@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodies Fusion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --text-main: #ffffff;
+            --btn-glass: rgba(255, 255, 255, 0.18);
+            --accent-google: #4285F4;
+            --accent-gold: #F59E0B;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.9)), 
+                        url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 440px;
+            width: 100%;
+            margin-top: 2vh;
+            padding-bottom: 40px;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 8px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 30px;
+            transition: 0.3s ease;
+        }
+        
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white; 
+            padding: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            object-fit: contain;
+        }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 32px; 
+            margin: 0 0 5px 0; 
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+        
+        p#slogan { 
+            font-size: 15px; 
+            font-style: italic; 
+            color: #cbd5e1;
+            margin: 0 0 30px 0; 
+            font-weight: 400;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--btn-glass);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .btn-google { border-left: 5px solid var(--accent-google); }
+        .btn-insta { border-left: 5px solid #E1306C; }
+
+        .btn-icon-img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        #review-card {
+            display: none;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            margin-top: 25px;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        #review-card p { font-weight: 600; margin-top: 0; font-size: 15px; color: #f8fafc; }
+        .sub-prompt { font-size: 13px !important; color: #94a3b8 !important; margin-bottom: 16px !important; font-weight: 400 !important;}
+
+        .menu-tree-container {
+            max-height: 340px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+
+        .menu-tree-container::-webkit-scrollbar { width: 6px; }
+        .menu-tree-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .menu-tree-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .tree-category {
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .category-header {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #f1f5f9;
+            transition: background 0.2s ease;
+        }
+        
+        .category-header:hover { background: rgba(255,255,255,0.1); }
+        .cat-icon { font-size: 12px; transition: transform 0.3s ease; }
+        .tree-category.active .cat-icon { transform: rotate(180deg); }
+        .tree-category.active .category-header { background: rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+        .category-body {
+            display: none;
+            padding: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .tree-category.active .category-body {
+            display: flex;
+        }
+
+        .tag-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 6px 14px;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .tag-btn:hover { background: rgba(255,255,255,0.15); }
+        
+        .tag-btn.active-tag {
+            background: var(--accent-google);
+            border-color: var(--accent-google);
+            color: white;
+            font-weight: 600;
+        }
+
+        #review-action-area {
+            display: none;
+            animation: slideUp 0.3s ease-out;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            color: #0f172a;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            background-color: rgba(255,255,255,0.95);
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-refresh, .btn-copy {
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            transition: 0.3s ease;
+        }
+
+        .btn-refresh {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-refresh:hover { background: rgba(255,255,255,0.2); }
+
+        .btn-copy { 
+            background-color: var(--accent-google); 
+            color: white; 
+            flex: 2;
+        }
+        .btn-copy:hover { background-color: #3367d6; }
+
+        @keyframes slideUp {
+            from { transform: translateY(15px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body onload="initApp()">
+    <div class="container">
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLanguage('mr')" id="btn-mr">मराठी</button>
+            <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
+            <button class="lang-btn" onclick="setLanguage('hi')" id="btn-hi">हिन्दी</button>
+        </div>
+
+        <div class="glass-card">
+            <img src="ff.jpg" alt="Foodies Fusion Logo" class="logo-img">
+            
+            <h1 id="title">Foodies Fusion</h1>
+            <p id="slogan">Delicious Moments, Fused to Perfection</p>
+
+            <div class="btn-group">
+                <button class="btn btn-google" onclick="triggerReviewCard()">
+                    <span style="font-size: 22px;">⭐</span> <span id="txt-google">Google Review</span>
+                </button>
+                
+                <button class="btn btn-insta" onclick="window.location.href='https://www.instagram.com/foodies_fushion/'">
+                    <svg class="btn-icon-img" viewBox="0 0 24 24" fill="url(#instaGradient)">
+                        <defs>
+                            <linearGradient id="instaGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#FED576" />
+                                <stop offset="25%" stop-color="#F47133" />
+                                <stop offset="50%" stop-color="#BC3081" />
+                                <stop offset="100%" stop-color="#4C63D2" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    <span id="txt-insta">Instagram</span>
+                </button>
+            </div>
+
+            <div id="review-card">
+                <p id="txt-prompt">Short on time? Use our quick-template review!</p>
+                <p id="txt-sub-prompt" class="sub-prompt">Select the products you experienced (Select multiple if needed):</p>
+                
+                <div class="menu-tree-container" id="menu-tree-container"></div>
+
+                <div id="review-action-area">
+                    <textarea id="review-text" readonly></textarea>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-refresh" onclick="displayReview()">🔄 <span id="txt-rephrase">Rephrase</span></button>
+                        <button class="btn-copy" id="copy-btn" onclick="copyAndRedirect()">📋 <span id="txt-copy">Copy & Continue</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuItems = {
+            fries: ["Plain French Fries", "Plain Cheese Fries", "Masala Periperi Fries", "Cheese Masala Periperi Fries"],
+            veg_burgers: ["Veg Cheese Patty Burger", "Veg Double Cheese Patty Burger", "Veg Paneer Tikka Cheese Burger"],
+            veg_sandwiches: ["Veg Sandwich", "Veg Cheese Sandwich", "Veg Grilled Sandwich", "Veg Cheese Grilled Sandwich", "Veg Club Grilled Sandwich", "Veg Cron Grilled Sandwich", "Paneer Tikka Grilled Sandwich"],
+            veg_pizza: ["Margherita Pizza", "Supreme Cheese Pizza", "Peri Peri Pizza", "Corn Pizza", "Paneer Tikka Pizza", "Paneer Chilly Pizza", "Foodies Special Pizza"],
+            exotic_starter: ["Chilly Garlic Pops", "Veg Cheese Shots 8/12", "Potato Veggies", "Potato Peri Peri Veggies"],
+            veg_garlic_bread: ["Garlic Bread", "Garlic Bread with Cheese", "Garlic Bread with Corn Cheese", "Garlic Bread with Vegetables"],
+            veg_momos: ["Veg Momo's", "Veg Cheese Momo's", "Veg Schezwan Momo's", "Veg Paneer Momo's", "Veg Paneer Peri Peri Momo's"],
+            milk_shakes: ["Chocolate Milkshake", "Oreo Milkshake", "Vanila Milkshake", "Butterscotch Milkshake", "Strawberry Milkshake", "Rose Milkshake", "Mango Milkshake", "Cold Coffee", "Cold Coffee with Chocolate", "Lime ICE Tea", "Peach ICE Tea"],
+            beverages: ["Mosambi Juice", "Water Melon Juice", "Orange Juice", "Pineapple Juice", "Cocktail Juice", "Fresh Lime", "Fresh Lime Soda"],
+            mojito: ["Kivi Mojito", "Mint Mojito", "Strawbery Mojito", "Blue Corruco Mojito", "Watermelon Mojito", "Mango Mojito", "Kala Khatta Mojito", "Kokam Mojito"],
+            hot_drinks: ["Hot Chocolate", "Hot Coffee", "Black Coffee", "Tea"],
+            dessert: ["Sizzling Brownie", "Sizzline Brownie with ICE Cream"],
+            nv_burgers: ["Chicken Patty Burger", "Chicken Tandoori Burger", "Chicken Hot & Spicy Burger"],
+            nv_sandwiches: ["Chicken Cheese Grilled Sandwich", "Chicken Mayo Grilled Sandwich", "Chicken Tikka Grilled Sandwich", "Chicken Combination Grilled Sandwich", "Chicken Panadi Grilled Sandwich"],
+            nv_pizza: ["Spicy Chicken Pizza", "Chicken Tikka Pizza", "Chicken Corn Pizza", "Chicken Combination Pizza", "Chicken BBQ Pizza", "Foodies Fusion Special Pizza"],
+            chicken_starters: ["Chicken Popcorn (M/L)", "Chicken Nuggets (8/12)", "Chicken Cheese Fingers (6/8)"],
+            nv_garlic_bread: ["Garlic Bread with Chicken", "Garlic Bread with Chicken Corn"],
+            nv_momos: ["Chicken Momo's", "Chicken Cheese Momo's", "Chicken Peri Peri Momo's"]
+        };
+
+        const generatorData = {
+            en: {
+                slogan: "Delicious Moments, Fused to Perfection", google: "Google Review", insta: "Instagram",
+                prompt: "Short on time? Use our quick-template review!", subPrompt: "Select the products you experienced (Select multiple if needed):",
+                copyBtn: "Copy & Continue", rephraseBtn: "Rephrase", copiedMsg: "✅ Copied!",
+                catNames: {
+                    fries: "Fries", veg_burgers: "Veg Burgers", veg_sandwiches: "Veg Sandwiches", veg_pizza: "Veg Pizza",
+                    exotic_starter: "Exotic Starters", veg_garlic_bread: "Veg Garlic Bread", veg_momos: "Veg Momos",
+                    milk_shakes: "Milk Shakes", beverages: "Beverages/Juices", mojito: "Mojitos", hot_drinks: "Hot Drinks", dessert: "Desserts",
+                    nv_burgers: "Non-Veg Burgers", nv_sandwiches: "Non-Veg Sandwiches", nv_pizza: "Non-Veg Pizza",
+                    chicken_starters: "Chicken Starters", nv_garlic_bread: "Non-Veg Garlic Bread", nv_momos: "Non-Veg Momos"
+                },
+                transitions: ["We also tried the [ITEM], and", "Along with that, we ordered the [ITEM];", "The [ITEM] was also a great choice, as", "Also had the [ITEM], which"],
+                shared_p3: ["Highly recommended!", "Will definitely visit again.", "Best place in town for this.", "Absolutely loved it.", "A must-try for everyone."],
+                fries: { p1: ["Ordered the [ITEM].", "Tried their [ITEM].", "The [ITEM] was amazing.", "Had a portion of [ITEM]."], p2: ["they were incredibly crispy.", "the seasoning was spot on.", "it had a generous portion size.", "it was served piping hot.", "it made for a perfect side dish."] },
+                veg_burgers: { p1: ["Had the [ITEM].", "The [ITEM] is great.", "Tried their [ITEM].", "Ordered a delicious [ITEM]."], p2: ["the patty was perfectly cooked.", "it had fresh veggies and great sauces.", "it was very filling and tasty.", "the buns were super soft.", "it was an excellent flavor fusion."] },
+                veg_sandwiches: { p1: ["Loved the [ITEM].", "The [ITEM] is amazing.", "Tried the [ITEM].", "Ordered the [ITEM]."], p2: ["it was perfectly toasted and crispy.", "it came loaded with fresh fillings.", "the cheese melt was perfect.", "it had a great blend of spices.", "it was a very satisfying meal."] },
+                veg_pizza: { p1: ["Ordered a [ITEM].", "Tried the [ITEM].", "The [ITEM] was great.", "Had the classic [ITEM]."], p2: ["the crust was baked perfectly.", "it was loaded with cheese and toppings.", "the pizza sauce was tangy.", "every bite was delicious.", "it had the perfect amount of spice."] },
+                exotic_starter: { p1: ["Started with [ITEM].", "The [ITEM] was divine.", "Tried the [ITEM].", "Ordered the [ITEM]."], p2: ["it was incredibly crunchy outside.", "it had a melt-in-your-mouth goodness.", "it was the perfect companion for drinks.", "the dips served alongside were great.", "it was full of amazing flavors."] },
+                veg_garlic_bread: { p1: ["Had the [ITEM].", "Tried the [ITEM].", "Ordered the [ITEM].", "Started with [ITEM]."], p2: ["it was perfectly buttery.", "it was loaded with amazing cheese.", "it was very soft inside and crispy outside.", "the garlic flavor was excellent.", "it was a great appetizer choice."] },
+                veg_momos: { p1: ["Tried the [ITEM].", "The [ITEM] were great.", "Ordered the [ITEM].", "Had a plate of [ITEM]."], p2: ["the filling was very generous.", "the spicy chutney was authentic.", "they were perfectly steamed and soft.", "they had incredible taste and texture.", "they really fulfilled my cravings."] },
+                milk_shakes: { p1: ["Had an [ITEM].", "Tried the [ITEM].", "Ordered a thick [ITEM].", "Loved the [ITEM]."], p2: ["it was thick and creamy.", "it was perfectly sweet and chilled.", "the presentation was lovely.", "it was a very refreshing drink.", "it was the best way to beat the heat."] },
+                beverages: { p1: ["Ordered fresh [ITEM].", "Tried the [ITEM].", "Had a refreshing [ITEM].", "Ordered a [ITEM]."], p2: ["it was made with fresh fruits.", "it was very refreshing and cooling.", "it had a perfect balance of sweetness.", "it felt incredibly revitalizing.", "it was served perfectly chilled."] },
+                mojito: { p1: ["Tried the [ITEM].", "The [ITEM] was amazing.", "Ordered a classic [ITEM].", "Had the [ITEM]."], p2: ["it was very fizzy and minty.", "it had perfectly balanced flavors.", "the ice and syrup ratio was great.", "it was a super refreshing drink.", "it looked and tasted fantastic."] },
+                hot_drinks: { p1: ["Ordered a [ITEM].", "Had a strong [ITEM].", "Tried their classic [ITEM].", "Enjoyed a warm [ITEM]."], p2: ["it was brewed to perfection.", "it was very comforting and warm.", "the aroma was wonderful.", "it was served at the perfect temperature.", "it was great for a cozy evening."] },
+                dessert: { p1: ["Ended with [ITEM].", "Tried the [ITEM].", "Ordered their [ITEM].", "Had a delicious [ITEM]."], p2: ["the chocolate sauce was heavenly.", "it was a perfect mix of hot and cold.", "it was baked perfectly fudgy.", "it satisfied my sweet tooth completely.", "it was a perfect end to the meal."] },
+                nv_burgers: { p1: ["Had the [ITEM].", "Tried the [ITEM].", "Ordered the [ITEM].", "The [ITEM] was excellent."], p2: ["the chicken was juicy and tender.", "the spices were perfectly balanced.", "it had a very generous chicken portion.", "the sauces complemented the meat perfectly.", "it was absolutely mouth-watering."] },
+                nv_sandwiches: { p1: ["Loved the [ITEM].", "Tried the [ITEM].", "Ordered the [ITEM].", "Had a [ITEM]."], p2: ["it was stuffed with flavorful chicken.", "it was perfectly grilled and crunchy.", "the mayo and chicken blend was perfect.", "it was very filling and delicious.", "it was a great fusion of flavors."] },
+                nv_pizza: { p1: ["Ordered the [ITEM].", "Tried the [ITEM].", "Had the [ITEM].", "The [ITEM] is great."], p2: ["it was generously topped with chicken.", "the BBQ sauce was amazing.", "it had a perfect cheese pull.", "the crust was perfectly crisp.", "it featured incredibly flavorful slices."] },
+                chicken_starters: { p1: ["Started with [ITEM].", "Tried the [ITEM].", "Ordered [ITEM].", "Had a platter of [ITEM]."], p2: ["they were crispy and golden.", "the meat was very succulent.", "they were perfect bite-sized pieces.", "the accompanying dips were great.", "it was a fantastic appetizer."] },
+                nv_garlic_bread: { p1: ["Had [ITEM].", "Tried [ITEM].", "Ordered [ITEM].", "The [ITEM] was a hit."], p2: ["it was loaded with cheese and chicken pieces.", "it was perfectly baked and buttery.", "the garlic and chicken combo is genius.", "it had very soft yet crispy edges.", "it was a uniquely delicious starter."] },
+                nv_momos: { p1: ["Tried the [ITEM].", "Ordered [ITEM].", "Had the [ITEM].", "The [ITEM] were fantastic."], p2: ["they were stuffed with juicy minced chicken.", "the spicy dip was perfect.", "the wrappers were perfectly cooked.", "the cheese and chicken mix was heavenly.", "it had an absolutely authentic taste."] }
+            },
+            hi: {
+                slogan: "स्वाद का बेहतरीन संगम", google: "गूगल रिव्यू", insta: "इंस्टाग्राम",
+                prompt: "समय कम है? हमारे इस टेम्पलेट का उपयोग करें!", subPrompt: "चुनें कि आपने किन चीजों का अनुभव किया (एक से अधिक चुन सकते हैं):",
+                copyBtn: "कॉपी करें और आगे बढ़ें", rephraseBtn: "फिर से लिखें", copiedMsg: "✅ कॉपी हो गया!",
+                catNames: {
+                    fries: "फ्राइज़ (Fries)", veg_burgers: "वेज बर्गर", veg_sandwiches: "वेज सैंडविच", veg_pizza: "वेज पिज़्ज़ा",
+                    exotic_starter: "एक्जॉटिक स्टार्टर्स", veg_garlic_bread: "वेज गार्लिक ब्रेड", veg_momos: "वेज मोमोज़",
+                    milk_shakes: "मिल्क शेक", beverages: "बेवरेज/जूस", mojito: "मोजिटो", hot_drinks: "हॉट ड्रिंक्स", dessert: "डेसर्ट",
+                    nv_burgers: "नॉन-वेज बर्गर", nv_sandwiches: "नॉन-वेज सैंडविच", nv_pizza: "नॉन-वेज पिज़्ज़ा",
+                    chicken_starters: "चिकन स्टार्टर्स", nv_garlic_bread: "नॉन-वेज गार्लिक ब्रेड", nv_momos: "नॉन-वेज मोमोज़"
+                },
+                transitions: ["साथ ही [ITEM] भी ट्राई किया, जो", "हमने [ITEM] भी ऑर्डर किया, और", "इसके अलावा [ITEM] का भी स्वाद लिया, क्योंकि", "[ITEM] भी मंगाया था, और"],
+                shared_p3: ["मैं 100% रिकमेंड करूँगा।", "यहाँ जरूर आना चाहिए।", "यह जगह बहुत शानदार है।", "मुझे यह बहुत पसंद आया।", "पैसे वसूल हो गए।"],
+                fries: { p1: ["[ITEM] ऑर्डर किया।", "[ITEM] ट्राई किया।", "[ITEM] बहुत बढ़िया था।", "[ITEM] खाया।"], p2: ["वे बहुत क्रिस्पी थे।", "मसाले का स्वाद एकदम सही था।", "क्वांटिटी भी काफी अच्छी थी।", "बिल्कुल गरमागरम परोसे गए।", "स्वाद बहुत ही लाजवाब था।"] },
+                veg_burgers: { p1: ["[ITEM] खाया।", "[ITEM] बहुत अच्छा है।", "[ITEM] ट्राई किया।", "एक स्वादिष्ट [ITEM] ऑर्डर किया।"], p2: ["पैटी बहुत अच्छे से पकी थी।", "सब्जियां ताजी थीं और सॉस बेहतरीन था।", "काफी फिलिंग और टेस्टी था।", "बर्गर बन बहुत सॉफ्ट थे।", "स्वाद का बेहतरीन फ्यूजन था।"] },
+                veg_sandwiches: { p1: ["[ITEM] बहुत पसंद आया।", "[ITEM] लाजवाब है।", "[ITEM] ट्राई किया।", "[ITEM] बहुत बढ़िया है।"], p2: ["एकदम परफेक्ट ग्रिल और क्रिस्पी था।", "स्टफिंग बहुत अच्छी की गई थी।", "चीज़ बहुत अच्छे से मेल्ट हुआ था।", "मसालों का स्वाद बहुत बढ़िया था।", "खाकर मजा आ गया।"] },
+                veg_pizza: { p1: ["[ITEM] ऑर्डर किया।", "[ITEM] ट्राई किया।", "[ITEM] बहुत अच्छा था।", "[ITEM] खाया।"], p2: ["पिज़्ज़ा बेस एकदम सही पका था।", "चीज़ और टॉपिंग से भरपूर था।", "पिज़्ज़ा सॉस का स्वाद बहुत अच्छा था।", "हर बाइट में मजा आ गया।", "मसालों का संतुलन एकदम परफेक्ट था।"] },
+                exotic_starter: { p1: ["[ITEM] से शुरुआत की।", "[ITEM] बहुत ही स्वादिष्ट था।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।"], p2: ["बाहर से बहुत क्रंची था।", "मुंह में जाते ही घुल गया।", "ड्रिंक्स के साथ एकदम परफेक्ट है।", "साथ में दी गई डिप बहुत अच्छी थी।", "स्वाद से भरपूर था।"] },
+                veg_garlic_bread: { p1: ["[ITEM] खाया।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "[ITEM] से शुरुआत की।"], p2: ["बटर का स्वाद बहुत अच्छा था।", "चीज़ बहुत अच्छे से डाला गया था।", "अंदर से सॉफ्ट और बाहर से क्रिस्पी।", "गार्लिक का फ्लेवर एकदम परफेक्ट था।", "स्टार्टर के लिए बेहतरीन विकल्प।"] },
+                veg_momos: { p1: ["[ITEM] ट्राई किया।", "[ITEM] बहुत अच्छा था।", "[ITEM] ऑर्डर किया।", "[ITEM] की एक प्लेट खाई।"], p2: ["स्टफिंग बहुत अच्छी मात्रा में थी।", "तीखी चटनी का स्वाद असली था।", "बहुत अच्छे से स्टीम किया गया था।", "टेस्ट और टेक्सचर दोनों शानदार थे।", "खाकर दिल खुश हो गया।"] },
+                milk_shakes: { p1: ["[ITEM] पिया।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "[ITEM] बहुत पसंद आया।"], p2: ["यह काफी गाढ़ा और क्रीमी था।", "मिठास एकदम परफेक्ट थी।", "प्रेजेंटेशन बहुत अच्छी थी।", "बहुत ही रिफ्रेशिंग ड्रिंक है।", "गर्मी भगाने का बेहतरीन तरीका।"] },
+                beverages: { p1: ["फ्रेश [ITEM] ऑर्डर किया।", "[ITEM] ट्राई किया।", "रिफ्रेशिंग [ITEM] पिया।", "[ITEM] ऑर्डर किया।"], p2: ["ताज़े फलों से बना था।", "बहुत ही रिफ्रेशिंग और ठंडा था।", "स्वाद एकदम संतुलित था।", "पीकर काफी तरोताज़ा महसूस हुआ।", "एकदम चिल्ड सर्व किया गया था।"] },
+                mojito: { p1: ["[ITEM] ट्राई किया।", "[ITEM] लाजवाब था।", "[ITEM] ऑर्डर किया।", "[ITEM] पिया।"], p2: ["काफी फिज़ी और मिन्टी था।", "फ्लेवर्स का बैलेंस एकदम सही था।", "बर्फ और सिरप का अनुपात अच्छा था।", "सुपर रिफ्रेशिंग ड्रिंक है।", "दिखने और पीने में बहुत शानदार।"] },
+                hot_drinks: { p1: ["[ITEM] ऑर्डर किया।", "स्ट्रॉन्ग [ITEM] पी।", "[ITEM] ट्राई की।", "गरमागरम [ITEM] का मज़ा लिया।"], p2: ["एकदम परफेक्ट तरीके से बनाई गई थी।", "पीकर बहुत सुकून मिला।", "खुशबू बहुत ही शानदार थी।", "एकदम सही तापमान पर परोसी गई।", "शाम के वक्त के लिए बेहतरीन।"] },
+                dessert: { p1: ["[ITEM] के साथ खत्म किया।", "[ITEM] ट्राई किया।", "इनका सिग्नेचर [ITEM] ऑर्डर किया।", "एक स्वादिष्ट [ITEM] खाया।"], p2: ["सॉस का स्वाद लाजवाब था।", "गर्म और ठंडे का बेहतरीन कॉम्बिनेशन।", "बहुत अच्छे से बेक हुआ था।", "मीठा खाने की तलब पूरी हो गई।", "खाने के बाद के लिए एकदम परफेक्ट।"] },
+                nv_burgers: { p1: ["[ITEM] खाया।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "नॉन-वेज [ITEM] बहुत शानदार था।"], p2: ["चिकन काफी जूसी और सॉफ्ट था।", "मसालों का बैलेंस एकदम सही था।", "चिकन का पोर्शन काफी अच्छा था।", "सॉस और मीट का कॉम्बिनेशन बहुत अच्छा था।", "खाकर मजा आ गया।"] },
+                nv_sandwiches: { p1: ["[ITEM] बहुत पसंद आया।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "[ITEM] खाया।"], p2: ["फ्लेवरफुल चिकन की अच्छी स्टफिंग थी।", "एकदम परफेक्ट ग्रिल और क्रंची था।", "मेयो और चिकन का ब्लेंड एकदम सही था।", "काफी फिलिंग और स्वादिष्ट था।", "स्वाद का बेहतरीन फ्यूजन।"] },
+                nv_pizza: { p1: ["[ITEM] ऑर्डर किया।", "[ITEM] ट्राई किया।", "[ITEM] खाया।", "[ITEM] बहुत अच्छा है।"], p2: ["चिकन की टॉपिंग बहुत अच्छे से की गई थी।", "सॉस का स्वाद लाजवाब था।", "चीज़ बहुत अच्छे से मेल्ट हुआ था।", "पिज़्ज़ा बेस क्रिस्पी था।", "हर स्लाइस स्वाद से भरपूर था।"] },
+                chicken_starters: { p1: ["[ITEM] से शुरुआत की।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "[ITEM] खाया।"], p2: ["वे बहुत क्रिस्पी और सुनहरे थे।", "मीट काफी जूसी था।", "एकदम परफेक्ट बाइट-साइज़ थे।", "साथ में दी गई डिप बहुत अच्छी थी।", "स्टार्टर के लिए बेहतरीन विकल्प।"] },
+                nv_garlic_bread: { p1: ["[ITEM] खाया।", "[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "[ITEM] बहुत शानदार था।"], p2: ["चीज़ और चिकन से भरपूर था।", "बटर के साथ बहुत अच्छे से बेक किया गया था।", "गार्लिक और चिकन का कॉम्बिनेशन कमाल का है।", "अंदर से सॉफ्ट और बाहर से क्रिस्पी।", "एकदम अलग और स्वादिष्ट स्टार्टर।"] },
+                nv_momos: { p1: ["[ITEM] ट्राई किया।", "[ITEM] ऑर्डर किया।", "[ITEM] खाया।", "[ITEM] बहुत शानदार था।"], p2: ["जूसी चिकन की बेहतरीन स्टफिंग थी।", "तीखी चटनी का स्वाद एकदम सही था।", "बहुत अच्छे से पकाया गया था।", "चीज़ और चिकन का मिक्स लाजवाब था।", "स्वाद एकदम असली था।"] }
+            },
+            mr: {
+                slogan: "उत्तम चवीचा अद्भुत संगम", google: "गुगल रिव्ह्यू", insta: "इंस्टाग्राम",
+                prompt: "वेळ कमी आहे? आमचा हा तयार रिव्ह्यू वापरा!", subPrompt: "तुम्ही अनुभवलेले पदार्थ निवडा (एकापेक्षा जास्त निवडू शकता):",
+                copyBtn: "कॉपी करा आणि पुढे जा", rephraseBtn: "पुन्हा लिहा", copiedMsg: "✅ कॉपी झाले!",
+                catNames: {
+                    fries: "फ्राइज (Fries)", veg_burgers: "व्हेज बर्गर", veg_sandwiches: "व्हेज सँडविच", veg_pizza: "व्हेज पिझ्झा",
+                    exotic_starter: "एक्झॉटिक स्टार्टर्स", veg_garlic_bread: "व्हेज गार्लिक ब्रेड", veg_momos: "व्हेज मोमोज",
+                    milk_shakes: "मिल्क शेक", beverages: "बेव्हरेजेस/ज्यूस", mojito: "मोजिटो", hot_drinks: "हॉट ड्रिंक्स", dessert: "डेझर्ट",
+                    nv_burgers: "नॉन-व्हेज बर्गर", nv_sandwiches: "नॉन-व्हेज सँडविच", nv_pizza: "नॉन-व्हेज पिझ्झा",
+                    chicken_starters: "चिकन स्टार्टर्स", nv_garlic_bread: "नॉन-व्हेज गार्लिक ब्रेड", nv_momos: "नॉन-व्हेज मोमोज"
+                },
+                transitions: ["सोबतच [ITEM] पण ट्राय केले, आणि", "आम्ही [ITEM] पण ऑर्डर केले, जे", "त्यासोबत [ITEM] ची पण चव घेतली, कारण", "[ITEM] सुद्धा मागवले होते, आणि ते"],
+                shared_p3: ["मी नक्कीच शिफारस करेन.", "येथे नक्की भेट द्या.", "खूप छान अनुभव होता.", "पैसे वसूल झाले.", "मला हे खूप आवडले."],
+                fries: { p1: ["[ITEM] ऑर्डर केले होते.", "[ITEM] ट्राय केले.", "[ITEM] खूप छान होते.", "लोडेड [ITEM] खाल्ले."], p2: ["खूप क्रिस्पी होते.", "मसाल्याची चव एकदम परफेक्ट होती.", "क्वांटिटी खूप चांगली होती.", "गरमागरम सर्व्ह केले गेले.", "चव अगदी अप्रतिम होती."] },
+                veg_burgers: { p1: ["[ITEM] खाल्ला.", "[ITEM] खूप छान आहे.", "[ITEM] ट्राय केला.", "एक चविष्ट [ITEM] ऑर्डर केला."], p2: ["पॅटी खूप छान शिजलेली होती.", "भाज्या ताज्या होत्या आणि सॉस उत्तम होता.", "खूप फिलिंग आणि टेस्टी होता.", "बर्गर बन खूप मऊ होते.", "चवीचा उत्तम संगम होता."] },
+                veg_sandwiches: { p1: ["[ITEM] खूप आवडला.", "[ITEM] अप्रतिम आहे.", "[ITEM] ट्राय केला.", "यांचे [ITEM] खूप छान आहे."], p2: ["एकदम परफेक्ट ग्रिल आणि क्रिस्पी होता.", "स्टफिंग खूप चांगल्या प्रकारे केले होते.", "चीज खूप छान मेल्ट झाले होते.", "मसाल्यांची चव उत्तम होती.", "खाऊन खूप समाधान वाटले."] },
+                veg_pizza: { p1: ["[ITEM] ऑर्डर केला.", "[ITEM] ट्राय केला.", "[ITEM] खूप छान होता.", "[ITEM] खाल्ला."], p2: ["पिझ्झा बेस एकदम परफेक्ट शिजला होता.", "चीज आणि टॉपिंग्ज भरपूर होते.", "पिझ्झा सॉसची चव खूप छान होती.", "प्रत्येक बाइटमध्ये मजा आली.", "मसाल्यांचे संतुलन एकदम परफेक्ट होते."] },
+                exotic_starter: { p1: ["[ITEM] ने सुरुवात केली.", "[ITEM] खूपच चविष्ट होते.", "[ITEM] ट्राय केले.", "एक्झॉटिक [ITEM] ऑर्डर केले."], p2: ["बाहेरून खूप क्रंची होते.", "तोंडात टाकताच विरघळले.", "ड्रिंक्स सोबत एकदम परफेक्ट आहेत.", "सोबत दिलेली डिप खूप छान होती.", "चवीने परिपूर्ण होते."] },
+                veg_garlic_bread: { p1: ["[ITEM] खाल्ला.", "[ITEM] ट्राय केला.", "[ITEM] ऑर्डर केला.", "[ITEM] ने सुरुवात केली."], p2: ["बटरची चव खूप छान होती.", "चीज खूप चांगल्या प्रकारे घातले होते.", "आतून मऊ आणि बाहेरून क्रिस्पी.", "गार्लिकचा फ्लेवर एकदम परफेक्ट होता.", "स्टार्टरसाठी उत्तम पर्याय."] },
+                veg_momos: { p1: ["[ITEM] ट्राय केले.", "[ITEM] खूप छान होते.", "स्टीम [ITEM] ऑर्डर केले.", "[ITEM] ची प्लेट खाल्ली."], p2: ["स्टफिंग भरपूर प्रमाणात होते.", "तिखट चटणीची चव अस्सल होती.", "खूप चांगल्या प्रकारे स्टीम केले होते.", "टेस्ट आणि टेक्सचर दोन्ही उत्तम होते.", "खाऊन खूप मजा आली."] },
+                milk_shakes: { p1: ["[ITEM] प्यायला.", "[ITEM] ट्राय केला.", "थिक [ITEM] ऑर्डर केला.", "[ITEM] खूप आवडला."], p2: ["तो खूप घट्ट आणि क्रीमी होता.", "गोडवा एकदम परफेक्ट होता.", "प्रेझेंटेशन खूप छान होते.", "खूप रिफ्रेशिंग ड्रिंक आहे.", "उन्हाळा दूर करण्याचा उत्तम मार्ग."] },
+                beverages: { p1: ["फ्रेश [ITEM] ऑर्डर केला.", "[ITEM] ट्राय केला.", "रिफ्रेशिंग [ITEM] प्यायला.", "[ITEM] ऑर्डर केला."], p2: ["ताज्या फळांपासून बनवलेला होता.", "खूपच रिफ्रेशिंग आणि थंड होता.", "चव एकदम संतुलित होती.", "पिऊन खूप ताजेतवाने वाटले.", "एकदम चिल्ड सर्व्ह केला होता."] },
+                mojito: { p1: ["[ITEM] ट्राय केला.", "[ITEM] अप्रतिम होता.", "क्लासिक [ITEM] ऑर्डर केला.", "[ITEM] प्यायला."], p2: ["खूप फिझी आणि मिन्टी होता.", "फ्लेवर्सचा बॅलन्स एकदम योग्य होता.", "बर्फ आणि सिरपचे प्रमाण छान होते.", "सुपर रिफ्रेशिंग ड्रिंक आहे.", "दिसायला आणि प्यायला खूप छान."] },
+                hot_drinks: { p1: ["[ITEM] ऑर्डर केले.", "स्ट्रॉंग [ITEM] प्यायलो.", "[ITEM] ट्राय केली.", "गरमागरम [ITEM] ची मजा घेतली."], p2: ["एकदम परफेक्ट प्रकारे बनवली होती.", "पिऊन खूप समाधान मिळाले.", "सुगंध खूपच छान होता.", "एकदम योग्य तापमानावर सर्व्ह केली गेली.", "संध्याकाळसाठी एकदम उत्तम."] },
+                dessert: { p1: ["[ITEM] ने शेवट केला.", "[ITEM] ट्राय केली.", "यांचा सिग्नेचर [ITEM] ऑर्डर केला.", "एक चविष्ट [ITEM] खाल्ले."], p2: ["सॉसची चव अप्रतिम होती.", "गरम आणि थंडचा उत्तम कॉम्बिनेशन.", "खूप चांगल्या प्रकारे बेक झाली होती.", "गोड खाण्याची इच्छा पूर्ण झाली.", "जेवणानंतरसाठी एकदम परफेक्ट."] },
+                nv_burgers: { p1: ["[ITEM] खाल्ला.", "[ITEM] ट्राय केला.", "[ITEM] ऑर्डर केला.", "नॉन-व्हेज [ITEM] खूप छान होता."], p2: ["चिकन खूप ज्युसी आणि मऊ होते.", "मसाल्यांचा बॅलन्स एकदम योग्य होता.", "चिकनचे प्रमाण खूप चांगले होते.", "सॉस आणि मीटचे कॉम्बिनेशन उत्तम होते.", "खाऊन मजा आली."] },
+                nv_sandwiches: { p1: ["[ITEM] खूप आवडला.", "[ITEM] ट्राय केला.", "[ITEM] ऑर्डर केला.", "[ITEM] खाल्ला."], p2: ["फ्लेवरफुल चिकनची उत्तम स्टफिंग होती.", "एकदम परफेक्ट ग्रिल आणि क्रंची होता.", "मेयो आणि चिकनचा ब्लेंड एकदम योग्य होता.", "खूप फिलिंग आणि चविष्ट होता.", "चवीचा उत्तम संगम."] },
+                nv_pizza: { p1: ["[ITEM] ऑर्डर केला.", "[ITEM] ट्राय केला.", "[ITEM] खाल्ला.", "[ITEM] खूप छान आहे."], p2: ["चिकनचे टॉपिंग खूप छान केले होते.", "सॉसची चव अप्रतिम होती.", "चीज खूप छान मेल्ट झाले होते.", "पिझ्झा बेस क्रिस्पी होता.", "प्रत्येक स्लाइस चवीने परिपूर्ण होता."] },
+                chicken_starters: { p1: ["[ITEM] ने सुरुवात केली.", "[ITEM] ट्राय केले.", "[ITEM] ऑर्डर केले.", "[ITEM] खाल्ले."], p2: ["ते खूप क्रिस्पी आणि सोनेरी रंगाचे होते.", "मीट खूप ज्युसी होते.", "एकदम परफेक्ट बाइट-साईज होते.", "सोबत दिलेली डिप खूप छान होती.", "स्टार्टरसाठी उत्तम पर्याय."] },
+                nv_garlic_bread: { p1: ["[ITEM] खाल्ला.", "[ITEM] ट्राय केला.", "[ITEM] ऑर्डर केला.", "[ITEM] खूप छान होता."], p2: ["चीज आणि चिकनने भरपूर होता.", "बटर सोबत खूप छान बेक केला होता.", "गार्लिक आणि चिकनचे कॉम्बिनेशन कमाल आहे.", "आतून मऊ आणि बाहेरून क्रिस्पी.", "एकदम वेगळा आणि चविष्ट स्टार्टर."] },
+                nv_momos: { p1: ["[ITEM] ट्राय केले.", "[ITEM] ऑर्डर केले.", "[ITEM] खाल्ले.", "नॉन-व्हेज [ITEM] खूप छान होते."], p2: ["ज्युसी चिकनची उत्तम स्टफिंग होती.", "तिखट चटणीची चव एकदम योग्य होती.", "खूप चांगल्या प्रकारे शिजवले होते.", "चीज आणि चिकनचा मिक्स अप्रतिम होता.", "चव एकदम अस्सल होती."] }
+            }
+        };
+
+        const productKeys = Object.keys(menuItems);
+        let currentLang = 'mr'; 
+        let selectedItems = []; 
+        const sequentialCounters = { en: {}, hi: {}, mr: {} };
+
+        function initApp() {
+            for (let lang in generatorData) {
+                if(lang === 'catNames' || lang === 'products' || lang === 'shared_p3' || lang === 'transitions') continue;
+                productKeys.forEach(catKey => {
+                    sequentialCounters[lang][catKey] = 0; 
+                });
+            }
+            renderMenuTreeUI();
+            setLanguage('mr');
+        }
+
+        function renderMenuTreeUI() {
+            const container = document.getElementById('menu-tree-container');
+            container.innerHTML = '';
+            
+            Object.keys(menuItems).forEach(catKey => {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'tree-category';
+                catDiv.id = `cat-${catKey}`;
+                
+                const header = document.createElement('div');
+                header.className = 'category-header';
+                header.onclick = () => toggleCategory(catKey);
+                
+                const titleSpan = document.createElement('span');
+                titleSpan.id = `title-${catKey}`;
+                titleSpan.innerText = catKey; 
+                
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'cat-icon';
+                iconSpan.innerText = '▼';
+                
+                header.appendChild(titleSpan);
+                header.appendChild(iconSpan);
+                
+                const body = document.createElement('div');
+                body.className = 'category-body';
+                
+                menuItems[catKey].forEach(itemName => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tag-btn';
+                    btn.innerText = itemName;
+                    btn.onclick = () => toggleItem(catKey, itemName, btn);
+                    body.appendChild(btn);
+                });
+                
+                catDiv.appendChild(header);
+                catDiv.appendChild(body);
+                container.appendChild(catDiv);
+            });
+        }
+
+        function toggleCategory(catKey) {
+            const catDiv = document.getElementById(`cat-${catKey}`);
+            catDiv.classList.toggle('active');
+        }
+
+        function toggleItem(catKey, itemName, btnElement) {
+            const existingIndex = selectedItems.findIndex(i => i.item === itemName && i.cat === catKey);
+            
+            if (existingIndex > -1) {
+                selectedItems.splice(existingIndex, 1);
+                btnElement.classList.remove('active-tag');
+            } else {
+                selectedItems.push({cat: catKey, item: itemName});
+                btnElement.classList.add('active-tag');
+            }
+            
+            if (selectedItems.length > 0) {
+                document.getElementById('review-action-area').style.display = 'block';
+                displayReview();
+            } else {
+                document.getElementById('review-action-area').style.display = 'none';
+            }
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            document.getElementById('slogan').innerText = generatorData[lang].slogan;
+            document.getElementById('txt-google').innerText = generatorData[lang].google;
+            document.getElementById('txt-insta').innerText = generatorData[lang].insta;
+            document.getElementById('txt-prompt').innerText = generatorData[lang].prompt;
+            document.getElementById('txt-sub-prompt').innerText = generatorData[lang].subPrompt;
+            document.getElementById('txt-copy').innerText = generatorData[lang].copyBtn;
+            document.getElementById('txt-rephrase').innerText = generatorData[lang].rephraseBtn;
+            
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.style.backgroundColor = "var(--accent-google)";
+
+            Object.keys(menuItems).forEach(catKey => {
+                const titleSpan = document.getElementById(`title-${catKey}`);
+                if(titleSpan && generatorData[lang].catNames[catKey]) {
+                    titleSpan.innerText = generatorData[lang].catNames[catKey];
+                }
+            });
+
+            if (selectedItems.length > 0) {
+                displayReview();
+            }
+        }
+
+        function triggerReviewCard() {
+            document.getElementById('review-card').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('review-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function displayReview() {
+            if(selectedItems.length === 0) return;
+            
+            let combinedReview = [];
+            let closingStatement = "";
+            let langData = generatorData[currentLang];
+
+            selectedItems.forEach((selection, index) => {
+                let cat = selection.cat;
+                let item = selection.item;
+                let c = sequentialCounters[currentLang][cat];
+                
+                let p1Arr = langData[cat].p1;
+                let p2Arr = langData[cat].p2;
+                let transArr = langData.transitions;
+                let p3Arr = langData.shared_p3;
+
+                let p1_idx = c % p1Arr.length;
+                let p2_idx = Math.floor(c / p1Arr.length) % p2Arr.length;
+                let trans_idx = c % transArr.length;
+                let p3_idx = Math.floor(c / (p1Arr.length * p2Arr.length)) % p3Arr.length;
+
+                // Grammar Engine Logic
+                if (index === 0) {
+                    // First item gets regular opening and experience
+                    let sentence1 = p1Arr[p1_idx].replace(/\[ITEM\]/g, item);
+                    let sentence2 = p2Arr[p2_idx].replace(/\[ITEM\]/g, item);
+                    // Standardize punctuation (capitalize first letter of p2 if needed, though arrays usually handle this)
+                    combinedReview.push(`${sentence1} ${sentence2.charAt(0).toUpperCase() + sentence2.slice(1)}`);
+                } else {
+                    // Subsequent items get a transition phrase + experience
+                    let transition = transArr[trans_idx].replace(/\[ITEM\]/g, item);
+                    let experience = p2Arr[p2_idx].replace(/\[ITEM\]/g, item);
+                    combinedReview.push(`${transition} ${experience}`);
+                }
+
+                // The closing statement is determined by the last item
+                if (index === selectedItems.length - 1) {
+                    closingStatement = p3Arr[p3_idx];
+                }
+
+                sequentialCounters[currentLang][cat]++;
+            });
+            
+            combinedReview.push(closingStatement);
+
+            document.getElementById('review-text').value = combinedReview.join(' ');
+            document.getElementById('copy-btn').style.backgroundColor = "var(--accent-google)";
+            document.getElementById('txt-copy').innerText = generatorData[currentLang].copyBtn;
+        }
+
+        function copyAndRedirect() {
+            const copyText = document.getElementById("review-text");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const copyBtn = document.getElementById("copy-btn");
+                document.getElementById('txt-copy').innerText = generatorData[currentLang].copiedMsg;
+                copyBtn.style.backgroundColor = "#20c997"; 
+                
+                setTimeout(() => {
+                    window.location.href = 'https://search.google.com/local/writereview?placeid=ChIJ8bY0GHu55zsRGISyHu5aaR8';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
