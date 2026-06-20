@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Furnishing & Mattress</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-main: #ffffff;
+            --btn-glass: rgba(255, 255, 255, 0.2);
+            --accent-gold: #D4AF37;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75)), 
+                        url('https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            margin-top: 2vh;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: white; 
+            padding: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; 
+            margin: 0 0 5px 0; 
+            line-height: 1.2;
+        }
+        
+        p#slogan { 
+            font-size: 13px; 
+            font-style: italic; 
+            color: #d1d1d1;
+            margin: 0 0 25px 0; 
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--btn-glass);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .btn-google { border-left: 4px solid #4285F4; }
+        .btn-insta { border-left: 4px solid #E1306C; }
+        .btn-web { border-left: 4px solid var(--accent-gold); } 
+
+        .btn-icon-img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        #review-card {
+            display: none;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            margin-top: 20px;
+            animation: slideUp 0.4s ease-out;
+            text-align: left;
+        }
+
+        #review-card p { font-weight: 500; margin-top: 0; font-size: 14px; }
+        .sub-prompt { font-size: 12px !important; color: #d1d1d1; margin-bottom: 12px !important; }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 8px 14px;
+            color: white;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .tag-btn:hover { background: rgba(255,255,255,0.2); }
+        
+        .tag-btn.active-tag {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: #111;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #review-action-area {
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            color: #333;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            background-color: rgba(255,255,255,0.95);
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-refresh, .btn-copy {
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-refresh {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-refresh:hover { background: rgba(255,255,255,0.3); }
+
+        .btn-copy { 
+            background-color: var(--accent-gold); 
+            color: #111; 
+            flex: 2;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(15px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body onload="initApp()">
+    <div class="container">
+        <!-- Language Switcher: Marathi First, English Second, Hindi Third. -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLanguage('mr')" id="btn-mr">मराठी</button>
+            <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
+            <button class="lang-btn" onclick="setLanguage('hi')" id="btn-hi">हिन्दी</button>
+        </div>
+
+        <div class="glass-card">
+            <img src="logo.png" alt="Indian Furnishing Logo" class="logo-img">
+            
+            <h1 id="title">Indian Furnishing<br>& Mattress</h1>
+            <p id="slogan">The New Standard.. for better works..</p>
+
+            <div class="btn-group">
+                <button class="btn btn-google" onclick="triggerReviewCard()">
+                    <span style="font-size: 20px;">⭐</span> <span id="txt-google">Google Review</span>
+                </button>
+                
+                <button class="btn btn-insta" onclick="window.location.href='https://www.instagram.com/indianfurnishingandmattress/'">
+                    <svg class="btn-icon-img" viewBox="0 0 24 24" fill="url(#instaGradient)">
+                        <defs>
+                            <linearGradient id="instaGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#FED576" />
+                                <stop offset="25%" stop-color="#F47133" />
+                                <stop offset="50%" stop-color="#BC3081" />
+                                <stop offset="100%" stop-color="#4C63D2" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    <span id="txt-insta">Instagram</span>
+                </button>
+                
+                <button class="btn btn-web" onclick="window.location.href='https://www.indianfurnishingandmattress.com/'">
+                    <img src="logo.png" alt="Icon" class="btn-icon-img" style="border-radius: 50%;"> 
+                    <span id="txt-web">Website</span>
+                </button>
+            </div>
+
+            <div id="review-card">
+                <p id="txt-prompt">Short on time? Use our quick-template review!</p>
+                <p id="txt-sub-prompt" class="sub-prompt">Select the products you experienced (Select multiple if needed):</p>
+                
+                <div class="tags-container" id="tags-container"></div>
+
+                <div id="review-action-area">
+                    <textarea id="review-text" readonly></textarea>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-refresh" onclick="displayReview()">🔄 <span id="txt-rephrase">Rephrase</span></button>
+                        <button class="btn-copy" id="copy-btn" onclick="copyAndRedirect()">📋 <span id="txt-copy">Copy & Continue</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const generatorData = {
+            mr: {
+                slogan: "उत्तम कामासाठी.. एक नवीन मानक..", google: "गुगल रिव्ह्यू", insta: "इंस्टाग्राम", web: "वेबसाईट",
+                prompt: "वेळ कमी आहे? आमचा हा तयार रिव्ह्यू वापरा!", subPrompt: "तुम्ही खरेदी केलेली उत्पादने निवडा (एकापेक्षा जास्त निवडू शकता):",
+                copyBtn: "कॉपी करा आणि पुढे जा", rephraseBtn: "पुन्हा लिहा", copiedMsg: "✅ कॉपी झाले!",
+                products: {
+                    blinds: "ब्लाइंड्स (Blinds)", carpets: "कार्पेट्स (Carpets)", curtains: "पडदे (Curtains)", fabrics: "फॅब्रिक्स (Fabrics)",
+                    mattresses: "मॅट्रेस (Mattresses)", pillows: "उशा (Pillows)", vertical_blinds: "व्हर्टिकल ब्लाइंड्स", other: "इतर (सामान्य सेवा)"
+                },
+                shared_p3: ["नक्की खरेदी करा.", "मी १००% रिकमेंड करेन.", "खूप समाधानी आहे.", "पैसे वसूल झाले.", "उत्तम अनुभव आला!"],
+                blinds: {
+                    p1: ["इथले ब्लाइंड्स खूप छान आहेत.", "खिडक्यांसाठी एकदम परफेक्ट ब्लाइंड्स.", "दर्जेदार ब्लाइंड्स मिळाले.", "मॉडर्न ब्लाइंड्सचे उत्तम कलेक्शन."],
+                    p2: ["बसवण्याचे काम वेळेवर झाले.", "घराला खूप शोभून दिसतात.", "फिनिशिंग खूप प्रोफेशनल आहे.", "क्वालिटी उत्तम आहे.", "सर्व्हिस फास्ट मिळाली."]
+                },
+                carpets: {
+                    p1: ["कार्पेट्सचे कलेक्शन खूप सुंदर आहे.", "प्रीमियम कार्पेट्स इथून घेतले.", "हॉलसाठी उत्तम कार्पेट मिळाले.", "कार्पेट्सची मोठी व्हरायटी आहे."],
+                    p2: ["घराला नवीन लुक मिळाला.", "मजबूत आणि उत्तम डिझाईन आहे.", "अतिशय मऊ आणि आरामदायी आहे.", "रंग खूप छान आहेत.", "योग्य दरात उत्तम वस्तू मिळाली."]
+                },
+                curtains: {
+                    p1: ["पडद्यांचे डिझाईन खूप आकर्षक आहे.", "सुंदर पडदे इथून घेतले.", "कस्टमाइज्ड पडदे बनवून मिळाले.", "पडद्यांची क्वालिटी एकदम परफेक्ट आहे."],
+                    p2: ["शिलाई खूपच उत्तम आहे.", "घराला एक प्रीमियम लुक आला.", "फॅब्रिक दीर्घकाळ टिकणारे आहे.", "रंग घराला खूप शोभतात.", "लाईट ब्लॉकिंग खूप छान आहे."]
+                },
+                fabrics: {
+                    p1: ["सोफ्याचे नवीन कापड इथून घेतले.", "फॅब्रिकचे भरपूर ऑप्शन्स उपलब्ध आहेत.", "सुंदर फॅब्रिक्स इथून मिळाले.", "फर्निचरसाठी उत्तम कापड घेतले."],
+                    p2: ["क्वालिटी एकदम नंबर वन आहे.", "मजबूत आणि टिकाऊ आहे.", "कपड्याचा पोत खूप आकर्षक आहे.", "रंग अगदी मनासारखा मिळाला.", "सॉफ्ट आणि मजबूत आहे."]
+                },
+                mattresses: {
+                    p1: ["इथून घेतलेली मॅट्रेस आरामदायी आहे.", "मेमरी फोम मॅट्रेस एकदम बेस्ट आहे.", "कस्टमाइज्ड मॅट्रेस बनवून घेतली.", "उत्तम दर्जाची गादी इथून मिळाली."],
+                    p2: ["पाठदुखीचा त्रास कमी झाला.", "फिटिंग आणि क्वालिटी एक नंबर आहे.", "मॅट्रेस खूपच मऊ आहे.", "झोप खूप शांत लागते.", "खूप प्रीमियम फील येतो."]
+                },
+                pillows: {
+                    p1: ["नवीन उशा इथून घेतल्या.", "मानेच्या आधारासाठी उत्तम उशा आहेत.", "मेमरी फोमच्या उशा एकदम भारी आहेत.", "उशांचा आकार समाधानकारक आहे."],
+                    p2: ["फॅब्रिक खूप मऊ आणि आरामदायक आहे.", "क्वालिटी आणि दर्जा उत्तम आहे.", "झोप खूप शांत लागते.", "मानेचा त्रास कमी झाला.", "योग्य दरात उत्तम उशा मिळाल्या."]
+                },
+                vertical_blinds: {
+                    p1: ["व्हर्टिकल ब्लाइंड्स खूप मॉडर्न आहेत.", "ऑफिससाठी व्हर्टिकल ब्लाइंड्स घेतले.", "मजबूत व्हर्टिकल ब्लाइंड्स इथून मिळाले.", "व्हर्टिकल ब्लाइंड्सचे डिझाईन छान आहे."],
+                    p2: ["बसवण्याची सर्व्हिस फास्ट होती.", "लुक खूप प्रोफेशनल आला आहे.", "फिटिंग एकदम अचूक आहे.", "टीमने व्यवस्थित काम केले.", "क्वालिटी एकदम बेस्ट आहे."]
+                },
+                other: {
+                    p1: ["दुकानदारांचा स्वभाव खूप नम्र आहे.", "ग्राहकांना इथून योग्य मार्गदर्शन मिळते.", "स्टोअरमधील वातावरण खूप छान आहे.", "येथे नेहमी उत्तम सल्ले मिळतात."],
+                    p2: ["उत्तम सेवा मिळाली.", "सर्व्हिस फास्ट आणि विश्वासार्ह आहे.", "यांची ग्राहक सेवा कौतुकास्पद आहे.", "टीम खूप मदत करणारी आहे.", "खरेदीचा अनुभव छान राहिला."]
+                }
+            },
+            en: {
+                slogan: "The New Standard.. for better works..", google: "Google Review", insta: "Instagram", web: "Website",
+                prompt: "Short on time? Use our quick-template review!", subPrompt: "Select the products you experienced (Select multiple if needed):",
+                copyBtn: "Copy & Continue", rephraseBtn: "Rephrase", copiedMsg: "✅ Copied!",
+                products: {
+                    blinds: "Blinds", carpets: "Carpets", curtains: "Curtains", fabrics: "Fabrics",
+                    mattresses: "Mattresses", pillows: "Pillows", vertical_blinds: "Vertical Blinds", other: "Other (Service)"
+                },
+                shared_p3: ["Highly recommended!", "Will definitely buy again.", "Very satisfied with the service.", "Great value for money.", "Absolutely worth it."],
+                blinds: {
+                    p1: ["Highly impressed with their window blinds.", "The blinds we bought fit perfectly.", "Great quality blinds for the house.", "Their collection of blinds is very modern."],
+                    p2: ["The installation team was quick.", "They really elevate the room.", "The finish is highly professional.", "We love the durability and look.", "The mechanism works very smoothly."]
+                },
+                carpets: {
+                    p1: ["Best place for premium carpets.", "The carpet completely transformed our room.", "Huge variety of carpets to choose from.", "Bought a beautiful carpet here."],
+                    p2: ["The texture is unmatched.", "Excellent quality and softness.", "The colors are very vibrant.", "It feels very luxurious.", "Pricing is very reasonable."]
+                },
+                curtains: {
+                    p1: ["Beautiful curtains available here.", "Elegant fabrics for window curtains.", "Excellent custom curtain stitching.", "Perfect light blocking curtains."],
+                    p2: ["The stitching is top-notch.", "Looks incredibly premium.", "Completely changes the room's aesthetic.", "Great pattern options.", "Feels very high-end."]
+                },
+                fabrics: {
+                    p1: ["Purchased sofa fabrics from here.", "Massive selection of upholstery.", "Found the exact shade I needed.", "Great place for furnishing fabrics."],
+                    p2: ["The quality is top-notch.", "Very premium and durable material.", "Soft yet incredibly strong.", "The texture is just beautiful.", "Perfect for our furniture makeover."]
+                },
+                mattresses: {
+                    p1: ["Replaced our old mattress with memory foam.", "The custom mattress is perfect.", "Provides great back support.", "Perfect firmness for good sleep."],
+                    p2: ["Best decision we made.", "Incredibly comfortable every night.", "I sleep so much better now.", "Very premium feel.", "Completely relieved my back pain."]
+                },
+                pillows: {
+                    p1: ["Bought excellent memory foam pillows.", "Perfect neck support pillows.", "Highly comfortable pillows.", "The shape is absolutely perfect."],
+                    p2: ["Super soft and cozy.", "Completely cured my neck stiffness.", "Great shape retention over time.", "Very pocket-friendly.", "Exactly what I was looking for."]
+                },
+                vertical_blinds: {
+                    p1: ["Modern vertical blinds available.", "Gave a clean look to the office.", "Fantastic collection of blinds.", "Highly functional vertical blinds."],
+                    p2: ["Installed very professionally.", "Smooth operating mechanism.", "Quick and polite team.", "Perfect for large windows.", "Elegant finish to the space."]
+                },
+                other: {
+                    p1: ["Very polite and welcoming staff.", "Wonderful ambiance in the store.", "A truly premium shopping experience.", "A very trustworthy store."],
+                    p2: ["Prompt and excellent service.", "They really listen to requirements.", "Helpful team all around.", "Provided reliable suggestions.", "Great customer care."]
+                }
+            },
+            hi: {
+                slogan: "बेहतर काम के लिए.. नया मानक..", google: "गूगल रिव्यू", insta: "इंस्टाग्राम", web: "वेबसाइट",
+                prompt: "समय कम है? हमारे इस टेम्पलेट का उपयोग करें!", subPrompt: "चुनें कि आपने हमारे साथ क्या अनुभव किया (एक से अधिक चुन सकते हैं):",
+                copyBtn: "कॉपी करें और आगे बढ़ें", rephraseBtn: "फिर से लिखें", copiedMsg: "✅ कॉपी हो गया!",
+                products: {
+                    blinds: "ब्लाइंड्स (Blinds)", carpets: "कालीन (Carpets)", curtains: "पर्दे (Curtains)", fabrics: "फैब्रिक्स (Fabrics)",
+                    mattresses: "गद्दे (Mattresses)", pillows: "तकिए (Pillows)", vertical_blinds: "वर्टिकल ब्लाइंड्स", other: "अन्य (सामान्य सेवा)"
+                },
+                shared_p3: ["मैं 100% रिकमेंड करूँगा।", "पैसे वसूल हो गए।", "मैं बहुत संतुष्ट हूँ।", "आप भी जरूर ट्राई करें।", "बहुत ही शानदार अनुभव!"],
+                blinds: {
+                    p1: ["इनके विंडो ब्लाइंड्स बहुत अच्छे हैं।", "यहाँ से शानदार ब्लाइंड्स लिए।", "ब्लाइंड्स का कलेक्शन बहुत मॉडर्न है।", "घर के लिए परफेक्ट ब्लाइंड्स मिले।"],
+                    p2: ["क्वालिटी से मैं बहुत प्रभावित हूँ।", "फिटिंग एकदम प्रोफेशनल है।", "लगाने की सर्विस काफी तेज रही।", "दिखने में बहुत प्रीमियम लगते हैं।", "मजबूत और टिकाऊ हैं।"]
+                },
+                carpets: {
+                    p1: ["कालीन (कार्पेट) का शानदार कलेक्शन है।", "प्रीमियम क्वालिटी के कार्पेट लिए।", "यहाँ बहुत सारे कार्पेट्स के विकल्प हैं।", "बहुत ही सुंदर कार्पेट खरीदा।"],
+                    p2: ["मेरे घर की रौनक बढ़ गई।", "फैब्रिक बहुत मुलायम है।", "सही दाम पर मिल गए।", "डिज़ाइन बहुत ही बढ़िया है।", "दिखने में काफी लग्जरी लगते हैं।"]
+                },
+                curtains: {
+                    p1: ["पर्दों के डिज़ाइन बहुत प्यारे हैं।", "हमने यहाँ से सुंदर पर्दे खरीदे।", "पर्दों की क्वालिटी बेहतरीन है।", "यहाँ कस्टम पर्दे भी बनते हैं।"],
+                    p2: ["सिलाई बहुत अच्छी की गई है।", "घर का लुक एकदम बदल गया।", "कपड़ा काफी मजबूत और अच्छा है।", "रंग बहुत खिले हुए हैं।", "लाइट को अच्छे से रोकते हैं।"]
+                },
+                fabrics: {
+                    p1: ["सोफा बनाने के लिए फैब्रिक यहीं से लिया।", "कुशन के कपड़ों की अच्छी वैरायटी है।", "बहुत ही उम्दा फैब्रिक मिला।", "फर्नीचर के कपड़ों के शानदार विकल्प हैं।"],
+                    p2: ["यह बहुत मजबूत और टिकाऊ है।", "क्वालिटी एकदम प्रीमियम है।", "रंग बिल्कुल वैसा ही है जैसा चाहिए था।", "छूने में बहुत सॉफ्ट है।", "दाम भी काफी सही हैं।"]
+                },
+                mattresses: {
+                    p1: ["यहाँ से लिया गद्दा बहुत आरामदायक है।", "गद्दों की क्वालिटी बहुत बढ़िया है।", "मेमोरी फोम गद्दा सबसे अच्छा है।", "बेड के नाप का कस्टमाइज़्ड गद्दा बनवाया।"],
+                    p2: ["नींद भी बहुत अच्छी आती है।", "पीठ दर्द में काफी आराम मिला है।", "फिटिंग एकदम सही है।", "सॉफ्टनेस लाजवाब है।", "इनकी लाइफ काफी अच्छी लगती है।"]
+                },
+                pillows: {
+                    p1: ["तकियों की क्वालिटी बहुत नरम है।", "गर्दन के दर्द के लिए तकिए अच्छे हैं।", "मेमोरी फोम वाले तकिए खरीदे।", "बहुत ही बढ़िया क्वालिटी के तकिए हैं।"],
+                    p2: ["ये काफी आरामदायक हैं।", "सही दाम में बेहतरीन सामान मिला।", "रात की नींद बहुत अच्छी आती है।", "ये जल्दी दबते नहीं हैं।", "इनका शेप बहुत अच्छा रहता है।"]
+                },
+                vertical_blinds: {
+                    p1: ["वर्टिकल ब्लाइंड्स बहुत ही मॉडर्न हैं।", "ऑफिस के लिए वर्टिकल ब्लाइंड्स लगवाए।", "वर्टिकल ब्लाइंड्स का मैकेनिज्म अच्छा है।", "शानदार क्वालिटी के ब्लाइंड्स मिले।"],
+                    p2: ["फिटिंग सफाई से और जल्दी की गई।", "बहुत ही प्रोफेशनल लुक मिला है।", "कमरे की रौनक बढ़ गई है।", "टीम ने काफी अच्छे से काम किया।", "इनका उपयोग करना बहुत आसान है।"]
+                },
+                other: {
+                    p1: ["कस्टमर सर्विस बहुत अच्छी और मददगार है।", "स्टाफ का व्यवहार बहुत अच्छा है।", "स्टोर का माहौल बहुत ही शानदार है।", "यहाँ सही जानकारी और सलाह मिलती है।"],
+                    p2: ["वे सही और सटीक सलाह देते हैं।", "खरीदारी का अनुभव बेहतरीन रहा।", "सर्विस बहुत ही तेज और भरोसेमंद है।", "सभी को यहाँ आने की सलाह दूँगा।", "इनकी टीम बहुत हेल्पफुल है।"]
+                }
+            }
+        };
+
+        const productKeys = ['blinds', 'carpets', 'curtains', 'fabrics', 'mattresses', 'pillows', 'vertical_blinds', 'other'];
+        let currentLang = 'mr'; 
+        let selectedProducts = []; 
+        
+        const generatedReviews = { mr: {}, en: {}, hi: {} };
+        const sequentialCounters = { mr: {}, en: {}, hi: {} };
+
+        function initApp() {
+            // Build the 100 variations + SHUFFLE THE SENTENCE STRUCTURE
+            for (let lang in generatorData) {
+                productKeys.forEach(prodKey => {
+                    let sentences100 = [];
+                    const p1Arr = generatorData[lang][prodKey].p1; 
+                    const p2Arr = generatorData[lang][prodKey].p2; 
+                    const p3Arr = generatorData[lang].shared_p3;   
+
+                    for (let i = 0; i < p1Arr.length; i++) {
+                        for (let j = 0; j < p2Arr.length; j++) {
+                            for (let k = 0; k < p3Arr.length; k++) {
+                                
+                                let parts = [p1Arr[i], p2Arr[j], p3Arr[k]];
+                                let order = (i + j + k) % 6; // Determines structure based on mathematical index
+                                let sentence = "";
+
+                                // Structural Shuffle - Reordering the placement of p1, p2, and p3
+                                if (order === 0) sentence = `${parts[0]} ${parts[1]} ${parts[2]}`;
+                                else if (order === 1) sentence = `${parts[0]} ${parts[2]} ${parts[1]}`;
+                                else if (order === 2) sentence = `${parts[1]} ${parts[0]} ${parts[2]}`;
+                                else if (order === 3) sentence = `${parts[1]} ${parts[2]} ${parts[0]}`;
+                                else if (order === 4) sentence = `${parts[2]} ${parts[0]} ${parts[1]}`;
+                                else if (order === 5) sentence = `${parts[2]} ${parts[1]} ${parts[0]}`;
+
+                                sentences100.push(sentence);
+                            }
+                        }
+                    }
+
+                    // Scramble the 100 array so they don't play back in obvious thematic clumps
+                    let mixed100 = new Array(100);
+                    for (let i = 0; i < 100; i++) {
+                        mixed100[(i * 27) % 100] = sentences100[i];
+                    }
+
+                    generatedReviews[lang][prodKey] = mixed100;
+                    sequentialCounters[lang][prodKey] = 0; 
+                });
+            }
+            setLanguage('mr');
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            document.getElementById('slogan').innerText = generatorData[lang].slogan;
+            document.getElementById('txt-google').innerText = generatorData[lang].google;
+            document.getElementById('txt-insta').innerText = generatorData[lang].insta;
+            document.getElementById('txt-web').innerText = generatorData[lang].web;
+            document.getElementById('txt-prompt').innerText = generatorData[lang].prompt;
+            document.getElementById('txt-sub-prompt').innerText = generatorData[lang].subPrompt;
+            document.getElementById('txt-copy').innerText = generatorData[lang].copyBtn;
+            document.getElementById('txt-rephrase').innerText = generatorData[lang].rephraseBtn;
+            
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.style.backgroundColor = "#D4AF37";
+
+            renderTags();
+
+            if (selectedProducts.length > 0) {
+                displayReview();
+            }
+        }
+
+        function renderTags() {
+            const container = document.getElementById('tags-container');
+            container.innerHTML = '';
+            
+            productKeys.forEach(key => {
+                const btn = document.createElement('button');
+                btn.className = 'tag-btn ' + (selectedProducts.includes(key) ? 'active-tag' : '');
+                btn.innerText = generatorData[currentLang].products[key];
+                
+                btn.onclick = () => toggleTag(key);
+                
+                container.appendChild(btn);
+            });
+        }
+
+        function toggleTag(key) {
+            const index = selectedProducts.indexOf(key);
+            
+            if (index > -1) {
+                selectedProducts.splice(index, 1);
+            } else {
+                selectedProducts.push(key);
+            }
+            
+            renderTags(); 
+            
+            if (selectedProducts.length > 0) {
+                document.getElementById('review-action-area').style.display = 'block';
+                displayReview();
+            } else {
+                document.getElementById('review-action-area').style.display = 'none';
+            }
+        }
+
+        function triggerReviewCard() {
+            document.getElementById('review-card').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('review-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function displayReview() {
+            if(selectedProducts.length === 0) return;
+            
+            let combinedReview = [];
+            
+            selectedProducts.forEach(key => {
+                let currentIndex = sequentialCounters[currentLang][key] % 100;
+                combinedReview.push(generatedReviews[currentLang][key][currentIndex]);
+                sequentialCounters[currentLang][key]++;
+            });
+            
+            document.getElementById('review-text').value = combinedReview.join(' ');
+            
+            document.getElementById('copy-btn').style.backgroundColor = "#D4AF37";
+            document.getElementById('txt-copy').innerText = generatorData[currentLang].copyBtn;
+        }
+
+        function copyAndRedirect() {
+            const copyText = document.getElementById("review-text");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const copyBtn = document.getElementById("copy-btn");
+                document.getElementById('txt-copy').innerText = generatorData[currentLang].copiedMsg;
+                copyBtn.style.backgroundColor = "#20c997"; 
+                
+                setTimeout(() => {
+                    window.location.href = 'https://search.google.com/local/writereview?placeid=ChIJNfZ__w655zsRss9lwLQ40zA';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
