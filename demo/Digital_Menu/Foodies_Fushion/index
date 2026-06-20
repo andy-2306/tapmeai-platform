@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodies Fusion - Digital Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-gold: #F59E0B;
+            --veg-color: #22c55e;
+            --nonveg-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), 
+                        url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .menu-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        /* Header Section */
+        header {
+            padding: 40px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: linear-gradient(to bottom, rgba(15,23,42,0.9), rgba(15,23,42,0.6));
+        }
+
+        .logo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-gold);
+            margin-bottom: 15px;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+            background: white;
+            padding: 4px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin: 0 0 5px 0;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+        }
+
+        .slogan {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin: 0 0 20px 0;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin: 0 20px 20px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent-gold);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Sticky Category Navigation */
+        .category-nav {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px 20px;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .category-nav::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .cat-pill {
+            white-space: nowrap;
+            padding: 8px 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cat-pill.active {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Menu Items Layout */
+        .menu-section {
+            padding: 25px 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--accent-gold);
+            margin: 0 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: transform 0.2s ease;
+        }
+
+        .item-card:active {
+            transform: scale(0.98);
+        }
+
+        .item-info {
+            flex: 1;
+            padding-right: 15px;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .veg-indicator {
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--veg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        
+        .veg-indicator::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--veg-color);
+            border-radius: 50%;
+        }
+
+        .nonveg-indicator {
+            border-color: var(--nonveg-color);
+        }
+        
+        .nonveg-indicator::after {
+            background: var(--nonveg-color);
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .item-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+            display: none; /* Can be enabled if descriptions are added */
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background: rgba(245, 158, 11, 0.1);
+            padding: 6px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 16px;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="menu-wrapper">
+        <header>
+            <img src="ff.jpg" alt="Foodies Fusion Logo" class="logo">
+            <h1>Foodies Fusion</h1>
+            <p class="slogan">Delicious Moments, Fused to Perfection</p>
+            
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-bar" id="searchInput" placeholder="Search for your favorite dish..." onkeyup="filterMenu()">
+            </div>
+        </header>
+
+        <nav class="category-nav" id="categoryNav"></nav>
+
+        <main id="menuContainer">
+            </main>
+        
+        <div class="no-results" id="noResults">
+            🍽️ Oops! We couldn't find that dish. Try searching for something else.
+        </div>
+
+        <footer>
+            © 2026 Foodies Fusion • 100% Quality Guaranteed<br>
+            Taxes applicable as per government rules.
+        </footer>
+    </div>
+
+    <script>
+        // Comprehensive Menu Data mapped from physical menu images
+        const menuData = [
+            {
+                id: "fries",
+                title: "Fries",
+                type: "veg",
+                items: [
+                    { name: "Plain French Fries", price: "115" },
+                    { name: "Plain Cheese Fries", price: "179" },
+                    { name: "Masala Periperi Fries", price: "168" },
+                    { name: "Cheese Masala Periperi Fries", price: "189" }
+                ]
+            },
+            {
+                id: "veg-burgers",
+                title: "Veg Burgers",
+                type: "veg",
+                items: [
+                    { name: "Veg Cheese Patty Burger", price: "158" },
+                    { name: "Veg Double Cheese Patty Burger", price: "179" },
+                    { name: "Veg Paneer Tikka Cheese Burger", price: "189" }
+                ]
+            },
+            {
+                id: "veg-sandwiches",
+                title: "Veg Sandwiches",
+                type: "veg",
+                items: [
+                    { name: "Veg Sandwich", price: "105" },
+                    { name: "Veg Cheese Sandwich", price: "115" },
+                    { name: "Veg Grilled Sandwich", price: "158" },
+                    { name: "Veg Cheese Grilled Sandwich", price: "168" },
+                    { name: "Veg Club Grilled Sandwich", price: "179" },
+                    { name: "Veg Cron Grilled Sandwich", price: "179" },
+                    { name: "Paneer Tikka Grilled Sandwich", price: "189" }
+                ]
+            },
+            {
+                id: "veg-pizza",
+                title: "Veg Pizza",
+                type: "veg",
+                items: [
+                    { name: "Margherita Pizza", price: "189" },
+                    { name: "Supreme Cheese Pizza", price: "200" },
+                    { name: "Peri Peri Pizza", price: "210" },
+                    { name: "Corn Pizza", price: "220" },
+                    { name: "Paneer Tikka Pizza", price: "220" },
+                    { name: "Paneer Chilly Pizza", price: "230" },
+                    { name: "Foodies Special Pizza", price: "250" }
+                ]
+            },
+            {
+                id: "exotic-starter",
+                title: "Exotic Starters",
+                type: "veg",
+                items: [
+                    { name: "Chilly Garlic Pops", price: "179" },
+                    { name: "Veg Cheese Shots (8/12)", price: "189" },
+                    { name: "Potato Veggies", price: "189" },
+                    { name: "Potato Peri Peri Veggies", price: "200" }
+                ]
+            },
+            {
+                id: "veg-garlic-bread",
+                title: "Veg Garlic Bread",
+                type: "veg",
+                items: [
+                    { name: "Garlic Bread", price: "115" },
+                    { name: "Garlic Bread with Cheese", price: "137" },
+                    { name: "Garlic Bread with Corn Cheese", price: "158" },
+                    { name: "Garlic Bread with Vegetables", price: "179" }
+                ]
+            },
+            {
+                id: "veg-momos",
+                title: "Veg Momo's",
+                type: "veg",
+                items: [
+                    { name: "Veg Momo's", price: "179" },
+                    { name: "Veg Cheese Momo's", price: "189" },
+                    { name: "Veg Schezwan Momo's", price: "200" },
+                    { name: "Veg Paneer Momo's", price: "189" },
+                    { name: "Veg Paneer Peri Peri Momo's", price: "200" }
+                ]
+            },
+            {
+                id: "milk-shakes",
+                title: "Milk Shakes",
+                type: "veg",
+                items: [
+                    { name: "Chocolate Milkshake", price: "168" },
+                    { name: "Oreo Milkshake", price: "168" },
+                    { name: "Vanila Milkshake", price: "158" },
+                    { name: "Butterscotch Milkshake", price: "168" },
+                    { name: "Strawberry Milkshake", price: "168" },
+                    { name: "Rose Milkshake", price: "168" },
+                    { name: "Mango Milkshake", price: "168" },
+                    { name: "Cold Coffee", price: "168" },
+                    { name: "Cold Coffee with Chocolate", price: "179" },
+                    { name: "Lime ICE Tea", price: "168" },
+                    { name: "Peach ICE Tea", price: "168" }
+                ]
+            },
+            {
+                id: "beverages",
+                title: "Beverages (Juices)",
+                type: "veg",
+                items: [
+                    { name: "Mosambi Juice", price: "105" },
+                    { name: "Water Melon Juice", price: "105" },
+                    { name: "Orange Juice", price: "105" },
+                    { name: "Pineapple Juice", price: "105" },
+                    { name: "Cocktail Juice", price: "137" },
+                    { name: "Fresh Lime", price: "84" },
+                    { name: "Fresh Lime Soda", price: "105" }
+                ]
+            },
+            {
+                id: "mojito",
+                title: "Mojitos",
+                type: "veg",
+                items: [
+                    { name: "Kivi Mojito", price: "168" },
+                    { name: "Mint Mojito", price: "168" },
+                    { name: "Strawbery Mojito", price: "168" },
+                    { name: "Blue Corruco Mojito", price: "168" },
+                    { name: "Watermelon Mojito", price: "168" },
+                    { name: "Mango Mojito", price: "168" },
+                    { name: "Kala Khatta Mojito", price: "168" },
+                    { name: "Kokam Mojito", price: "168" }
+                ]
+            },
+            {
+                id: "hot-drinks",
+                title: "Hot Drinks",
+                type: "veg",
+                items: [
+                    { name: "Hot Chocolate", price: "100" },
+                    { name: "Hot Coffee", price: "30" },
+                    { name: "Black Coffee", price: "30" },
+                    { name: "Tea", price: "30" }
+                ]
+            },
+            {
+                id: "dessert",
+                title: "Desserts",
+                type: "veg",
+                items: [
+                    { name: "Sizzling Brownie", price: "158" },
+                    { name: "Sizzling Brownie with ICE Cream", price: "179" }
+                ]
+            },
+            {
+                id: "nv-burgers",
+                title: "Non-Veg Burgers",
+                type: "nonveg",
+                items: [
+                    { name: "Chicken Patty Burger", price: "179" },
+                    { name: "Chicken Tandoori Burger", price: "200" },
+                    { name: "Chicken Hot & Spicy Burger", price: "210" }
+                ]
+            },
+            {
+                id: "nv-sandwiches",
+                title: "Non-Veg Sandwiches",
+                type: "nonveg",
+                items: [
+                    { name: "Chicken Cheese Grilled Sandwich", price: "200" },
+                    { name: "Chicken Mayo Grilled Sandwich", price: "200" },
+                    { name: "Chicken Tikka Grilled Sandwich", price: "210" },
+                    { name: "Chicken Combination Grilled Sandwich", price: "242" },
+                    { name: "Chicken Panadi Grilled Sandwich", price: "200" }
+                ]
+            },
+            {
+                id: "nv-pizza",
+                title: "Non-Veg Pizza",
+                type: "nonveg",
+                items: [
+                    { name: "Spicy Chicken Pizza", price: "252" },
+                    { name: "Chicken Tikka Pizza", price: "273" },
+                    { name: "Chicken Corn Pizza", price: "273" },
+                    { name: "Chicken Combination Pizza", price: "273" },
+                    { name: "Chicken BBQ Pizza", price: "284" },
+                    { name: "Foodies Fusion Special Pizza", price: "305" }
+                ]
+            },
+            {
+                id: "chicken-starters",
+                title: "Chicken Starters",
+                type: "nonveg",
+                items: [
+                    { name: "Chicken Popcorn (M/L)", price: "220" },
+                    { name: "Chicken Nuggets (8/12)", price: "210" },
+                    { name: "Chicken Cheese Fingers (6/8)", price: "242" }
+                ]
+            },
+            {
+                id: "nv-garlic-bread",
+                title: "Non-Veg Garlic Bread",
+                type: "nonveg",
+                items: [
+                    { name: "Garlic Bread with Chicken", price: "179" },
+                    { name: "Garlic Bread with Chicken Corn", price: "189" }
+                ]
+            },
+            {
+                id: "nv-momos",
+                title: "Non-Veg Momo's",
+                type: "nonveg",
+                items: [
+                    { name: "Chicken Momo's", price: "189" },
+                    { name: "Chicken Cheese Momo's", price: "200" },
+                    { name: "Chicken Peri Peri Momo's", price: "210" }
+                ]
+            }
+        ];
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNavigation();
+            renderMenu();
+        });
+
+        // Render Top Navigation Pills
+        function renderNavigation() {
+            const navContainer = document.getElementById('categoryNav');
+            
+            // Add "All" button
+            const allBtn = document.createElement('button');
+            allBtn.className = 'cat-pill active';
+            allBtn.innerText = 'All Items';
+            allBtn.onclick = () => scrollToCategory('all', allBtn);
+            navContainer.appendChild(allBtn);
+
+            // Add Category Buttons
+            menuData.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'cat-pill';
+                btn.innerText = cat.title;
+                btn.onclick = () => scrollToCategory(cat.id, btn);
+                navContainer.appendChild(btn);
+            });
+        }
+
+        // Render the Main Menu Sections
+        function renderMenu() {
+            const menuContainer = document.getElementById('menuContainer');
+            menuContainer.innerHTML = '';
+
+            menuData.forEach(category => {
+                // Create Section
+                const section = document.createElement('div');
+                section.className = 'menu-section';
+                section.id = category.id;
+
+                // Create Title
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                
+                // Add icon based on category type
+                const icon = category.type === 'veg' ? '🌿' : '🍗';
+                title.innerHTML = `${icon} ${category.title}`;
+                section.appendChild(title);
+
+                // Create Item Cards
+                category.items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    card.setAttribute('data-search', item.name.toLowerCase());
+
+                    const indicatorClass = category.type === 'veg' ? 'veg-indicator' : 'veg-indicator nonveg-indicator';
+
+                    card.innerHTML = `
+                        <div class="item-info">
+                            <div class="item-header">
+                                <div class="${indicatorClass}"></div>
+                                <h3 class="item-name">${item.name}</h3>
+                            </div>
+                        </div>
+                        <div class="item-price">₹${item.price}</div>
+                    `;
+                    section.appendChild(card);
+                });
+
+                menuContainer.appendChild(section);
+            });
+        }
+
+        // Scroll to Category and Update Active Pill
+        function scrollToCategory(id, btnElement) {
+            // Update Active State
+            document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Handle Scroll
+            if (id === 'all') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const section = document.getElementById(id);
+                // Offset for sticky header/nav
+                const y = section.getBoundingClientRect().top + window.scrollY - 150;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+
+        // Live Search Filter Engine
+        function filterMenu() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.menu-section');
+            let hasVisibleItems = false;
+
+            sections.forEach(section => {
+                const cards = section.querySelectorAll('.item-card');
+                let sectionHasMatch = false;
+
+                cards.forEach(card => {
+                    const itemName = card.getAttribute('data-search');
+                    if (itemName.includes(input)) {
+                        card.style.display = 'flex';
+                        sectionHasMatch = true;
+                        hasVisibleItems = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Hide entire section if no items match inside it
+                section.style.display = sectionHasMatch ? 'block' : 'none';
+            });
+
+            // Show/Hide "No Results" message
+            document.getElementById('noResults').style.display = hasVisibleItems ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
