@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shweta Ladies Tailor - Reviews</title>
+<style>
+body{font-family:Segoe UI,Tahoma,sans-serif;background:linear-gradient(135deg,#fce4ec,#f3e5f5);padding:20px}
+.container{max-width:480px;margin:auto}
+.header{background:linear-gradient(135deg,#e91e8c,#9c27b0);color:#fff;text-align:center;padding:30px 20px;border-radius:28px;margin-bottom:18px;position:relative;overflow:hidden}
+.header h1{margin:10px 0 4px;font-size:1.9rem}
+.header .slogan{font-size:.9rem;opacity:.95;margin-bottom:10px;font-weight:600}
+.scissor{font-size:64px;display:block;margin-bottom:6px}
+.stars{font-size:1.4rem;letter-spacing:3px}
+/* sewing illustration */
+.sewing-svg{position:absolute;right:-10px;bottom:-8px;width:140px;opacity:.18}
+.tabs{display:flex;background:#fff;border-radius:14px;padding:6px;margin-bottom:16px}
+.tab{flex:1;border:none;background:transparent;font-weight:700;padding:10px;border-radius:10px;color:#9c27b0;cursor:pointer}
+.tab.active{background:linear-gradient(135deg,#e91e8c,#9c27b0);color:#fff}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:#fff;border-radius:18px;padding:18px;margin-bottom:14px;border-left:5px solid #e91e8c}
+.title{font-weight:700;color:#880e4f;margin-bottom:6px}
+.preview{font-style:italic;margin:8px 0;color:#444}
+.copy{width:100%;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#e91e8c,#9c27b0);color:#fff;font-weight:700;cursor:pointer}
+.footer{text-align:center;color:#9c27b0;font-weight:600;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<span class="scissor">✂️</span>
+<h1>Shweta Ladies Tailor</h1>
+  <div class="slogan" id="slogan">महिलांकडून, महिलांसाठी</div>
+<div class="slogan"></div>
+<div class="stars">⭐⭐⭐⭐⭐</div>
+<!-- SVG illustration: lady stitching -->
+
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="switchLang('mr',this)">मराठी</button>
+<button class="tab" onclick="switchLang('en',this)">English</button>
+<button class="tab" onclick="switchLang('hi',this)">हिंदी</button>
+</div>
+
+<div class="panel active" id="mr">
+<div class="card"><div class="title">उत्कृष्ट शिलाई</div><div class="preview" id="mr0">खूप छान शिलाई! माझा सूट अगदी परफेक्ट शिवला.</div><button class="copy" onclick="copyText('mr',0,this)">Copy करा आणि Review लिहा</button></div>
+<div class="card"><div class="title">वेळेवर आणि व्यावसायिक</div><div class="preview" id="mr1">वेळेत डिलिव्हरी आणि ब्लाउजची फिटिंग अगदी योग्य होती.</div><button class="copy" onclick="copyText('mr',1,this)">Copy करा आणि Review लिहा</button></div>
+<div class="card"><div class="title">परवडणारे आणि उत्तम</div><div class="preview" id="mr2">या भागातील सर्वोत्तम शिंपी! वाजवी दर आणि उत्तम काम.</div><button class="copy" onclick="copyText('mr',2,this)">Copy करा आणि Review लिहा</button></div>
+</div>
+
+<div class="panel" id="en">
+<div class="card"><div class="title">Excellent Quality</div><div class="preview" id="en0">Excellent stitching quality! My suit was stitched perfectly.</div><button class="copy" onclick="copyText('en',0,this)">Copy & Write Review</button></div>
+<div class="card"><div class="title">Timely & Professional</div><div class="preview" id="en1">Very professional and on-time delivery. Perfect blouse fitting.</div><button class="copy" onclick="copyText('en',1,this)">Copy & Write Review</button></div>
+<div class="card"><div class="title">Best Value</div><div class="preview" id="en2">Best ladies tailor in the area. Great quality at reasonable prices.</div><button class="copy" onclick="copyText('en',2,this)">Copy & Write Review</button></div>
+</div>
+
+<div class="panel" id="hi">
+<div class="card"><div class="title">बेहतरीन सिलाई</div><div class="preview" id="hi0">बहुत अच्छी सिलाई! मेरा सूट एकदम परफेक्ट बना।</div><button class="copy" onclick="copyText('hi',0,this)">Copy करें और Review लिखें</button></div>
+<div class="card"><div class="title">समय पर और प्रोफेशनल</div><div class="preview" id="hi1">समय पर डिलीवरी और ब्लाउज की फिटिंग एकदम सही थी。</div><button class="copy" onclick="copyText('hi',1,this)">Copy करें और Review लिखें</button></div>
+<div class="card"><div class="title">किफायती और बढ़िया</div><div class="preview" id="hi2">इस एरिया की सबसे अच्छी दर्जी! किफायती दाम और बढ़िया काम।</div><button class="copy" onclick="copyText('hi',2,this)">Copy करें और Review लिखें</button></div>
+</div>
+
+<div class="footer">🙏 Thank you | धन्यवाद | धन्यवाद</div>
+</div>
+<script>
+const url='https://search.google.com/local/writereview?placeid=ChIJiXjYaG-55zsRXmOs-Sw5veE';
+const reviews={
+ mr:[["खूप छान शिलाई! माझा सूट परफेक्ट झाला.","शिलाईची गुणवत्ता अप्रतिम आहे.","सूटची फिटिंग खूप छान आहे."],["वेळेत डिलिव्हरी आणि ब्लाउजची फिटिंग अगदी योग्य होती.","ब्लाउजची शिलाई सुंदर आणि वेळेवर मिळाली.","खूप professional काम आणि वेळेवर delivery."],["या भागातील सर्वोत्तम शिंपी! वाजवी दर आणि उत्तम काम.","उत्तम शिलाई आणि परवडणारे दर.","कामाची गुणवत्ता खूपच चांगली आहे."]],
+ en:[["Excellent stitching quality! My suit was stitched perfectly.","Outstanding stitching and perfect fitting.","Really impressed with the stitching quality."],["Very professional and on-time delivery. Perfect blouse fitting.","On-time delivery and very professional tailoring.","Blouse fitting was perfect and service was professional."],["Best ladies tailor in the area. Great quality at reasonable prices.","Amazing quality work at affordable prices.","Great value for money and excellent tailoring."]],
+ hi:[["बहुत अच्छी सिलाई! मेरा सूट एकदम परफेक्ट बना।","सिलाई की क्वालिटी शानदार है।","सूट की फिटिंग बहुत अच्छी आई।"],["समय पर डिलीवरी और ब्लाउज की फिटिंग एकदम सही थी।","ब्लाउज की सिलाई सुंदर और समय पर मिली।","बहुत professional काम और समय पर delivery।"],["इस एरिया की सबसे अच्छी दर्जी! किफायती दाम और बढ़िया काम।","बेहतरीन दर्जी, वाजिब दाम और अच्छा काम।","काम की quality शानदार और दाम भी सही।"]]
+};
+function switchLang(l,el){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(l).classList.add('active');}
+function copyText(l,i,btn){const t=reviews[l][i][Math.floor(Math.random()*reviews[l][i].length)];navigator.clipboard.writeText(t);btn.innerText='✅ Copied';setTimeout(()=>window.open(url,'_blank'),1200)}
+</script>
+
+<script>
+const slogans = {
+  mr: 'महिलांकडून, महिलांसाठी',
+  en: 'By women, for women',
+  hi: 'महिलाओं द्वारा, महिलाओं के लिए'
+};
+
+// Extend existing switchLang to update slogan
+const _oldSwitchLang = window.switchLang;
+window.switchLang = function(lang, el){
+  if (typeof _oldSwitchLang === 'function') {
+    _oldSwitchLang(lang, el);
+  }
+  const s = document.getElementById('slogan');
+  if (s && slogans[lang]) s.innerText = slogans[lang];
+}
+</script>
+
+</body>
+</html>
