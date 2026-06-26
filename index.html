@@ -174,34 +174,78 @@
                     </button>
                 </form>
 
-                <script>
-                    document.getElementById("leadForm").addEventListener("submit", async function(event) {
-                        event.preventDefault(); // Stops the page from refreshing or redirecting
-                        
-                        var form = event.target;
-                        var data = new FormData(form);
-                        
-                        try {
-                            let response = await fetch(form.action, {
-                                method: form.method,
-                                body: data,
-                                headers: {
-                                    'Accept': 'application/json'
-                                }
-                            });
-                            
-                            if (response.ok) {
-                                alert("Request Received. Our technical team will reach out to you within 1 business day to connect your infrastructure.");
-                                form.reset(); // Clears the form fields automatically
-                            } else {
-                                alert("Oops! There was a problem submitting your request. Please try again.");
-                            }
-                        } catch (error) {
-                            alert("Network error. Please check your connection and try again.");
-                        }
-                    });
-                </script>
-            </div>
+               <!-- Lead Capture Form Interface -->
+<div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl border border-slate-800 shadow-xl my-10">
+    <h2 class="text-2xl font-bold text-white mb-6">Request TapMe AI Setup</h2>
+    
+    <form id="whatsappForm" onsubmit="routeToWhatsApp(event)">
+        
+        <!-- Business Name Input -->
+        <div class="mb-4">
+            <label class="block text-slate-400 text-sm font-bold mb-2">Business Name *</label>
+            <input type="text" id="bizName" required placeholder="e.g. Foodies Fusion" class="w-full bg-slate-950 text-white border border-slate-700 rounded-lg py-3 px-4 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <!-- Contact Name Input -->
+        <div class="mb-4">
+            <label class="block text-slate-400 text-sm font-bold mb-2">Your Name *</label>
+            <input type="text" id="contactName" required placeholder="John Doe" class="w-full bg-slate-950 text-white border border-slate-700 rounded-lg py-3 px-4 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <!-- Mobile Number Input -->
+        <div class="mb-4">
+            <label class="block text-slate-400 text-sm font-bold mb-2">Mobile Number *</label>
+            <input type="tel" id="mobileNo" required placeholder="+91" class="w-full bg-slate-950 text-white border border-slate-700 rounded-lg py-3 px-4 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <!-- Product Interest Dropdown -->
+        <div class="mb-8">
+            <label class="block text-slate-400 text-sm font-bold mb-2">Product Interest</label>
+            <select id="productInterest" class="w-full bg-slate-950 text-white border border-slate-700 rounded-lg py-3 px-4 focus:outline-none focus:border-indigo-500">
+                <option value="Google Reviews System">Google Reviews System</option>
+                <option value="Digital Menu System">Digital Menu System</option>
+                <option value="Both (Growth Bundle)">Both (Growth Bundle)</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-[#25D366] hover:bg-[#20b858] text-white font-bold py-3.5 rounded-lg transition-transform active:scale-95 flex justify-center items-center gap-2">
+            Send Details via WhatsApp
+        </button>
+    </form>
+</div>
+
+<!-- The Routing Engine Code -->
+<script>
+    function routeToWhatsApp(event) {
+        // Prevents the webpage from reloading when the user clicks submit
+        event.preventDefault(); 
+
+        // 1. Capture the exact values the customer typed
+        const bizName = document.getElementById('bizName').value;
+        const contactName = document.getElementById('contactName').value;
+        const mobileNo = document.getElementById('mobileNo').value;
+        const product = document.getElementById('productInterest').value;
+
+        // 2. Format those details into a clean message for you to read
+        const message = `*New TapMe AI Lead!* 🚀\n\n` +
+                        `*Business Name:* ${bizName}\n` +
+                        `*Contact Name:* ${contactName}\n` +
+                        `*Mobile No:* ${mobileNo}\n` +
+                        `*Interested In:* ${product}\n\n` +
+                        `Let's get my setup started.`;
+
+        // 3. Convert the text into a web-safe URL format
+        const encodedMessage = encodeURIComponent(message);
+
+        // 4. Inject your specific routing destination
+        const whatsappNumber = "918433508666"; 
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+        // 5. Fire the redirect to open their WhatsApp app instantly
+        window.open(whatsappURL, '_blank');
+    }
+</script>            </div>
         </section>
     </main>
 
