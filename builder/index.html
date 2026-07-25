@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TapMe AI | Digital Menu Builder Engine</title>
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: { 950: '#020617' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars for clean UI */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    </style>
+</head>
+<body class="h-full text-slate-100 font-sans antialiased flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="bg-white p-1 rounded-lg shadow-sm">
+                <img src="/favicon.png" alt="Logo" class="h-6 w-6 object-contain">
+            </div>
+            <span class="text-xl font-bold tracking-tight text-white">TapMe AI <span class="text-indigo-500 font-mono text-xs uppercase ml-2 px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded">Menu Builder 1.0</span></span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="exportStaticHTML()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition border border-slate-700 flex items-center gap-2">
+                <span>⚡ Export HTML File</span>
+            </button>
+            <button onclick="sendToWhatsApp()" class="bg-[#25D366] hover:bg-[#20b858] text-white text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2 shadow-lg shadow-[#25D366]/20">
+                <span>🚀 Deploy via WhatsApp</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace (Split Screen) -->
+    <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        
+        <!-- LEFT PANEL: Data Input Form (Scrollable) -->
+        <div class="w-full lg:w-1/2 p-6 overflow-y-auto border-r border-slate-900 space-y-8">
+            
+            <!-- Section 1: Restaurant Identity -->
+            <div class="bg-slate-900/50 border border-slate-900 p-6 rounded-2xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-indigo-400">01.</span> Restaurant Identity
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Restaurant Name *</label>
+                        <input type="text" id="inputBrandName" value="Foodies Fusion" oninput="updatePreview()" class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Tagline / Subtitle</label>
+                        <input type="text" id="inputTagline" value="Authentic Multi-Cuisine Dining" oninput="updatePreview()" class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Add Menu Items -->
+            <div class="bg-slate-900/50 border border-slate-900 p-6 rounded-2xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-indigo-400">02.</span> Add Menu Item
+                </h2>
+                
+                <form id="itemForm" onsubmit="addMenuItem(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Category *</label>
+                            <input type="text" id="itemCategory" placeholder="e.g. Starters, Main Course" required class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Item Name *</label>
+                            <input type="text" id="itemName" placeholder="e.g. Paneer Butter Masala" required class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Price (₹) *</label>
+                            <input type="number" id="itemPrice" placeholder="299" required class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Dietary Type</label>
+                            <select id="itemType" class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                <option value="veg">🟢 Veg</option>
+                                <option value="non-veg">🔴 Non-Veg</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Description (Optional)</label>
+                        <input type="text" id="itemDesc" placeholder="Rich tomato gravy cooked with fresh butter and cottage cheese." class="w-full bg-slate-950 border border-slate-800 rounded-lg py-2.5 px-3 text-sm text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-3 rounded-lg transition">
+                        + Add Item to Menu
+                    </button>
+                </form>
+            </div>
+
+            <!-- Section 3: Active Items List -->
+            <div class="bg-slate-900/50 border border-slate-900 p-6 rounded-2xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center justify-between">
+                    <span><span class="text-indigo-400">03.</span> Menu Inventory</span>
+                    <span id="itemCounter" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full font-mono">0 Items</span>
+                </h2>
+                <div id="itemList" class="space-y-2">
+                    <!-- Dynamic items will render here -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL: Live Smartphone Preview (Fixed/Centered) -->
+        <div class="w-full lg:w-1/2 bg-slate-950 p-6 flex flex-col items-center justify-center overflow-y-auto">
+            <div class="text-center mb-4">
+                <span class="text-xs font-mono text-slate-500 uppercase tracking-widest">Live Mobile Device Simulator</span>
+            </div>
+
+            <!-- Smartphone Mockup Frame -->
+            <div class="w-[360px] h-[680px] bg-slate-900 border-[8px] border-slate-800 rounded-[40px] shadow-2xl flex flex-col overflow-hidden relative">
+                
+                <!-- Phone Speaker Notch -->
+                <div class="w-32 h-4 bg-slate-800 rounded-b-xl mx-auto shrink-0 z-20"></div>
+
+                <!-- Live Menu Screen Content -->
+                <div class="flex-1 overflow-y-auto p-4 space-y-6 text-left bg-slate-950" id="phoneScreen">
+                    
+                    <!-- Dynamic Header -->
+                    <div class="text-center pt-2 pb-4 border-b border-slate-900">
+                        <h3 id="previewTitle" class="text-2xl font-extrabold text-white">Foodies Fusion</h3>
+                        <p id="previewTagline" class="text-xs text-slate-400 mt-1">Authentic Multi-Cuisine Dining</p>
+                    </div>
+
+                    <!-- Dynamic Menu Categories -->
+                    <div id="previewCategories" class="space-y-6">
+                        <!-- Items rendered dynamically -->
+                    </div>
+
+                </div>
+
+                <!-- Floating Bottom Bar Mockup -->
+                <div class="p-3 bg-slate-900/90 border-t border-slate-800 text-center shrink-0">
+                    <span class="text-[10px] text-slate-400">Powered by <strong class="text-indigo-400">TapMe AI Engine</strong></span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic Core -->
+    <script>
+        // Central State Memory
+        let menuItems = [
+            { category: "Starters", name: "Paneer Tikka", price: "240", type: "veg", desc: "Marinated cottage cheese grilled in tandoor." },
+            { category: "Main Course", name: "Butter Chicken", price: "380", type: "non-veg", desc: "Tender chicken cooked in rich tomato gravy." }
+        ];
+
+        // Initial render on load
+        window.onload = () => {
+            updatePreview();
+        };
+
+        function addMenuItem(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('itemCategory').value.trim();
+            const name = document.getElementById('itemName').value.trim();
+            const price = document.getElementById('itemPrice').value.trim();
+            const type = document.getElementById('itemType').value;
+            const desc = document.getElementById('itemDesc').value.trim();
+
+            menuItems.push({ category, name, price, type, desc });
+            
+            // Clear inputs
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemDesc').value = '';
+
+            updatePreview();
+        }
+
+        function deleteItem(index) {
+            menuItems.splice(index, 1);
+            updatePreview();
+        }
+
+        function updatePreview() {
+            // 1. Update Identity
+            const title = document.getElementById('inputBrandName').value || "Your Restaurant";
+            const tagline = document.getElementById('inputTagline').value || "";
+            
+            document.getElementById('previewTitle').innerText = title;
+            document.getElementById('previewTagline').innerText = tagline;
+
+            // 2. Update Inventory Counter
+            document.getElementById('itemCounter').innerText = `${menuItems.length} Items`;
+
+            // 3. Render Admin Inventory List
+            const itemListContainer = document.getElementById('itemList');
+            itemListContainer.innerHTML = '';
+            
+            menuItems.forEach((item, index) => {
+                itemListContainer.innerHTML += `
+                    <div class="flex items-center justify-between bg-slate-950 border border-slate-800 p-3 rounded-lg text-xs">
+                        <div>
+                            <span class="font-bold text-white">${item.name}</span>
+                            <span class="text-slate-500 ml-2">(₹${item.price})</span>
+                            <span class="block text-[10px] text-slate-400">${item.category}</span>
+                        </div>
+                        <button onclick="deleteItem(${index})" class="text-rose-400 hover:text-rose-300 font-bold px-2 py-1">Remove</button>
+                    </div>
+                `;
+            });
+
+            // 4. Render Mobile Screen Menu Categories
+            const categoriesContainer = document.getElementById('previewCategories');
+            categoriesContainer.innerHTML = '';
+
+            // Group items by category
+            const grouped = menuItems.reduce((acc, item) => {
+                acc[item.category] = acc[item.category] || [];
+                acc[item.category].push(item);
+                return acc;
+            }, {});
+
+            for (const [catName, items] of Object.entries(grouped)) {
+                let itemsHTML = '';
+                items.forEach(item => {
+                    const badge = item.type === 'veg' ? '🟢' : '🔴';
+                    itemsHTML += `
+                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
+                            <div class="space-y-1 pr-2">
+                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                                    <span>${badge}</span>
+                                    <span>${item.name}</span>
+                                </div>
+                                ${item.desc ? `<p class="text-[10px] text-slate-400 leading-tight">${item.desc}</p>` : ''}
+                            </div>
+                            <span class="text-xs font-bold text-indigo-400 font-mono">₹${item.price}</span>
+                        </div>
+                    `;
+                });
+
+                categoriesContainer.innerHTML += `
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-900 pb-1">${catName}</h4>
+                        <div class="space-y-2">${itemsHTML}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Export Standalone HTML File
+        function exportStaticHTML() {
+            const title = document.getElementById('inputBrandName').value || "Digital Menu";
+            const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} | Digital Menu</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans p-4 max-w-md mx-auto min-h-screen">
+    ${document.getElementById('phoneScreen').innerHTML}
+</body>
+</html>`;
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${title.toLowerCase().replace(/\s+/g, '-')}-menu.html`;
+            a.click();
+        }
+
+        // Send Structured Payload via WhatsApp
+        function sendToWhatsApp() {
+            const title = document.getElementById('inputBrandName').value || "Restaurant";
+            let payload = `*NEW DIGITAL MENU CREATED!* 🍽️\n\n*Brand:* ${title}\n*Total Items:* ${menuItems.length}\n\n*Menu Breakdown:*\n`;
+
+            menuItems.forEach((item, idx) => {
+                payload += `${idx + 1}. [${item.category}] ${item.name} - ₹${item.price}\n`;
+            });
+
+            const encoded = encodeURIComponent(payload);
+            window.open(`https://wa.me/919336157892?text=${encoded}`, '_blank');
+        }
+    </script>
+</body>
+</html>
