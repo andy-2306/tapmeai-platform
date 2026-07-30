@@ -1,144 +1,711 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vaibhav Chinese | Digital Menu</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vaibhav Chinese - Digital Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent-brand: #e11d48; /* Chinese Red */
+            --veg-color: #22c55e;
+            --non-veg-color: #ef4444;
+            --border-color: #333333;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 100px; /* Space for sticky cart */
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .brand h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-brand);
+            font-size: 30px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .table-input-container {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .table-input-container label { font-weight: 500; font-size: 14px; color: var(--text-muted); }
+        .table-input-container input {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            width: 80px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+        }
+        .table-input-container input:focus { border-color: var(--accent-brand); }
+
+        /* Search & Filters */
+        .controls-container {
+            padding: 15px 20px;
+            position: sticky;
+            top: 105px;
+            background: var(--bg-color);
+            z-index: 99;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: white;
+            font-size: 15px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .search-bar:focus { border-color: var(--accent-brand); }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .filter-btn.active-veg { background: rgba(34, 197, 94, 0.15); border-color: var(--veg-color); color: var(--veg-color); }
+        .filter-btn.active-nonveg { background: rgba(239, 68, 68, 0.15); border-color: var(--non-veg-color); color: var(--non-veg-color); }
+
+        .type-icon {
+            width: 14px; height: 14px;
+            border: 2px solid;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 3px;
+        }
+        .type-icon::after { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+        .icon-veg { border-color: var(--veg-color); }
+        .icon-veg::after { background: var(--veg-color); }
+        .icon-nonveg { border-color: var(--non-veg-color); }
+        .icon-nonveg::after { background: var(--non-veg-color); }
+
+        /* Menu List */
+        .menu-container { padding: 10px 20px; }
+        .category-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-brand);
+            margin: 25px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-details { flex: 1; padding-right: 15px; }
+        .item-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+        .item-name { font-weight: 600; font-size: 14px; line-height: 1.3; }
+        .item-price { color: var(--text-muted); font-size: 14px; font-weight: 500; }
+
+        /* Add/Quantity Controls */
+        .add-controls {
+            display: flex;
+            align-items: center;
+            background: var(--bg-color);
+            border: 1px solid var(--accent-brand);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 36px;
+        }
+
+        .btn-add-init {
+            background: rgba(225, 29, 72, 0.1);
+            color: var(--accent-brand);
+            border: 1px solid var(--accent-brand);
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            height: 36px;
+            transition: 0.2s;
+        }
+        .btn-add-init:hover { background: var(--accent-brand); color: white; }
+
+        .ctrl-btn {
+            background: transparent;
+            color: var(--accent-brand);
+            border: none;
+            width: 32px;
+            height: 100%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .qty-display {
+            width: 30px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Sticky Bottom Cart */
+        .cart-bottom-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--accent-brand);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        }
+        .cart-bottom-bar.visible { transform: translateY(0); }
+        .cart-info { font-weight: 700; font-size: 16px; }
+        .cart-info span { font-size: 12px; font-weight: 500; display: block; opacity: 0.9; }
+        
+        .btn-checkout {
+            background: white;
+            color: var(--accent-brand);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Checkout Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 30px 20px;
+            transform: translateY(100%);
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .modal-header { font-size: 20px; font-weight: 600; margin-bottom: 20px; text-align: center; }
+        
+        .payment-options { display: flex; flex-direction: column; gap: 15px; }
+        .pay-btn {
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.2s;
+        }
+        .pay-btn-upi { border-color: #25D366; color: #25D366; }
+        .pay-btn-upi:hover { background: rgba(37, 211, 102, 0.1); }
+        .pay-btn-cash { border-color: #f59e0b; color: #f59e0b; }
+        .pay-btn-cash:hover { background: rgba(245, 158, 11, 0.1); }
+
+        .close-modal {
+            margin-top: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans p-4 max-w-md mx-auto min-h-screen">
-    
-                    
-                    <!-- Dynamic Header -->
-                    <div class="text-center pt-2 pb-4 border-b border-slate-900">
-                        <h3 id="previewTitle" class="text-2xl font-extrabold text-white">Vaibhav Chinese</h3>
-                        <p id="previewTagline" class="text-xs text-slate-400 mt-1">Taste the Real Chinese</p>
-                    </div>
+<body>
 
-                    <!-- Dynamic Menu Categories -->
-                    <div id="previewCategories" class="space-y-6">
-                    <div class="space-y-2">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-900 pb-1">Starters</h4>
-                        <div class="space-y-2">
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🟢</span>
-                                    <span>Paneer Chilly</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹169</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🟢</span>
-                                    <span>Veg Chilly</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹150</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🔴</span>
-                                    <span>Chicken Chilly</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹180</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🔴</span>
-                                    <span>a</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹120</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🔴</span>
-                                    <span>c5</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹120</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🔴</span>
-                                    <span>Paneer Chilly1</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹25</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🔴</span>
-                                    <span>54</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹543</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🔴</span>
-                                    <span>34</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹34</span>
-                        </div>
-                    
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🟢</span>
-                                    <span>3544</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹3543</span>
-                        </div>
-                    </div>
-                    </div>
-                
-                    <div class="space-y-2">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-900 pb-1">Main Course</h4>
-                        <div class="space-y-2">
-                        <div class="bg-slate-900/60 border border-slate-900 p-3 rounded-xl flex justify-between items-start">
-                            <div class="space-y-1 pr-2">
-                                <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                                    <span>🟢</span>
-                                    <span>Tripple schezwan rice with Gravy</span>
-                                </div>
-                                
-                            </div>
-                            <span class="text-xs font-bold text-indigo-400 font-mono">₹299</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+    <header>
+        <div class="brand">
+            <h1>Vaibhav Chinese</h1>
+        </div>
+        <div class="table-input-container">
+            <label for="table-no">Table Number:</label>
+            <input type="number" id="table-no" placeholder="e.g. 5" min="1" max="99">
+        </div>
+    </header>
 
+    <div class="controls-container">
+        <input type="text" class="search-bar" id="search-bar" placeholder="Search for your favorite dishes..." oninput="renderMenu()">
+        
+        <div class="filter-buttons">
+            <button class="filter-btn" id="btn-veg" onclick="toggleFilter('veg')">
+                <span class="type-icon icon-veg"></span> Pure Veg
+            </button>
+            <button class="filter-btn" id="btn-nonveg" onclick="toggleFilter('nonveg')">
+                <span class="type-icon icon-nonveg"></span> Non-Veg
+            </button>
+        </div>
+    </div>
+
+    <div class="menu-container" id="menu-container">
+        <!-- Menu items will be injected here via JavaScript -->
+    </div>
+
+    <!-- Sticky Bottom Cart -->
+    <div class="cart-bottom-bar" id="cart-bar">
+        <div class="cart-info">
+            <div id="cart-total-items">2 Items</div>
+            <span>Total: ₹<span id="cart-total-price">0</span></span>
+        </div>
+        <button class="btn-checkout" onclick="openCheckout()">Place Order ➔</button>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-content">
+            <div class="modal-header">Select Payment Method</div>
+            <div class="payment-options">
+                <button class="pay-btn pay-btn-upi" onclick="processOrder('UPI')">
+                    📱 Pay via UPI / Online
+                </button>
+                <button class="pay-btn pay-btn-cash" onclick="processOrder('Cash')">
+                    💵 Pay via Cash
+                </button>
+            </div>
+            <div class="close-modal" onclick="closeCheckout()">Cancel</div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. MENU DATA EXTRACTION ---
+        const menuData = [
+            // LOLLYPOP
+            { cat: "Lollypop", name: "Chicken Lollypop Oil Fry (3/6 PCs)", price: 240, type: "nonveg" },
+            { cat: "Lollypop", name: "Chicken Lollypop Masala Dry", price: 260, type: "nonveg" },
+            { cat: "Lollypop", name: "Chicken Lollypop Masala Gravy", price: 270, type: "nonveg" },
+
+            // STARTERS DRY OR GRAVY
+            { cat: "Starters (Dry or Gravy)", name: "Veg Chilly", price: 220, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Chilly", price: 250, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg Schezwan Chilly", price: 220, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Schezwan Chilly", price: 250, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg Manchurian", price: 220, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Manchurian", price: 250, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg Schezwan", price: 220, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Schezwan", price: 250, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg Garlic", price: 220, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Garlic", price: 250, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg Ginger", price: 220, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Ginger", price: 250, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg Chinese Bhel", price: 200, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Chinese Bhel", price: 230, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Veg 65 (Chinese Style)", price: 230, type: "veg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken 65 (Chinese Style)", price: 260, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Satte", price: 280, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Dragon", price: 280, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Lamba", price: 280, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Burnt Garlic", price: 280, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Shanghai", price: 280, type: "nonveg" },
+            { cat: "Starters (Dry or Gravy)", name: "Chicken Hot Garlic", price: 280, type: "nonveg" },
+
+            // SPECIAL STARTERS
+            { cat: "Special Starters", name: "Veg Crispy", price: 230, type: "veg" },
+            { cat: "Special Starters", name: "Chicken Crispy", price: 260, type: "nonveg" },
+            { cat: "Special Starters", name: "Veg Chilly in Oyster Sauce", price: 230, type: "veg" },
+            { cat: "Special Starters", name: "Chicken Chilly in Oyster Sauce", price: 260, type: "nonveg" },
+            { cat: "Special Starters", name: "Chicken Finger", price: 280, type: "nonveg" },
+            { cat: "Special Starters", name: "Veg Sesame Sauce", price: 240, type: "veg" },
+            { cat: "Special Starters", name: "Chicken Sesame Sauce", price: 280, type: "nonveg" },
+            { cat: "Special Starters", name: "Veg Korean Sauce", price: 240, type: "veg" },
+            { cat: "Special Starters", name: "Chicken Korean Sauce", price: 280, type: "nonveg" },
+            { cat: "Special Starters", name: "Veg Black Pepper Sauce", price: 240, type: "veg" },
+            { cat: "Special Starters", name: "Chicken Black Pepper Sauce", price: 280, type: "nonveg" },
+            { cat: "Special Starters", name: "Veg B.B.Q Sauce", price: 240, type: "veg" },
+            { cat: "Special Starters", name: "Chicken B.B.Q Sauce", price: 280, type: "nonveg" },
+
+            // CHOPSUEY
+            { cat: "Chopsuey", name: "Veg American Chopsuey", price: 220, type: "veg" },
+            { cat: "Chopsuey", name: "Chicken American Chopsuey", price: 240, type: "nonveg" },
+            { cat: "Chopsuey", name: "Veg Schezwan Chopsuey", price: 230, type: "veg" },
+            { cat: "Chopsuey", name: "Chicken Schezwan Chopsuey", price: 250, type: "nonveg" },
+
+            // SOUP
+            { cat: "Soups", name: "Veg Manchow Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Manchow Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Hot and Sour Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Hot and Sour Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Ginger & Garlic Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Ginger & Garlic Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Clear Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Clear Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Noodle Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Noodle Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Royal Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Royal Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Sweet Corn Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Sweet Corn Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Chicken Lung Fung Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Egg Drop Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Schezwan Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Schezwan Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Hong Kong Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Hong Kong Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Mushroom Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Mushroom Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Burnt Garlic Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Burnt Garlic Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Dragon Soup", price: 160, type: "veg" },
+            { cat: "Soups", name: "Chicken Dragon Soup", price: 180, type: "nonveg" },
+            { cat: "Soups", name: "Veg Vaibhav Special Soup", price: 180, type: "veg" },
+            { cat: "Soups", name: "Chicken Vaibhav Special Soup", price: 200, type: "nonveg" },
+
+            // PANEER & MUSHROOM
+            { cat: "Paneer & Mushroom Starters", name: "Paneer Chilly", price: 250, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Paneer Schezwan", price: 250, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Paneer Manchurian", price: 250, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Paneer Hong Kong", price: 260, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Paneer Singapur", price: 260, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Paneer Crispy", price: 260, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Mushroom Chilly", price: 250, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Mushroom Schezwan", price: 250, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Mushroom Manchurian", price: 250, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Mushroom Hong Kong", price: 260, type: "veg" },
+            { cat: "Paneer & Mushroom Starters", name: "Mushroom Singapur", price: 260, type: "veg" },
+
+            // MUSHROOM & PANEER RICE/NOODLE
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Mushroom Fried Rice/Noodle", price: 230, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Mushroom Schezwan Rice/Noodle", price: 240, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Mushroom Combination Rice/Noodle", price: 240, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Mushroom Triple Schezwan Rice/Noodle", price: 250, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Mushroom Manchurian Rice/Noodle", price: 250, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Paneer Fried Rice/Noodle", price: 240, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Paneer Schezwan Rice/Noodle", price: 250, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Paneer Combination Rice/Noodle", price: 250, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Paneer Triple Schezwan Rice/Noodle", price: 260, type: "veg" },
+            { cat: "Mushroom & Paneer (Rice/Noodles)", name: "Paneer Manchurian Rice/Noodle", price: 250, type: "veg" },
+
+            // RICE
+            { cat: "Rice", name: "Veg Fried Rice", price: 210, type: "veg" },
+            { cat: "Rice", name: "Chicken Fried Rice", price: 230, type: "nonveg" },
+            { cat: "Rice", name: "Egg Fried Rice", price: 230, type: "nonveg" },
+            { cat: "Rice", name: "Veg Ginger and Garlic Rice", price: 220, type: "veg" },
+            { cat: "Rice", name: "Chicken Ginger and Garlic Rice", price: 240, type: "nonveg" },
+            { cat: "Rice", name: "Veg Schezwan Rice", price: 220, type: "veg" },
+            { cat: "Rice", name: "Chicken Schezwan Rice", price: 240, type: "nonveg" },
+            { cat: "Rice", name: "Veg Combination Rice", price: 220, type: "veg" },
+            { cat: "Rice", name: "Chicken Combination Rice", price: 240, type: "nonveg" },
+            { cat: "Rice", name: "Veg Hongkong Rice", price: 220, type: "veg" },
+            { cat: "Rice", name: "Chicken Hongkong Rice", price: 250, type: "nonveg" },
+            { cat: "Rice", name: "Veg Singapur Rice", price: 230, type: "veg" },
+            { cat: "Rice", name: "Chicken Singapur Rice", price: 250, type: "nonveg" },
+            { cat: "Rice", name: "Veg Burnt Garlic Rice", price: 230, type: "veg" },
+            { cat: "Rice", name: "Chicken Burnt Garlic Rice", price: 250, type: "nonveg" },
+            { cat: "Rice", name: "Veg Crispy Rice", price: 310, type: "veg" },
+            { cat: "Rice", name: "Chicken Crispy Rice", price: 340, type: "nonveg" },
+
+            // RICE WITH GRAVY
+            { cat: "Rice With Gravy", name: "Veg Triple Schezwan Rice", price: 240, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Triple Schezwan Rice", price: 260, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Egg Triple Rice", price: 260, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Manchurian Rice", price: 240, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Manchurian Rice", price: 260, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Sherpa Rice", price: 240, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Sherpa Rice", price: 260, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Chicken Dream Rice", price: 290, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Chilly Milly Rice", price: 260, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Chilly Milly Rice", price: 280, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Chicken Chopper Rice", price: 280, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg 1000 Rice", price: 270, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken 1000 Rice", price: 300, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Chicken Pecking Rice", price: 310, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Korien Rice", price: 280, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Korien Rice", price: 300, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Chicken Dream Soft Heaven Rice", price: 320, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Pot Rice (Gravy Mix)", price: 300, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Pot Rice (Gravy Mix)", price: 320, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Shanghai Rice", price: 300, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Shanghai Rice", price: 320, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Three Dragon Rice", price: 310, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Three Dragon Rice", price: 330, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Garlic B.B.Q Rice", price: 300, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Garlic B.B.Q Rice", price: 330, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Chicken Malacian Rice", price: 330, type: "nonveg" },
+            { cat: "Rice With Gravy", name: "Veg Vaibhav Special Rice", price: 280, type: "veg" },
+            { cat: "Rice With Gravy", name: "Chicken Vaibhav Special Rice", price: 310, type: "nonveg" },
+
+            // NOODLE
+            { cat: "Noodles", name: "Veg Hakka Noodle", price: 220, type: "veg" },
+            { cat: "Noodles", name: "Chicken Hakka Noodle", price: 230, type: "nonveg" },
+            { cat: "Noodles", name: "Egg Hakka Noodle", price: 230, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Ginger and Garlic Noodle", price: 220, type: "veg" },
+            { cat: "Noodles", name: "Chicken Ginger and Garlic Noodle", price: 240, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Schezwan Noodle", price: 220, type: "veg" },
+            { cat: "Noodles", name: "Chicken Schezwan Noodle", price: 240, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Combination Noodle", price: 220, type: "veg" },
+            { cat: "Noodles", name: "Chicken Combination Noodle", price: 240, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Hongkong Noodle", price: 230, type: "veg" },
+            { cat: "Noodles", name: "Chicken Hongkong Noodle", price: 250, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Singapur Noodle", price: 230, type: "veg" },
+            { cat: "Noodles", name: "Chicken Singapur Noodle", price: 250, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Burnt Garlic Noodle", price: 230, type: "veg" },
+            { cat: "Noodles", name: "Chicken Burnt Garlic Noodle", price: 250, type: "nonveg" },
+            { cat: "Noodles", name: "Veg Crispy Noodle", price: 310, type: "veg" },
+            { cat: "Noodles", name: "Chicken Crispy Noodle", price: 340, type: "nonveg" }
+        ];
+
+        // --- STATE VARIABLES ---
+        let cart = {}; 
+        let currentFilter = 'all'; 
+
+        // --- CORE FUNCTIONS ---
+        function initApp() {
+            renderMenu();
+        }
+
+        function toggleFilter(type) {
+            const vegBtn = document.getElementById('btn-veg');
+            const nonvegBtn = document.getElementById('btn-nonveg');
+
+            if (currentFilter === type) {
+                currentFilter = 'all'; // Deselect
+                vegBtn.classList.remove('active-veg');
+                nonvegBtn.classList.remove('active-nonveg');
+            } else {
+                currentFilter = type;
+                if(type === 'veg') {
+                    vegBtn.classList.add('active-veg');
+                    nonvegBtn.classList.remove('active-nonveg');
+                } else {
+                    nonvegBtn.classList.add('active-nonveg');
+                    vegBtn.classList.remove('active-veg');
+                }
+            }
+            renderMenu();
+        }
+
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            container.innerHTML = '';
+
+            // Group by category
+            const grouped = {};
+            
+            menuData.forEach(item => {
+                // Apply Search Filter
+                if (searchTerm && !item.name.toLowerCase().includes(searchTerm)) return;
                 
+                // Apply Veg/Non-Veg Filter
+                if (currentFilter !== 'all' && item.type !== currentFilter) return;
+
+                if (!grouped[item.cat]) grouped[item.cat] = [];
+                grouped[item.cat].push(item);
+            });
+
+            // Render DOM
+            Object.keys(grouped).forEach(category => {
+                const catItems = grouped[category];
+                if (catItems.length === 0) return;
+
+                // Category Title
+                const catTitle = document.createElement('div');
+                catTitle.className = 'category-title';
+                catTitle.innerText = category;
+                container.appendChild(catTitle);
+
+                // Items
+                catItems.forEach(item => {
+                    const qty = cart[item.name] ? cart[item.name].qty : 0;
+                    const iconClass = item.type === 'veg' ? 'icon-veg' : 'icon-nonveg';
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'menu-item';
+                    
+                    let controlsHTML = '';
+                    if (qty > 0) {
+                        controlsHTML = `
+                            <div class="add-controls">
+                                <button class="ctrl-btn" onclick="updateCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, -1)">-</button>
+                                <div class="qty-display">${qty}</div>
+                                <button class="ctrl-btn" onclick="updateCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)">+</button>
+                            </div>
+                        `;
+                    } else {
+                        controlsHTML = `
+                            <button class="btn-add-init" onclick="updateCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)">ADD</button>
+                        `;
+                    }
+
+                    itemDiv.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-header">
+                                <span class="type-icon ${iconClass}"></span>
+                                <span class="item-name">${item.name}</span>
+                            </div>
+                            <div class="item-price">₹${item.price}</div>
+                        </div>
+                        <div class="item-actions">
+                            ${controlsHTML}
+                        </div>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+            });
+
+            if (container.innerHTML === '') {
+                container.innerHTML = `<p style="text-align:center; color: #a1a1aa; margin-top: 20px;">No dishes found.</p>`;
+            }
+        }
+
+        function updateCart(itemName, price, change) {
+            if (!cart[itemName]) {
+                cart[itemName] = { price: price, qty: 0 };
+            }
+            
+            cart[itemName].qty += change;
+
+            if (cart[itemName].qty <= 0) {
+                delete cart[itemName];
+            }
+
+            renderMenu(); 
+            updateCartUI(); 
+        }
+
+        function updateCartUI() {
+            const cartBar = document.getElementById('cart-bar');
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            Object.values(cart).forEach(item => {
+                totalItems += item.qty;
+                totalPrice += (item.qty * item.price);
+            });
+
+            if (totalItems > 0) {
+                document.getElementById('cart-total-items').innerText = `${totalItems} Item${totalItems > 1 ? 's' : ''}`;
+                document.getElementById('cart-total-price').innerText = totalPrice;
+                cartBar.classList.add('visible');
+            } else {
+                cartBar.classList.remove('visible');
+                closeCheckout(); 
+            }
+        }
+
+        // --- CHECKOUT & WHATSAPP LOGIC ---
+        function openCheckout() {
+            const tableNo = document.getElementById('table-no').value.trim();
+            if (!tableNo) {
+                alert("Please enter your Table Number at the top of the page before placing an order.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.getElementById('table-no').focus();
+                return;
+            }
+            document.getElementById('checkout-modal').classList.add('active');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.remove('active');
+        }
+
+        function processOrder(paymentMethod) {
+            const tableNo = document.getElementById('table-no').value.trim();
+            
+            let message = `🥢 *NEW ORDER - VAIBHAV CHINESE* 🥢\n\n`;
+            message += `📍 *Table No:* ${tableNo}\n`;
+            message += `💳 *Payment Method:* ${paymentMethod}\n`;
+            message += `---------------------------\n`;
+
+            let totalPrice = 0;
+            Object.keys(cart).forEach(itemName => {
+                const item = cart[itemName];
+                const itemTotal = item.qty * item.price;
+                totalPrice += itemTotal;
+                message += `▪️ ${item.qty} x ${itemName} (₹${itemTotal})\n`;
+            });
+
+            message += `---------------------------\n`;
+            message += `💰 *Grand Total:* ₹${totalPrice}\n\n`;
+            message += `_Please prepare the order!_`;
+
+            const encodedMessage = encodeURIComponent(message);
+            
+            // REPLACE THIS NUMBER WITH YOUR RESTAURANT WHATSAPP NUMBER (Country code + number, e.g., 919876543210)
+            const whatsappNumber = "919876543210"; 
+            
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            closeCheckout();
+            cart = {};
+            updateCartUI();
+            
+            // Uncheck table number to prepare for next potential guest
+            document.getElementById('table-no').value = "";
+            renderMenu();
+            
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
 </body>
 </html>
