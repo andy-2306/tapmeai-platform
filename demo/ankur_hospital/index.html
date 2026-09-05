@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -151,7 +154,7 @@
         
         .btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
         .btn-google { border-left: 5px solid var(--accent-google); }
-        .btn-contact { border-left: 5px solid var(--accent-medical); }
+        .btn-practo { border-left: 5px solid #14bef0; }
 
         /* Review Card Popup */
         #review-card {
@@ -261,6 +264,7 @@
 </head>
 <body onload="initApp()">
     <div class="container">
+        <!-- Language Switcher -->
         <div class="lang-switcher">
             <button class="lang-btn active" onclick="setLanguage('mr')" id="btn-mr">मराठी</button>
             <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
@@ -279,8 +283,8 @@
                     <span style="font-size: 22px;">⭐</span> <span id="txt-google">Google Review</span>
                 </button>
                 
-                <button class="btn btn-contact" onclick="window.location.href='#'">
-                    <span style="font-size: 20px;">🌐</span> <span id="txt-contact">Book Appointment</span>
+                <button class="btn btn-practo" onclick="window.location.href='https://www.practo.com/thane/hospital/ankur-maternity-and-nursing-home-thane-east'">
+                    <span style="font-size: 20px;">🩺</span> <span id="txt-practo">Practo Profile</span>
                 </button>
             </div>
 
@@ -307,7 +311,7 @@
         const generatorData = {
             en: {
                 title: "Ankur Hospital & Maternity Home", doctor: "Dr. Rooma Pathare", slogan: "Compassionate Maternity & Women's Healthcare",
-                google: "Google Review", contact: "Book Appointment", prompt: "Short on time? Use our quick-template review!",
+                google: "Google Review", practo: "Practo Profile", prompt: "Short on time? Use our quick-template review!",
                 subPrompt: "Please select the reason for your visit (Select multiple if applicable):",
                 copyBtn: "Copy & Continue", rephraseBtn: "Rephrase", copiedMsg: "✅ Copied!",
                 services: {
@@ -352,7 +356,7 @@
             },
             hi: {
                 title: "अंकुर हॉस्पिटल एंड मैटरनिटी होम", doctor: "डॉ. रूमा पथारे", slogan: "महिलाओं के लिए भरोसेमंद और सुरक्षित स्वास्थ्य सेवा",
-                google: "गूगल रिव्यू", contact: "अपॉइंटमेंट बुक करें", prompt: "समय कम है? हमारे इस टेम्पलेट का उपयोग करें!",
+                google: "गूगल रिव्यू", practo: "प्रैक्टो प्रोफाइल", prompt: "समय कम है? हमारे इस टेम्पलेट का उपयोग करें!",
                 subPrompt: "कृपया अपनी विज़िट का कारण चुनें (एक से अधिक चुन सकते हैं):",
                 copyBtn: "कॉपी करें और आगे बढ़ें", rephraseBtn: "फिर से लिखें", copiedMsg: "✅ कॉपी हो गया!",
                 services: {
@@ -397,7 +401,7 @@
             },
             mr: {
                 title: "अंकुर हॉस्पिटल अँड मॅटर्निटी होम", doctor: "डॉ. रुमा पाठारे", slogan: "महिलांसाठी सुरक्षित आणि उत्तम आरोग्यसेवा",
-                google: "गुगल रिव्ह्यू", contact: "अपॉइंटमेंट बुक करा", prompt: "वेळ कमी आहे? आमचा हा तयार रिव्ह्यू वापरा!",
+                google: "गुगल रिव्ह्यू", practo: "प्रॅक्टो प्रोफाईल", prompt: "वेळ कमी आहे? आमचा हा तयार रिव्ह्यू वापरा!",
                 subPrompt: "कृपया तुमच्या भेटीचे कारण निवडा (एकापेक्षा जास्त निवडू शकता):",
                 copyBtn: "कॉपी करा आणि पुढे जा", rephraseBtn: "पुन्हा लिहा", copiedMsg: "✅ कॉपी झाले!",
                 services: {
@@ -451,7 +455,7 @@
         function initApp() {
             // Build the 500 variations per SERVICE
             for (let lang in generatorData) {
-                if(lang === 'title' || lang === 'doctor' || lang === 'slogan' || lang === 'google' || lang === 'contact' || lang === 'prompt' || lang === 'subPrompt' || lang === 'copyBtn' || lang === 'rephraseBtn' || lang === 'copiedMsg' || lang === 'services' || lang === 'transitions' || lang === 'shared_p3') continue;
+                if(lang === 'title' || lang === 'doctor' || lang === 'slogan' || lang === 'google' || lang === 'practo' || lang === 'prompt' || lang === 'subPrompt' || lang === 'copyBtn' || lang === 'rephraseBtn' || lang === 'copiedMsg' || lang === 'services' || lang === 'transitions' || lang === 'shared_p3') continue;
                 
                 serviceKeys.forEach(srvKey => {
                     let sentences500 = [];
@@ -506,7 +510,7 @@
             document.getElementById('doctor-name').innerText = langData.doctor;
             document.getElementById('slogan').innerText = langData.slogan;
             document.getElementById('txt-google').innerText = langData.google;
-            document.getElementById('txt-contact').innerText = langData.contact;
+            document.getElementById('txt-practo').innerText = langData.practo;
             document.getElementById('txt-prompt').innerText = langData.prompt;
             document.getElementById('txt-sub-prompt').innerText = langData.subPrompt;
             document.getElementById('txt-copy').innerText = langData.copyBtn;
@@ -628,8 +632,8 @@
                 copyBtn.style.backgroundColor = "#10b981"; 
                 
                 setTimeout(() => {
-                    // Redirects to Google review within 1 second as requested
-                    window.location.href = 'https://search.google.com/local/writereview?placeid=ChIJwzq1J7C55zsRT7ykW7HreeA';
+                    // Redirects to Google review within 1 second using the accurate share link
+                    window.location.href = 'https://share.google/a9tsqXlFVaPDOJ3WH';
                 }, 1000);
             });
         }
