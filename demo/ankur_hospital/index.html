@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ankur Hospital & Maternity Home - Dr. Rooma Pathare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #e2e8f0;
+            --btn-glass: rgba(255, 255, 255, 0.2);
+            --accent-google: #4285F4;
+            --accent-medical: #0d9488; /* Trust-building Medical Teal */
+            --accent-medical-hover: #0f766e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.85), rgba(15, 23, 42, 0.95)), 
+                        url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 460px;
+            width: 100%;
+            margin-top: 2vh;
+            padding-bottom: 40px;
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 8px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent-medical-hover);
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Glassmorphism Main Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-img {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: white; 
+            padding: 4px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 28px; 
+            margin: 0 0 4px 0; 
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+            color: #f8fafc;
+        }
+        
+        p#slogan { 
+            font-size: 14px; 
+            font-style: italic; 
+            color: var(--text-muted);
+            margin: 0 0 32px 0; 
+            font-weight: 300;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--btn-glass);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .btn-google { border-left: 5px solid var(--accent-google); }
+        .btn-contact { border-left: 5px solid var(--accent-medical); }
+
+        /* Review Card Popup */
+        #review-card {
+            display: none;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 25px;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        #review-card p { font-weight: 600; margin-top: 0; font-size: 15px; color: #f8fafc; }
+        .sub-prompt { font-size: 13px !important; color: #cbd5e1 !important; margin-bottom: 16px !important; font-weight: 400 !important;}
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tag-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #f1f5f9;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tag-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
+        
+        .tag-btn.active-tag {
+            background: var(--accent-medical);
+            border-color: var(--accent-medical);
+            color: white;
+            box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
+        }
+
+        /* Review Text Area & Actions */
+        #review-action-area {
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            color: #0f172a;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            background-color: rgba(255,255,255,0.95);
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-refresh, .btn-copy {
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: 0.3s ease;
+        }
+
+        .btn-refresh {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-refresh:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-copy { 
+            background-color: var(--accent-google); 
+            color: white; 
+            flex: 2;
+        }
+        .btn-copy:hover { background-color: #3367d6; box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4); }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body onload="initApp()">
+    <div class="container">
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLanguage('mr')" id="btn-mr">मराठी</button>
+            <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
+            <button class="lang-btn" onclick="setLanguage('hi')" id="btn-hi">हिन्दी</button>
+        </div>
+
+        <div class="glass-card">
+            <img src="logo.png" alt="Ankur Hospital Logo" class="logo-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2ZmZiIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQwIiBmaWxsPSIjMGQ5NDg4IiBkeT0iLjM1ZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+PC9zdmc+'">
+            
+            <h1 id="title">Ankur Hospital & Maternity Home</h1>
+            <h2 id="doctor-name">Dr. Rooma Pathare</h2>
+            <p id="slogan">Compassionate Maternity & Women's Healthcare</p>
+
+            <div class="btn-group">
+                <button class="btn btn-google" onclick="triggerReviewCard()">
+                    <span style="font-size: 22px;">⭐</span> <span id="txt-google">Google Review</span>
+                </button>
+                
+                <button class="btn btn-contact" onclick="window.location.href='#'">
+                    <span style="font-size: 20px;">🌐</span> <span id="txt-contact">Book Appointment</span>
+                </button>
+            </div>
+
+            <div id="review-card">
+                <p id="txt-prompt">Short on time? Use our quick-template review!</p>
+                <p id="txt-sub-prompt" class="sub-prompt">Please select the reason for your visit (Select multiple if applicable):</p>
+                
+                <div class="tags-container" id="tags-container"></div>
+
+                <div id="review-action-area">
+                    <textarea id="review-text" readonly></textarea>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-refresh" onclick="displayReview()">🔄 <span id="txt-rephrase">Rephrase</span></button>
+                        <button class="btn-copy" id="copy-btn" onclick="copyAndRedirect()">📋 <span id="txt-copy">Copy & Continue</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 500 Combinations Engine: p1(5) * p2(10) * p3(10) = 500 permutations per service per language.
+        const generatorData = {
+            en: {
+                title: "Ankur Hospital & Maternity Home", doctor: "Dr. Rooma Pathare", slogan: "Compassionate Maternity & Women's Healthcare",
+                google: "Google Review", contact: "Book Appointment", prompt: "Short on time? Use our quick-template review!",
+                subPrompt: "Please select the reason for your visit (Select multiple if applicable):",
+                copyBtn: "Copy & Continue", rephraseBtn: "Rephrase", copiedMsg: "✅ Copied!",
+                services: {
+                    pregnancy: "Pregnancy & Maternity Care", pcos: "PCOS & Irregular Periods", infertility: "Infertility Treatment",
+                    delivery: "Normal / C-Section Delivery", general: "Infections & Checkups", surgery: "Gynecological Surgery"
+                },
+                transitions: [
+                    "We also consulted her for [SERVICE].", "Additionally, I received excellent care for [SERVICE].",
+                    "I also visited regarding [SERVICE].", "Furthermore, Dr. Rooma guided us perfectly with [SERVICE]."
+                ],
+                shared_p3: [
+                    "I highly recommend Dr. Rooma Pathare to everyone.", "Ankur Hospital is truly the best in Thane East.",
+                    "Very grateful for the excellent care received here.", "I would definitely recommend Ankur Maternity Home.",
+                    "Best gynecologist experience we've ever had.", "Thank you Dr. Rooma for your exceptional care.",
+                    "Ankur Hospital's facilities and staff are top-notch.", "You are definitely in safe hands with Dr. Rooma.",
+                    "A fantastic 5-star experience at Ankur Hospital.", "Truly a blessing to have found this clinic."
+                ],
+                pregnancy: {
+                    p1: ["I visited Dr. Rooma for my pregnancy journey.", "We consulted Dr. Rooma Pathare for maternity care.", "My entire pregnancy care was handled at Ankur Hospital.", "I chose Dr. Rooma for my prenatal care.", "We went to Ankur Maternity Home for my routine pregnancy checkups."],
+                    p2: ["She treats her patients just like family members.", "She explains everything in detail and clears all doubts.", "Dr. Rooma is highly attentive to every small concern.", "Her calm demeanor makes the whole journey stress-free.", "The clinic staff at Ankur Hospital is very cooperative.", "She gives ample time to her patients during every visit.", "The hygiene and cleanliness of the maternity ward are excellent.", "She is extremely knowledgeable and highly reassuring.", "Her positive attitude gave me so much confidence.", "She avoids unnecessary medications and guides you perfectly."]
+                },
+                pcos: {
+                    p1: ["I visited Dr. Rooma for my PCOS treatment.", "I consulted Dr. Rooma Pathare regarding irregular periods.", "I went to Ankur Hospital for my PCOD issues.", "I sought treatment from Dr. Rooma for hormonal imbalance.", "I visited Ankur Maternity Home for my menstrual issues."],
+                    p2: ["She listens to all symptoms with great patience.", "She explains the root cause of the issue very clearly.", "Her dietary and lifestyle advice is incredibly helpful.", "She doesn't rush the consultation and answers everything.", "She makes you feel extremely comfortable and heard.", "Her treatment approach is very systematic and effective.", "She focuses on natural healing rather than heavy medicines.", "The clinic environment is very welcoming and hygienic.", "She provides a very practical and effective treatment plan.", "Dr. Rooma is highly experienced in handling such cases."]
+                },
+                infertility: {
+                    p1: ["We consulted Dr. Rooma for infertility treatment.", "We visited Ankur Hospital for conception guidance.", "Dr. Rooma Pathare treated us for infertility issues.", "We sought help from Dr. Rooma to plan our pregnancy.", "We went to Ankur Maternity Home for fertility counseling."],
+                    p2: ["She is extremely supportive and understands emotional stress.", "Her diagnostic approach is very thorough and accurate.", "She provides highly personalized and effective treatments.", "Her encouraging words keep your hopes up.", "She explains the entire treatment process step-by-step.", "The staff ensures complete privacy and comfort.", "She is highly professional and deeply compassionate.", "Dr. Rooma gives you the right guidance without false promises.", "She monitors the progress very closely.", "Her expertise in this field is truly commendable."]
+                },
+                delivery: {
+                    p1: ["I had my delivery at Ankur Maternity Home.", "Dr. Rooma performed my C-section delivery.", "I delivered my baby under Dr. Rooma's care.", "My normal delivery was safely handled at Ankur Hospital.", "Dr. Rooma Pathare handled my childbirth process."],
+                    p2: ["The surgical team and nursing staff were exceptionally good.", "She handled the entire delivery process flawlessly.", "Post-operative care at the hospital was outstanding.", "The hospital rooms are very clean and comfortable.", "She ensured both mother and baby were completely safe.", "Her expertise made the delivery experience wonderful.", "The nurses are available 24/7 and are very caring.", "She kept our family informed and relaxed throughout.", "The recovery process was smooth thanks to her guidance.", "She is a highly skilled and confident surgeon."]
+                },
+                general: {
+                    p1: ["I visited Dr. Rooma for a general gynecological checkup.", "I consulted Dr. Pathare for a vaginal infection.", "I went to Ankur Hospital for routine women's health issues.", "I visited the clinic for a urinary tract infection.", "I consulted Dr. Rooma for general women's wellness."],
+                    p2: ["She makes you feel completely at ease during checkups.", "Her diagnosis is very quick and accurate.", "She prescribes only the necessary medications.", "She maintains the highest standards of hygiene.", "She respects patient privacy completely.", "Her gentle approach makes the visit comfortable.", "She takes the time to explain the medical condition.", "The clinic has a very positive and safe atmosphere.", "She is very approachable and friendly.", "Her treatment provided me with immediate relief."]
+                },
+                surgery: {
+                    p1: ["I underwent a gynecological surgery by Dr. Rooma.", "Dr. Rooma Pathare performed my laparoscopic surgery.", "I had my fibroid treatment at Ankur Hospital.", "I was admitted to Ankur Maternity Home for a procedure.", "Dr. Rooma handled my surgical treatment excellently."],
+                    p2: ["She explained the surgical procedure very transparently.", "The operation theatre and facilities are highly advanced.", "Her surgical skills are absolutely brilliant.", "She provided excellent post-surgery care and advice.", "The nursing staff took great care of me during recovery.", "She visited regularly to check on my healing progress.", "The billing and discharge process was hassle-free.", "She made sure I was completely pain-free and comfortable.", "Her confidence completely eliminated my pre-surgery anxiety.", "She is arguably the best surgeon in the area."]
+                }
+            },
+            hi: {
+                title: "अंकुर हॉस्पिटल एंड मैटरनिटी होम", doctor: "डॉ. रूमा पथारे", slogan: "महिलाओं के लिए भरोसेमंद और सुरक्षित स्वास्थ्य सेवा",
+                google: "गूगल रिव्यू", contact: "अपॉइंटमेंट बुक करें", prompt: "समय कम है? हमारे इस टेम्पलेट का उपयोग करें!",
+                subPrompt: "कृपया अपनी विज़िट का कारण चुनें (एक से अधिक चुन सकते हैं):",
+                copyBtn: "कॉपी करें और आगे बढ़ें", rephraseBtn: "फिर से लिखें", copiedMsg: "✅ कॉपी हो गया!",
+                services: {
+                    pregnancy: "प्रेगनेंसी और मैटरनिटी केयर", pcos: "PCOS और अनियमित पीरियड्स", infertility: "इनफर्टिलिटी (बांझपन) का इलाज",
+                    delivery: "नॉर्मल / सिजेरियन डिलीवरी", general: "इन्फेक्शन और जनरल चेकअप", surgery: "गायनोकोलॉजिकल सर्जरी"
+                },
+                transitions: [
+                    "हमने [SERVICE] के लिए भी उनसे सलाह ली।", "इसके अलावा, मुझे [SERVICE] के लिए बेहतरीन इलाज मिला।",
+                    "मैं [SERVICE] के सिलसिले में भी उनसे मिली थी।", "साथ ही, डॉ. रूमा ने हमें [SERVICE] में बहुत अच्छे से गाइड किया।"
+                ],
+                shared_p3: [
+                    "मैं सभी को डॉ. रूमा पथारे की सलाह दूंगी।", "ठाणे ईस्ट में अंकुर हॉस्पिटल सच में सबसे अच्छा है।",
+                    "यहाँ मिले बेहतरीन इलाज के लिए मैं बहुत आभारी हूँ।", "मैं अंकुर मैटरनिटी होम की पूरी तरह से सिफारिश करूंगी।",
+                    "यह मेरा अब तक का सबसे अच्छा अनुभव था।", "बेहतरीन इलाज के लिए डॉ. रूमा का बहुत-बहुत धन्यवाद।",
+                    "अंकुर हॉस्पिटल की सुविधाएं बहुत शानदार हैं।", "डॉ. रूमा के पास आप बिल्कुल सुरक्षित हाथों में हैं।",
+                    "अंकुर हॉस्पिटल का अनुभव बहुत ही बढ़िया रहा।", "इस क्लिनिक का मिलना हमारे लिए एक वरदान जैसा है।"
+                ],
+                pregnancy: {
+                    p1: ["मैं अपनी प्रेगनेंसी के दौरान डॉ. रूमा के पास गई थी।", "हमने मैटरनिटी केयर के लिए डॉ. रूमा पथारे से सलाह ली।", "मेरी पूरी प्रेगनेंसी का ध्यान अंकुर हॉस्पिटल में रखा गया।", "मैंने अपनी प्रेगनेंसी केयर के लिए डॉ. रूमा को चुना।", "हम नियमित प्रेगनेंसी चेकअप के लिए अंकुर मैटरनिटी होम गए थे।"],
+                    p2: ["वह अपने मरीजों के साथ परिवार के सदस्य जैसा व्यवहार करती हैं।", "वह हर चीज़ को विस्तार से समझाती हैं और सारे डाउट क्लियर करती हैं।", "डॉ. रूमा हर छोटी समस्या पर बहुत ध्यान देती हैं।", "उनका शांत स्वभाव पूरी प्रेगनेंसी को स्ट्रेस-फ्री बना देता है।", "अंकुर हॉस्पिटल का स्टाफ बहुत ही सहयोगी है।", "वह हर विज़िट के दौरान अपने मरीजों को पूरा समय देती हैं।", "मैटरनिटी वॉर्ड की साफ-सफाई और हाइजीन बहुत अच्छी है।", "वह बहुत अनुभवी हैं और हमेशा हिम्मत बढ़ाती हैं।", "उनके सकारात्मक रवैये ने मुझे बहुत आत्मविश्वास दिया।", "वह बेवजह की दवाइयों से बचाती हैं और सही सलाह देती हैं।"]
+                },
+                pcos: {
+                    p1: ["मैं अपने PCOS के इलाज के लिए डॉ. रूमा के पास गई थी।", "मैंने अनियमित पीरियड्स के लिए डॉ. रूमा पथारे से सलाह ली।", "मैं अपनी PCOD की समस्या के लिए अंकुर हॉस्पिटल गई थी।", "मैंने हार्मोनल असंतुलन के इलाज के लिए डॉ. रूमा से संपर्क किया।", "मैं अपनी मासिक धर्म की समस्याओं के लिए अंकुर मैटरनिटी होम गई थी।"],
+                    p2: ["वह मरीजों के सभी लक्षण बहुत धैर्य से सुनती हैं।", "वह समस्या के मूल कारण को बहुत स्पष्ट रूप से समझाती हैं।", "उनकी डाइट और लाइफस्टाइल से जुड़ी सलाह बहुत काम आती है।", "वह जल्दबाजी नहीं करतीं और हर सवाल का जवाब देती हैं।", "वह आपको बहुत ही सहज महसूस कराती हैं।", "उनके इलाज का तरीका बहुत ही व्यवस्थित और प्रभावी है।", "वह भारी दवाइयों के बजाय प्राकृतिक तरीके से ठीक करने पर ज़ोर देती हैं।", "क्लिनिक का माहौल बहुत ही स्वच्छ और सकारात्मक है।", "वह एक बहुत ही व्यावहारिक और असरदार ट्रीटमेंट प्लान देती हैं।", "डॉ. रूमा को ऐसे मामलों को संभालने का बहुत अनुभव है।"]
+                },
+                infertility: {
+                    p1: ["हमने इनफर्टिलिटी (बांझपन) के इलाज के लिए डॉ. रूमा से सलाह ली।", "हम प्रेगनेंसी प्लानिंग के लिए अंकुर हॉस्पिटल गए थे।", "डॉ. रूमा पथारे ने हमारा इनफर्टिलिटी का इलाज किया।", "हमने कंसेप्शन के लिए डॉ. रूमा से मदद ली।", "हम फर्टिलिटी काउंसलिंग के लिए अंकुर मैटरनिटी होम गए थे।"],
+                    p2: ["वह बहुत सपोर्टिव हैं और मानसिक तनाव को समझती हैं।", "बीमारी को पहचानने का उनका तरीका बहुत ही सटीक है।", "वह बहुत ही पर्सनलाइज्ड और प्रभावी इलाज देती हैं।", "उनके उत्साहवर्धक शब्द हमेशा उम्मीद बनाए रखते हैं।", "वह इलाज की पूरी प्रक्रिया को स्टेप-बाय-स्टेप समझाती हैं।", "अस्पताल का स्टाफ पूरी निजता (प्राइवेसी) और सुविधा का ध्यान रखता है।", "वह बेहद प्रोफेशनल और बहुत दयालु हैं।", "डॉ. रूमा झूठे वादे किए बिना सही मार्गदर्शन देती हैं।", "वह इलाज की प्रोग्रेस पर बहुत करीब से नज़र रखती हैं।", "इस क्षेत्र में उनकी विशेषज्ञता सच में काबिले तारीफ है।"]
+                },
+                delivery: {
+                    p1: ["मेरी डिलीवरी अंकुर मैटरनिटी होम में हुई।", "डॉ. रूमा ने मेरी सिजेरियन (C-section) डिलीवरी की।", "मैंने डॉ. रूमा की देखरेख में अपने बच्चे को जन्म दिया।", "मेरी नॉर्मल डिलीवरी अंकुर हॉस्पिटल में सुरक्षित तरीके से हुई।", "डॉ. रूमा पथारे ने मेरी डिलीवरी की पूरी प्रक्रिया को संभाला।"],
+                    p2: ["सर्जिकल टीम और नर्सिंग स्टाफ बहुत ही बेहतरीन था।", "उन्होंने डिलीवरी की पूरी प्रक्रिया को बहुत ही शानदार तरीके से संभाला।", "अस्पताल में ऑपरेशन के बाद की देखभाल बहुत अच्छी थी।", "अस्पताल के कमरे बहुत साफ और आरामदायक हैं।", "उन्होंने यह सुनिश्चित किया कि माँ और बच्चा दोनों पूरी तरह सुरक्षित रहें।", "उनकी विशेषज्ञता ने डिलीवरी के अनुभव को बहुत अच्छा बना दिया।", "नर्सें 24/7 उपलब्ध रहती हैं और बहुत अच्छी देखभाल करती हैं।", "उन्होंने हमारे परिवार को तनावमुक्त रखा और हर जानकारी दी।", "उनके मार्गदर्शन की वजह से रिकवरी बहुत जल्दी हुई।", "वह एक अत्यधिक कुशल और आत्मविश्वासी सर्जन हैं।"]
+                },
+                general: {
+                    p1: ["मैं एक जनरल गायनोकोलॉजिकल चेकअप के लिए डॉ. रूमा के पास गई थी।", "मैंने वजाइनल इन्फेक्शन के लिए डॉ. पथारे से सलाह ली।", "मैं महिलाओं की रूटीन स्वास्थ्य समस्याओं के लिए अंकुर हॉस्पिटल गई थी।", "मैं यूरिन इन्फेक्शन (UTI) के लिए क्लिनिक गई थी।", "मैंने महिलाओं के जनरल चेकअप के लिए डॉ. रूमा से सलाह ली।"],
+                    p2: ["वह चेकअप के दौरान आपको पूरी तरह से रिलैक्स महसूस कराती हैं।", "उनकी डायग्नोसिस (निदान) बहुत तेज़ और सटीक है।", "वह केवल ज़रूरी दवाइयाँ ही लिखती हैं।", "वह क्लिनिक में साफ-सफाई का उच्चतम स्तर बनाए रखती हैं।", "वह मरीज की प्राइवेसी का पूरा सम्मान करती हैं।", "उनका व्यवहार बहुत ही सौम्य है जिससे विज़िट आरामदायक हो जाती है।", "वह मेडिकल कंडीशन को समझाने के लिए पूरा समय निकालती हैं।", "क्लिनिक का माहौल बहुत ही सुरक्षित और सकारात्मक है।", "वह बहुत ही मिलनसार हैं और उनसे बात करना आसान है।", "उनके इलाज से मुझे तुरंत आराम मिल गया।"]
+                },
+                surgery: {
+                    p1: ["डॉ. रूमा ने मेरी गायनोकोलॉजिकल सर्जरी की।", "डॉ. रूमा पथारे ने मेरी लैप्रोस्कोपिक सर्जरी सफलतापूर्वक की।", "मैंने अंकुर हॉस्पिटल में फाइब्रॉइड (रसोली) का इलाज करवाया।", "मैं एक प्रोसीजर के लिए अंकुर मैटरनिटी होम में एडमिट थी।", "डॉ. रूमा ने मेरे सर्जिकल इलाज को बहुत अच्छे से संभाला।"],
+                    p2: ["उन्होंने सर्जरी की प्रक्रिया को बहुत स्पष्ट रूप से समझाया था।", "ऑपरेशन थियेटर और सुविधाएं बहुत ही एडवांस हैं।", "उनका सर्जिकल कौशल (skills) बिल्कुल शानदार है।", "उन्होंने सर्जरी के बाद बहुत अच्छी देखभाल और सलाह दी।", "रिकवरी के दौरान नर्सिंग स्टाफ ने मेरा बहुत अच्छा ख्याल रखा।", "वह रिकवरी प्रोग्रेस देखने के लिए नियमित रूप से आती थीं।", "हॉस्पिटल का बिलिंग और डिस्चार्ज प्रोसेस बिल्कुल परेशानी-मुक्त था।", "उन्होंने सुनिश्चित किया कि मुझे कम से कम दर्द हो।", "उनके आत्मविश्वास ने सर्जरी से पहले मेरा सारा डर खत्म कर दिया।", "वह यकीनन इस इलाके की सबसे बेहतरीन सर्जन हैं।"]
+                }
+            },
+            mr: {
+                title: "अंकुर हॉस्पिटल अँड मॅटर्निटी होम", doctor: "डॉ. रुमा पाठारे", slogan: "महिलांसाठी सुरक्षित आणि उत्तम आरोग्यसेवा",
+                google: "गुगल रिव्ह्यू", contact: "अपॉइंटमेंट बुक करा", prompt: "वेळ कमी आहे? आमचा हा तयार रिव्ह्यू वापरा!",
+                subPrompt: "कृपया तुमच्या भेटीचे कारण निवडा (एकापेक्षा जास्त निवडू शकता):",
+                copyBtn: "कॉपी करा आणि पुढे जा", rephraseBtn: "पुन्हा लिहा", copiedMsg: "✅ कॉपी झाले!",
+                services: {
+                    pregnancy: "प्रेग्नन्सी आणि मॅटर्निटी केअर", pcos: "PCOS आणि अनियमित मासिक पाळी", infertility: "इनफर्टिलिटी (वंध्यत्व) उपचार",
+                    delivery: "नॉर्मल / सिझेरियन डिलिव्हरी", general: "इन्फेक्शन आणि जनरल चेकअप", surgery: "गायनोकोलॉजिकल सर्जरी"
+                },
+                transitions: [
+                    "आम्ही [SERVICE] बद्दलही त्यांचा सल्ला घेतला.", "याव्यतिरिक्त, मला [SERVICE] साठी उत्तम उपचार मिळाले.",
+                    "मी [SERVICE] च्या संदर्भातही त्यांची भेट घेतली.", "तसेच, डॉ. रुमा यांनी आम्हाला [SERVICE] बद्दल खूप छान मार्गदर्शन केले."
+                ],
+                shared_p3: [
+                    "मी सर्वांना डॉ. रुमा पाठारे यांची नक्कीच शिफारस करेन.", "ठाणे पूर्वेतील अंकुर हॉस्पिटल खरोखरच सर्वोत्तम आहे.",
+                    "येथे मिळालेल्या उत्तम उपचारांबद्दल मी खूप आभारी आहे.", "मी अंकुर मॅटर्निटी होमची नक्कीच शिफारस करेन.",
+                    "हा माझा आतापर्यंतचा सर्वात चांगला अनुभव होता.", "उत्कृष्ट उपचारांसाठी डॉ. रुमा मॅडमचे खूप खूप आभार.",
+                    "अंकुर हॉस्पिटलमधील सुविधा अतिशय उत्तम आहेत.", "डॉ. रुमा यांच्याकडे तुम्ही पूर्णपणे सुरक्षित आहात.",
+                    "अंकुर हॉस्पिटलचा अनुभव खूप छान होता.", "हे क्लिनिक मिळणे आमच्यासाठी खरोखरच भाग्याची गोष्ट आहे."
+                ],
+                pregnancy: {
+                    p1: ["मी माझ्या प्रेग्नेंसीच्या काळात डॉ. रुमा यांच्याकडे गेले होते.", "आम्ही मॅटर्निटी केअरसाठी डॉ. रुमा पाठारे यांचा सल्ला घेतला.", "माझ्या संपूर्ण प्रेग्नेंसीची काळजी अंकुर हॉस्पिटलमध्ये घेतली गेली.", "मी माझ्या प्रेग्नेंसी केअरसाठी डॉ. रुमा मॅडमची निवड केली.", "आम्ही नियमित प्रेग्नेंसी चेकअपसाठी अंकुर मॅटर्निटी होममध्ये गेलो होतो."],
+                    p2: ["त्या त्यांच्या पेशंटला अगदी कुटुंबातील सदस्याप्रमाणे वागवतात.", "त्या प्रत्येक गोष्ट सविस्तर समजावून सांगतात आणि सर्व शंका दूर करतात.", "डॉ. रुमा प्रत्येक लहान-सहान गोष्टीकडे खूप लक्ष देतात.", "त्यांच्या शांत स्वभावामुळे प्रेग्नेंसीचा संपूर्ण प्रवास तणावमुक्त होतो.", "अंकुर हॉस्पिटलचा स्टाफ खूपच मदत करणारा आहे.", "त्या प्रत्येक भेटीदरम्यान पेशंटला भरपूर वेळ देतात.", "मॅटर्निटी वॉर्डची स्वच्छता आणि हायजीन अतिशय उत्तम आहे.", "त्या खूप अनुभवी आहेत आणि नेहमी धीर देतात.", "त्यांच्या सकारात्मक दृष्टिकोनामुळे मला खूप आत्मविश्वास मिळाला.", "त्या अनावश्यक औषधे टाळतात आणि योग्य मार्गदर्शन करतात."]
+                },
+                pcos: {
+                    p1: ["मी माझ्या PCOS च्या उपचारांसाठी डॉ. रुमा यांची भेट घेतली.", "मी अनियमित मासिक पाळीसाठी डॉ. रुमा पाठारे यांचा सल्ला घेतला.", "मी माझ्या PCOD च्या समस्येसाठी अंकुर हॉस्पिटलमध्ये गेले होते.", "हार्मोनल असंतुलनासाठी मी डॉ. रुमा यांच्याकडून उपचार घेतले.", "मासिक पाळीच्या समस्यांसाठी मी अंकुर मॅटर्निटी होममध्ये गेले होते."],
+                    p2: ["त्या पेशंटची सर्व लक्षणे अतिशय शांतपणे ऐकून घेतात.", "त्या समस्येचे मूळ कारण अतिशय स्पष्टपणे समजावून सांगतात.", "त्यांचा आहार आणि जीवनशैलीबद्दलचा सल्ला खूप फायदेशीर ठरतो.", "त्या अजिबात घाई करत नाहीत आणि प्रत्येक प्रश्नाचे उत्तर देतात.", "त्यांच्याशी बोलताना तुम्हाला खूप मोकळेपणा जाणवतो.", "त्यांची उपचार पद्धती अत्यंत पद्धतशीर आणि प्रभावी आहे.", "जड औषधांऐवजी त्या नैसर्गिकरित्या बरे करण्यावर भर देतात.", "क्लिनिकमधील वातावरण अतिशय स्वच्छ आणि सकारात्मक आहे.", "त्या अतिशय व्यावहारिक आणि प्रभावी ट्रीटमेंट प्लॅन देतात.", "डॉ. रुमा यांना अशी प्रकरणे हाताळण्याचा खूप अनुभव आहे."]
+                },
+                infertility: {
+                    p1: ["आम्ही इनफर्टिलिटी (वंध्यत्व) उपचारासाठी डॉ. रुमा यांचा सल्ला घेतला.", "आम्ही प्रेग्नेंसी प्लॅनिंगसाठी अंकुर हॉस्पिटलला भेट दिली.", "डॉ. रुमा पाठारे यांनी आमच्या इनफर्टिलिटीच्या समस्येवर उपचार केले.", "कन्सेप्शनसाठी आम्ही डॉ. रुमा मॅडमची मदत घेतली.", "फर्टिलिटी कन्सल्टिंगसाठी आम्ही अंकुर मॅटर्निटी होममध्ये गेलो होतो."],
+                    p2: ["त्या खूप सपोर्टिव्ह आहेत आणि मानसिक ताण समजून घेतात.", "त्यांची निदान करण्याची पद्धत अतिशय अचूक आहे.", "त्या अतिशय पर्सनलाईज्ड आणि प्रभावी उपचार देतात.", "त्यांचे आश्वासक शब्द नेहमी आशा जिवंत ठेवतात.", "त्या उपचारांची संपूर्ण प्रक्रिया टप्प्याटप्प्याने समजावून सांगतात.", "हॉस्पिटलचा स्टाफ पूर्ण प्रायव्हसी आणि सोयीची काळजी घेतो.", "त्या अत्यंत प्रोफेशनल आणि दयाळू आहेत.", "डॉ. रुमा खोटे आश्वासन न देता योग्य दिशा दाखवतात.", "त्या उपचारांच्या प्रगतीवर बारकाईने लक्ष ठेवतात.", "या क्षेत्रातील त्यांचे कौशल्य खरोखरच कौतुकास्पद आहे."]
+                },
+                delivery: {
+                    p1: ["माझी डिलिव्हरी अंकुर मॅटर्निटी होममध्ये झाली.", "डॉ. रुमा यांनी माझी सिझेरियन (C-section) डिलिव्हरी केली.", "मी डॉ. रुमा यांच्या देखरेखीखाली माझ्या बाळाला जन्म दिला.", "माझी नॉर्मल डिलिव्हरी अंकुर हॉस्पिटलमध्ये सुरक्षितपणे पार पडली.", "डॉ. रुमा पाठारे यांनी माझ्या बाळंतपणाची संपूर्ण प्रक्रिया हाताळली."],
+                    p2: ["सर्जिकल टीम आणि नर्सिंग स्टाफ अतिशय उत्कृष्ट होता.", "त्यांनी डिलिव्हरीची संपूर्ण प्रक्रिया अतिशय उत्तमरित्या हाताळली.", "ऑपरेशननंतर हॉस्पिटलमध्ये घेतलेली काळजी खूप चांगली होती.", "हॉस्पिटलमधील रूम्स अतिशय स्वच्छ आणि आरामदायी आहेत.", "त्यांनी आई आणि बाळ दोघांचीही पूर्ण सुरक्षितता सुनिश्चित केली.", "त्यांच्या कौशल्यामुळे डिलिव्हरीचा अनुभव खूप चांगला राहिला.", "नर्सेस 24/7 उपलब्ध असतात आणि खूप चांगली काळजी घेतात.", "त्यांनी आमच्या कुटुंबाला तणावमुक्त ठेवले आणि योग्य माहिती दिली.", "त्यांच्या मार्गदर्शनामुळे रिकव्हरी खूप जलद झाली.", "त्या एक अत्यंत कुशल आणि आत्मविश्वासू सर्जन आहेत."]
+                },
+                general: {
+                    p1: ["मी एका जनरल गायनोकोलॉजिकल चेकअपसाठी डॉ. रुमा यांची भेट घेतली.", "मी वजायनल इन्फेक्शनसाठी डॉ. पाठारे यांचा सल्ला घेतला.", "मी महिलांच्या नियमित आरोग्य समस्यांसाठी अंकुर हॉस्पिटलमध्ये गेले होते.", "मी युरिन इन्फेक्शन (UTI) साठी क्लिनिकला भेट दिली.", "मी महिलांच्या जनरल चेकअपसाठी डॉ. रुमा यांचा सल्ला घेतला."],
+                    p2: ["त्या चेकअप दरम्यान तुम्हाला पूर्णपणे रिलॅक्स वाटू देतात.", "त्यांचे निदान अतिशय जलद आणि अचूक आहे.", "त्या फक्त आवश्यक तेवढीच औषधे देतात.", "त्या क्लिनिकमध्ये स्वच्छतेचा सर्वोच्च स्तर राखतात.", "त्या पेशंटच्या प्रायव्हसीचा पूर्ण आदर करतात.", "त्यांच्या सौम्य व्यवहारामुळे व्हिजिट अतिशय आरामदायक होते.", "त्या मेडिकल कंडिशन समजावून सांगण्यासाठी पूर्ण वेळ देतात.", "क्लिनिकचे वातावरण अतिशय सुरक्षित आणि सकारात्मक आहे.", "त्या अतिशय मनमिळावू आहेत आणि त्यांच्याशी बोलणे सोपे जाते.", "त्यांच्या उपचारामुळे मला त्वरित आराम मिळाला."]
+                },
+                surgery: {
+                    p1: ["डॉ. रुमा यांनी माझी गायनोकोलॉजिकल सर्जरी केली.", "डॉ. रुमा पाठारे यांनी माझी लॅपरोस्कोपिक सर्जरी यशस्वीपणे केली.", "मी अंकुर हॉस्पिटलमध्ये फायब्रॉइड (गर्भाशयातील गाठ) चा उपचार घेतला.", "एका प्रोसिजरसाठी मी अंकुर मॅटर्निटी होममध्ये ॲडमिट होते.", "डॉ. रुमा यांनी माझ्या सर्जिकल उपचारांना खूप चांगल्या प्रकारे हाताळले."],
+                    p2: ["त्यांनी सर्जरीची प्रक्रिया अतिशय स्पष्टपणे समजावून सांगितली होती.", "ऑपरेशन थिएटर आणि सुविधा अतिशय अत्याधुनिक आहेत.", "त्यांचे सर्जिकल कौशल्य खरोखरच अप्रतिम आहे.", "त्यांनी सर्जरीनंतर उत्तम काळजी घेतली आणि योग्य सल्ला दिला.", "रिकव्हरीच्या काळात नर्सिंग स्टाफने माझी खूप छान काळजी घेतली.", "त्या रिकव्हरीची प्रगती पाहण्यासाठी नियमितपणे येत असत.", "हॉस्पिटलची बिलिंग आणि डिस्चार्ज प्रक्रिया अतिशय सोपी होती.", "त्यांनी मला कमीत कमी त्रास होईल याची काळजी घेतली.", "त्यांच्या आत्मविश्वासामुळे सर्जरीपूर्वीची माझी सर्व भीती नाहीशी झाली.", "त्या या परिसरातील सर्वात उत्तम सर्जन आहेत हे नक्की."]
+                }
+            }
+        };
+
+        const serviceKeys = Object.keys(generatorData.en.services);
+        let currentLang = 'mr'; // Default Language
+        let selectedServices = []; 
+        const generatedReviews = { en: {}, hi: {}, mr: {} };
+        const sequentialCounters = { en: {}, hi: {}, mr: {} };
+
+        function initApp() {
+            // Build the 500 variations per SERVICE
+            for (let lang in generatorData) {
+                if(lang === 'title' || lang === 'doctor' || lang === 'slogan' || lang === 'google' || lang === 'contact' || lang === 'prompt' || lang === 'subPrompt' || lang === 'copyBtn' || lang === 'rephraseBtn' || lang === 'copiedMsg' || lang === 'services' || lang === 'transitions' || lang === 'shared_p3') continue;
+                
+                serviceKeys.forEach(srvKey => {
+                    let sentences500 = [];
+                    const srvData = generatorData[lang][srvKey];
+                    if(!srvData) return; 
+                    
+                    const p1Arr = srvData.p1; // 5 items
+                    const p2Arr = srvData.p2; // 10 items
+                    const p3Arr = generatorData[lang].shared_p3; // 10 items
+
+                    const structuralOrders = [
+                        [0, 1, 2], [0, 2, 1], [1, 0, 2],
+                        [1, 2, 0], [2, 0, 1], [2, 1, 0]
+                    ];
+
+                    for (let i = 0; i < p1Arr.length; i++) {
+                        for (let j = 0; j < p2Arr.length; j++) {
+                            for (let k = 0; k < p3Arr.length; k++) {
+                                let parts = [p1Arr[i], p2Arr[j], p3Arr[k]];
+                                let orderIdx = (i + j + k) % 6; 
+                                let ord = structuralOrders[orderIdx];
+                                
+                                let sentence = `${parts[ord[0]]} ${parts[ord[1]]} ${parts[ord[2]]}`;
+                                sentences500.push(sentence);
+                            }
+                        }
+                    }
+
+                    // Scramble algorithm (Prime modulo offset)
+                    let mixed500 = new Array(500);
+                    for (let i = 0; i < 500; i++) {
+                        mixed500[(i * 137) % 500] = sentences500[i];
+                    }
+
+                    generatedReviews[lang][srvKey] = mixed500;
+                    sequentialCounters[lang][srvKey] = 0; 
+                });
+            }
+            
+            setLanguage('mr');
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            const langData = generatorData[lang];
+            
+            document.getElementById('title').innerText = langData.title;
+            document.getElementById('doctor-name').innerText = langData.doctor;
+            document.getElementById('slogan').innerText = langData.slogan;
+            document.getElementById('txt-google').innerText = langData.google;
+            document.getElementById('txt-contact').innerText = langData.contact;
+            document.getElementById('txt-prompt').innerText = langData.prompt;
+            document.getElementById('txt-sub-prompt').innerText = langData.subPrompt;
+            document.getElementById('txt-copy').innerText = langData.copyBtn;
+            document.getElementById('txt-rephrase').innerText = langData.rephraseBtn;
+            
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.style.backgroundColor = "var(--accent-google)";
+
+            renderTags();
+
+            if (selectedServices.length > 0) {
+                displayReview();
+            }
+        }
+
+        function renderTags() {
+            const container = document.getElementById('tags-container');
+            container.innerHTML = '';
+            
+            serviceKeys.forEach(key => {
+                const btn = document.createElement('button');
+                btn.className = 'tag-btn ' + (selectedServices.includes(key) ? 'active-tag' : '');
+                btn.innerText = generatorData[currentLang].services[key];
+                
+                btn.onclick = () => toggleTag(key);
+                
+                container.appendChild(btn);
+            });
+        }
+
+        function toggleTag(key) {
+            const index = selectedServices.indexOf(key);
+            
+            if (index > -1) {
+                selectedServices.splice(index, 1);
+            } else {
+                selectedServices.push(key);
+            }
+            
+            renderTags(); 
+            
+            if (selectedServices.length > 0) {
+                document.getElementById('review-action-area').style.display = 'block';
+                displayReview();
+            } else {
+                document.getElementById('review-action-area').style.display = 'none';
+            }
+        }
+
+        function triggerReviewCard() {
+            document.getElementById('review-card').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('review-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function displayReview() {
+            if(selectedServices.length === 0) return;
+            
+            let combinedReview = [];
+            let closingStatement = "";
+            let langData = generatorData[currentLang];
+
+            // If exactly 1 service is selected, use the 500 pre-mixed structurally shuffled array.
+            if (selectedServices.length === 1) {
+                let srv = selectedServices[0];
+                let currentIndex = sequentialCounters[currentLang][srv] % 500;
+                combinedReview.push(generatedReviews[currentLang][srv][currentIndex]);
+                sequentialCounters[currentLang][srv]++;
+            } 
+            // If multiple services are selected, dynamically stitch components for grammatical perfection.
+            else {
+                selectedServices.forEach((srv, index) => {
+                    let c = sequentialCounters[currentLang][srv];
+                    let serviceNameStr = generatorData[currentLang].services[srv].toLowerCase();
+                    
+                    let p1Arr = langData[srv].p1;
+                    let p2Arr = langData[srv].p2;
+                    let transArr = langData.transitions;
+                    let p3Arr = langData.shared_p3;
+
+                    let p1_idx = c % p1Arr.length;
+                    let p2_idx = Math.floor(c / p1Arr.length) % p2Arr.length;
+                    let trans_idx = c % transArr.length;
+                    let p3_idx = Math.floor(c / (p1Arr.length * p2Arr.length)) % p3Arr.length;
+
+                    if (index === 0) {
+                        let sentence1 = p1Arr[p1_idx];
+                        let sentence2 = p2Arr[p2_idx];
+                        combinedReview.push(`${sentence1} ${sentence2}`);
+                    } else {
+                        let transition = transArr[trans_idx].replace(/\[SERVICE\]/g, serviceNameStr);
+                        let experience = p2Arr[p2_idx];
+                        combinedReview.push(`${transition} ${experience}`);
+                    }
+
+                    if (index === selectedServices.length - 1) {
+                        closingStatement = p3Arr[p3_idx];
+                    }
+
+                    sequentialCounters[currentLang][srv]++;
+                });
+                combinedReview.push(closingStatement);
+            }
+            
+            document.getElementById('review-text').value = combinedReview.join(' ');
+            document.getElementById('copy-btn').style.backgroundColor = "var(--accent-google)";
+            document.getElementById('txt-copy').innerText = generatorData[currentLang].copyBtn;
+        }
+
+        function copyAndRedirect() {
+            const copyText = document.getElementById("review-text");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const copyBtn = document.getElementById("copy-btn");
+                document.getElementById('txt-copy').innerText = generatorData[currentLang].copiedMsg;
+                copyBtn.style.backgroundColor = "#10b981"; 
+                
+                setTimeout(() => {
+                    // Redirects to Google review within 1 second as requested
+                    window.location.href = 'https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID_HERE';
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+</html>
