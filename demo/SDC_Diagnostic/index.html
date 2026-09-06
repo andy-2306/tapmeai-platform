@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SDC Diagnostic Centre - Thane</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #e2e8f0;
+            --btn-glass: rgba(255, 255, 255, 0.2);
+            --accent-google: #4285F4;
+            --accent-medical: #0284c7; /* Clinical Blue */
+            --accent-medical-hover: #0369a1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Clean, hygienic medical background */
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.85), rgba(15, 23, 42, 0.95)), 
+                        url('https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 460px;
+            width: 100%;
+            margin-top: 2vh;
+            padding-bottom: 40px;
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 8px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent-medical-hover);
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Glassmorphism Main Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Pure CSS Text Logo */
+        .logo-text {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: white; 
+            color: var(--accent-medical);
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 3px solid rgba(255,255,255,0.5);
+            letter-spacing: 1px;
+        }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; 
+            margin: 0 0 4px 0; 
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+        }
+        
+        p#slogan { 
+            font-size: 14px; 
+            font-style: italic; 
+            color: var(--text-muted);
+            margin: 0 0 32px 0; 
+            font-weight: 300;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--btn-glass);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .btn-google { border-left: 5px solid var(--accent-google); }
+        .btn-website { border-left: 5px solid var(--accent-medical); }
+
+        /* Review Card Popup & Star Rating */
+        #review-card {
+            display: none;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 25px;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        #txt-rate-prompt {
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #f8fafc;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            font-size: 36px;
+            cursor: pointer;
+        }
+
+        .star {
+            color: rgba(255, 255, 255, 0.3);
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .star.active {
+            color: #F59E0B; /* Gold */
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+
+        .star:active {
+            transform: scale(0.8);
+        }
+
+        #txt-sub-prompt {
+            display: none; 
+            font-size: 13px; 
+            color: #cbd5e1; 
+            margin-bottom: 16px; 
+            font-weight: 400;
+        }
+
+        .tags-container {
+            display: none; 
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tag-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #f1f5f9;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tag-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
+        
+        .tag-btn.active-tag {
+            background: var(--accent-medical);
+            border-color: var(--accent-medical);
+            color: white;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+        }
+
+        /* Review Text Area & Actions */
+        #review-action-area {
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13.5px;
+            color: #0f172a;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            background-color: rgba(255,255,255,0.95);
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-refresh, .btn-copy {
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: 0.3s ease;
+        }
+
+        .btn-refresh {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-refresh:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-copy { 
+            background-color: var(--accent-google); 
+            color: white; 
+            flex: 2;
+        }
+        .btn-copy:hover { background-color: #3367d6; box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4); }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body onload="initApp()">
+    <div class="container">
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLanguage('mr')" id="btn-mr">मराठी</button>
+            <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
+            <button class="lang-btn" onclick="setLanguage('hi')" id="btn-hi">हिन्दी</button>
+        </div>
+
+        <div class="glass-card">
+            <!-- Pure CSS Text Logo -->
+            <div class="logo-text">SDC</div>
+            
+            <h1 id="title">SDC Diagnostic Centre</h1>
+            <p id="slogan">Accuracy, Speed & Compassionate Care in Thane</p>
+
+            <div class="btn-group">
+                <button class="btn btn-google" onclick="triggerReviewCard()">
+                    <span style="font-size: 22px;">⭐</span> <span id="txt-google">Google Review</span>
+                </button>
+                
+                <button class="btn btn-website" onclick="window.location.href='https://sdc-diagnostic-centre.grexa.site/'">
+                    <span style="font-size: 20px;">🌐</span> <span id="txt-website">Visit Website</span>
+                </button>
+            </div>
+
+            <div id="review-card">
+                <!-- Star Rating Section -->
+                <div id="txt-rate-prompt">How was your experience?</div>
+                <div class="star-rating" id="star-rating">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
+
+                <p id="txt-sub-prompt" class="sub-prompt">Select the highlights of your visit (Select multiple if applicable):</p>
+                
+                <div class="tags-container" id="tags-container"></div>
+
+                <div id="review-action-area">
+                    <textarea id="review-text" readonly></textarea>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-refresh" onclick="displayReview()">🔄 <span id="txt-rephrase">Rephrase</span></button>
+                        <button class="btn-copy" id="copy-btn" onclick="copyAndRedirect()">📋 <span id="txt-copy">Copy & Continue</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 500 Combinations Engine
+        const generatorData = {
+            en: {
+                title: "SDC Diagnostic Centre", slogan: "Accuracy, Speed & Compassionate Care in Thane",
+                google: "Share Feedback", website: "Visit Website", 
+                ratePrompt: "How was your experience today?", 
+                subPrompt: "Select the highlights of your visit (Select multiple if applicable):",
+                copyBtn: "Copy & Post to Google", 
+                rephraseBtn: "Rephrase", copiedMsg: "✅ Copied!", 
+                services: {
+                    blood_test: "Painless Blood Test", health_checkup: "Full Body Checkup", 
+                    hygiene: "Clean & Hygienic Lab", speed: "Fast WhatsApp Reports", staff: "Polite & Professional Staff"
+                },
+                transitions: [
+                    "Also, we were very impressed by the [SERVICE].", "Additionally, I noticed the [SERVICE].",
+                    "I also really appreciated their [SERVICE].", "Furthermore, the [SERVICE] was excellent."
+                ],
+                shared_p3: [
+                    "Highly recommend SDC Diagnostic Centre to everyone in Thane.", "Best pathology lab in Vartak Nagar and Lokmanya Nagar.",
+                    "Very satisfied with their diagnostic services.", "Will definitely visit again for future tests.",
+                    "Excellent facility near Lokmanya bus stop.", "A highly reliable testing center with great pricing.",
+                    "Definitely my go-to diagnostic lab from now on.", "A fantastic experience at SDC.",
+                    "Trustworthy reports and a very professional setup.", "Thank you SDC team for the smooth experience."
+                ],
+                blood_test: { p1: ["Visited SDC Diagnostic Centre for a routine blood test.", "Got my blood sample collected here today.", "Went to SDC for some prescribed blood tests.", "Needed a quick blood draw and chose this lab.", "Visited the clinic near Lokmanya Nagar for my pathology tests."], p2: ["The phlebotomist was highly skilled and the prick was completely painless.", "Sample collection was quick and very smooth.", "They use sterile needles and follow great safety protocols.", "The technician found my vein immediately without any hassle.", "I usually fear needles, but their staff made it incredibly easy."] },
+                health_checkup: { p1: ["Booked a full body preventive health checkup for my family.", "Visited for a comprehensive health package.", "Got my senior citizen health checkup done here.", "Chose SDC for our annual medical testing.", "Went in for a complete blood profile and health package."], p2: ["The package was very affordable and covered all major tests.", "Everything from thyroid to lipid profile was handled efficiently.", "The entire process was well-coordinated without long queues.", "They offer great value for money on their diagnostic packages.", "The health checkup was thorough and expertly managed."] },
+                hygiene: { p1: ["Visited the lab today for some tests.", "Chose SDC Diagnostic Centre for my pathology needs.", "Went in for sample collection.", "Visited their Vartak Nagar branch for diagnostics.", "Needed a reliable lab so I came to SDC."], p2: ["The clinic is exceptionally clean and well-sanitized.", "I was impressed by their strict hygiene and NABL protocols.", "The environment feels very safe and professional.", "They constantly sanitize the chairs and equipment.", "The waiting area is neat and provides a comfortable atmosphere."] },
+                speed: { p1: ["I needed some urgent test results today.", "Visited SDC for tests that required a quick turnaround.", "Got my blood work done in the morning.", "I was in a rush and needed my pathology reports fast.", "Did my tests at SDC Diagnostic Centre."], p2: ["Received accurate reports on my WhatsApp within just a few hours.", "The turnaround time for the results was impressively fast.", "Very prompt service with no delays in report delivery.", "Getting the digital reports directly on phone is super convenient.", "They kept their promise and delivered the urgent reports on time."] },
+                staff: { p1: ["Interacted with the team at SDC Diagnostic Centre.", "Visited the clinic near Lokmanya Nagar.", "Got my tests done here recently.", "Walked in for a quick diagnostic test.", "Had a smooth visit at the pathology lab."], p2: ["The reception staff was very polite and helpful.", "Minimal waiting time and a very cooperative team.", "They answered all my queries patiently and guided me well.", "The billing process was fast and the front desk was courteous.", "It's great to see a lab open on Sundays with such dedicated staff."] }
+            },
+            hi: {
+                title: "SDC डायग्नोस्टिक सेंटर", slogan: "ठाणे में सटीक, तेज़ और सुरक्षित जांच",
+                google: "फीडबैक दें", website: "वेबसाइट पर जाएं", 
+                ratePrompt: "आज का आपका अनुभव कैसा रहा?", 
+                subPrompt: "कृपया अपनी विज़िट की खासियत चुनें (एक से अधिक चुन सकते हैं):",
+                copyBtn: "कॉपी करें और गूगल पर पोस्ट करें", 
+                rephraseBtn: "फिर से लिखें", copiedMsg: "✅ कॉपी हो गया!",
+                services: {
+                    blood_test: "बिना दर्द के ब्लड टेस्ट", health_checkup: "फुल बॉडी चेकअप", 
+                    hygiene: "साफ और हाइजीनिक लैब", speed: "व्हाट्सएप पर तेज़ रिपोर्ट", staff: "विनम्र और प्रोफेशनल स्टाफ"
+                },
+                transitions: [
+                    "साथ ही, हम [SERVICE] से काफी प्रभावित हुए।", "इसके अलावा, मैंने [SERVICE] पर ध्यान दिया।",
+                    "मुझे उनकी [SERVICE] भी बहुत पसंद आई।", "इसके साथ ही, [SERVICE] भी बहुत बढ़िया थी।"
+                ],
+                shared_p3: [
+                    "मैं ठाणे में सभी को SDC डायग्नोस्टिक सेंटर की सलाह दूंगा।", "वर्तक नगर और लोकमान्य नगर में सबसे अच्छी पैथोलॉजी लैब।",
+                    "उनकी डायग्नोस्टिक सेवाओं से मैं बहुत संतुष्ट हूँ।", "भविष्य के टेस्ट के लिए मैं निश्चित रूप से यहाँ दोबारा आऊंगा।",
+                    "लोकमान्य बस स्टॉप के पास एक बहुत ही बेहतरीन लैब।", "सही दाम के साथ एक बहुत ही भरोसेमंद टेस्टिंग सेंटर।",
+                    "अब से यह मेरी पसंदीदा डायग्नोस्टिक लैब है।", "SDC का अनुभव बहुत शानदार रहा।",
+                    "भरोसेमंद रिपोर्ट और बहुत ही प्रोफेशनल सेटअप।", "इतने अच्छे अनुभव के लिए SDC टीम का धन्यवाद।"
+                ],
+                blood_test: { p1: ["मैं रूटीन ब्लड टेस्ट के लिए SDC डायग्नोस्टिक सेंटर गया था।", "आज मैंने यहां अपना ब्लड सैंपल दिया।", "डॉक्टर द्वारा बताए गए ब्लड टेस्ट के लिए SDC गया।", "मुझे जल्दी ब्लड टेस्ट कराना था इसलिए इस लैब को चुना।", "अपने पैथोलॉजी टेस्ट के लिए लोकमान्य नगर के पास वाले क्लिनिक में गया।"], p2: ["फ्लेबोटोमिस्ट बहुत ही कुशल था और सुई चुभने का बिल्कुल दर्द नहीं हुआ।", "सैंपल कलेक्शन बहुत ही जल्दी और आसानी से हो गया।", "वे सुरक्षित सुइयों का उपयोग करते हैं और सुरक्षा नियमों का पालन करते हैं।", "टेक्नीशियन को मेरी नस तुरंत मिल गई, कोई परेशानी नहीं हुई।", "मुझे आमतौर पर सुई से डर लगता है, लेकिन उनके स्टाफ ने इसे बहुत आसान बना दिया।"] },
+                health_checkup: { p1: ["मैंने अपने परिवार के लिए फुल बॉडी हेल्थ चेकअप बुक किया था।", "एक कम्पलीट हेल्थ पैकेज के लिए यहाँ गया था।", "मैंने यहाँ अपना सीनियर सिटीजन हेल्थ चेकअप करवाया।", "हमने अपने वार्षिक मेडिकल टेस्ट के लिए SDC को चुना।", "कम्पलीट ब्लड प्रोफाइल और हेल्थ पैकेज के लिए गया था।"], p2: ["पैकेज बहुत ही किफायती था और इसमें सभी प्रमुख टेस्ट शामिल थे।", "थायराइड से लेकर लिपिड प्रोफाइल तक सब कुछ बहुत अच्छे से किया गया।", "लंबी कतारों के बिना पूरी प्रक्रिया बहुत ही व्यवस्थित थी।", "उनके डायग्नोस्टिक पैकेज में पैसे की पूरी कीमत (Value for money) मिलती है।", "हेल्थ चेकअप बहुत ही गहनता से और विशेषज्ञता के साथ किया गया।"] },
+                hygiene: { p1: ["आज कुछ टेस्ट के लिए लैब गया था।", "अपनी पैथोलॉजी जरूरतों के लिए मैंने SDC डायग्नोस्टिक सेंटर को चुना।", "सैंपल कलेक्शन के लिए अंदर गया था।", "डायग्नोस्टिक्स के लिए उनकी वर्तक नगर ब्रांच में गया।", "मुझे एक भरोसेमंद लैब की जरूरत थी इसलिए मैं SDC आया।"], p2: ["क्लिनिक असाधारण रूप से साफ और सैनिटाइज़्ड है।", "मैं उनकी सख्त स्वच्छता और NABL प्रोटोकॉल से प्रभावित हुआ।", "यहाँ का माहौल बहुत ही सुरक्षित और प्रोफेशनल लगता है।", "वे कुर्सियों और उपकरणों को लगातार सैनिटाइज़ करते रहते हैं।", "वेटिंग एरिया साफ-सुथरा है और एक आरामदायक माहौल देता है।"] },
+                speed: { p1: ["मुझे आज कुछ जरूरी टेस्ट रिज़ल्ट चाहिए थे।", "उन टेस्ट के लिए SDC गया जिनके रिज़ल्ट जल्दी चाहिए थे।", "सुबह अपना ब्लड टेस्ट करवाया था।", "मुझे जल्दी थी और मुझे अपनी पैथोलॉजी रिपोर्ट जल्द चाहिए थी।", "SDC डायग्नोस्टिक सेंटर में अपने टेस्ट करवाए।"], p2: ["कुछ ही घंटों में मुझे अपने व्हाट्सएप पर सटीक रिपोर्ट मिल गई।", "नतीजों का टर्नअराउंड टाइम आश्चर्यजनक रूप से तेज़ था।", "रिपोर्ट देने में बिना किसी देरी के बहुत ही त्वरित सेवा दी गई।", "सीधे फोन पर डिजिटल रिपोर्ट प्राप्त करना बहुत सुविधाजनक है।", "उन्होंने अपना वादा निभाया और समय पर मेरी अर्जेंट रिपोर्ट दे दी।"] },
+                staff: { p1: ["SDC डायग्नोस्टिक सेंटर की टीम से बातचीत हुई।", "लोकमान्य नगर के पास क्लिनिक में गया था।", "हाल ही में यहाँ अपने टेस्ट करवाए हैं।", "एक त्वरित डायग्नोस्टिक टेस्ट के लिए अंदर गया।", "पैथोलॉजी लैब में मेरा अनुभव बहुत ही सहज रहा।"], p2: ["रिसेप्शन का स्टाफ बहुत ही विनम्र और मददगार था।", "इंतज़ार का समय बहुत कम था और टीम बहुत ही सहयोगी है।", "उन्होंने मेरे सभी सवालों के जवाब धैर्यपूर्वक दिए और मेरा सही मार्गदर्शन किया।", "बिलिंग प्रक्रिया तेज़ थी और फ्रंट डेस्क का व्यवहार विनम्र था।", "रविवार को भी इतने समर्पित कर्मचारियों के साथ लैब को खुला देखना बहुत अच्छा लगा।"] }
+            },
+            mr: {
+                title: "SDC डायग्नोस्टिक सेंटर", slogan: "ठाण्यात अचूक, वेगवान आणि सुरक्षित चाचणी",
+                google: "फीडबॅक द्या", website: "वेबसाईटला भेट द्या", 
+                ratePrompt: "आजचा तुमचा अनुभव कसा होता?", 
+                subPrompt: "कृपया तुमच्या भेटीची खासियत निवडा (एकापेक्षा जास्त निवडू शकता):",
+                copyBtn: "कॉपी करा आणि गुगलवर पोस्ट करा", 
+                rephraseBtn: "पुन्हा लिहा", copiedMsg: "✅ कॉपी झाले!",
+                services: {
+                    blood_test: "वेदनारहित रक्त तपासणी (Painless)", health_checkup: "संपूर्ण शरीर तपासणी", 
+                    hygiene: "स्वच्छ आणि हायजीनिक लॅब", speed: "व्हॉट्सॲपवर जलद रिपोर्ट", staff: "नम्र आणि व्यावसायिक स्टाफ"
+                },
+                transitions: [
+                    "तसेच, आम्ही [SERVICE] ने खूप प्रभावित झालो.", "याव्यतिरिक्त, मला त्यांची [SERVICE] खूप आवडली.",
+                    "त्यांची [SERVICE] खरोखरच कौतुकास्पद होती.", "आणि हो, [SERVICE] देखील अतिशय उत्तम होती."
+                ],
+                shared_p3: [
+                    "मी ठाण्यातील सर्वांना SDC डायग्नोस्टिक सेंटरची नक्कीच शिफारस करेन.", "वर्तक नगर आणि लोकमान्य नगर मधील सर्वात उत्तम पॅथॉलॉजी लॅब.",
+                    "मी त्यांच्या डायग्नोस्टिक सेवांनी खूप समाधानी आहे.", "भविष्यातील चाचण्यांसाठी मी नक्कीच येथे पुन्हा येईन.",
+                    "लोकमान्य बस स्टॉप जवळ एक अतिशय उत्तम सुविधा.", "योग्य दरांसह एक अत्यंत विश्वासार्ह टेस्टिंग सेंटर.",
+                    "आतापासून हीच माझी आवडती डायग्नोस्टिक लॅब असेल.", "SDC मधील अनुभव खरोखरच शानदार होता.",
+                    "विश्वासार्ह रिपोर्ट्स आणि अतिशय व्यावसायिक सेटअप.", "इतक्या चांगल्या अनुभवासाठी SDC टीमचे आभार."
+                ],
+                blood_test: { p1: ["मी रुटीन रक्त तपासणीसाठी SDC डायग्नोस्टिक सेंटरला गेलो होतो.", "आज मी येथे माझे रक्ताचे सॅम्पल दिले.", "डॉक्टरांनी सांगितलेल्या रक्त तपासणीसाठी SDC मध्ये गेलो.", "मला लवकरात लवकर रक्त तपासणी करायची होती म्हणून ही लॅब निवडली.", "माझ्या पॅथॉलॉजी टेस्टसाठी लोकमान्य नगर जवळील क्लिनिकला भेट दिली."], p2: ["फ्लेबोटोमिस्ट अत्यंत कुशल होता आणि सुई टोचताना अजिबात वेदना झाल्या नाहीत.", "सॅम्पल कलेक्शन अतिशय जलद आणि सुरळीत झाले.", "ते निर्जंतुक सुया वापरतात आणि सुरक्षेचे नियम पाळतात.", "टेक्निशियनला माझी नस लगेच सापडली, कोणताही त्रास झाला नाही.", "मला सहसा सुईची भीती वाटते, पण त्यांच्या स्टाफने हे अगदी सोपे केले."] },
+                health_checkup: { p1: ["मी माझ्या कुटुंबासाठी फुल बॉडी हेल्थ चेकअप बुक केले होते.", "एका कॉम्प्रिहेन्सिव्ह हेल्थ पॅकेजसाठी येथे भेट दिली.", "मी माझी सीनियर सिटिझन हेल्थ चेकअप येथे पूर्ण केली.", "आम्ही आमच्या वार्षिक वैद्यकीय चाचण्यांसाठी SDC ची निवड केली.", "कम्प्लीट ब्लड प्रोफाइल आणि हेल्थ पॅकेजसाठी गेलो होतो."], p2: ["हे पॅकेज अतिशय परवडणारे होते आणि त्यात सर्व प्रमुख चाचण्यांचा समावेश होता.", "थायरॉईडपासून ते लिपिड प्रोफाइलपर्यंत सर्व काही अतिशय उत्तम प्रकारे हाताळले गेले.", "लांब रांगांशिवाय संपूर्ण प्रक्रिया अत्यंत सुव्यवस्थित होती.", "त्यांच्या डायग्नोस्टिक पॅकेजमध्ये पैशाचे पूर्ण मूल्य (Value for money) मिळते.", "हेल्थ चेकअप अत्यंत सखोल आणि तज्ञांच्या मार्गदर्शनाखाली झाले."] },
+                hygiene: { p1: ["आज काही चाचण्यांसाठी लॅबला भेट दिली.", "माझ्या पॅथॉलॉजीच्या गरजांसाठी मी SDC डायग्नोस्टिक सेंटरची निवड केली.", "सॅम्पल कलेक्शनसाठी आत गेलो होतो.", "डायग्नोस्टिक्ससाठी त्यांच्या वर्तक नगर शाखेला भेट दिली.", "मला एका विश्वासार्ह लॅबची गरज होती म्हणून मी SDC ला आलो."], p2: ["क्लिनिक अतिशय स्वच्छ आणि सॅनिटाईज्ड आहे.", "मी त्यांची कडक स्वच्छता आणि NABL प्रोटोकॉल पाहून प्रभावित झालो.", "येथील वातावरण अत्यंत सुरक्षित आणि व्यावसायिक वाटते.", "ते खुर्च्या आणि उपकरणे सतत सॅनिटाईज करत असतात.", "वेटिंग एरिया स्वच्छ असून एक आरामदायक वातावरण देतो."] },
+                speed: { p1: ["मला आज काही तातडीचे टेस्ट रिझल्ट हवे होते.", "ज्या चाचण्यांचे रिझल्ट लवकर हवे होते त्यासाठी SDC मध्ये गेलो.", "सकाळी माझी रक्त तपासणी करून घेतली.", "मला घाई होती आणि माझे पॅथॉलॉजी रिपोर्ट्स लवकरात लवकर हवे होते.", "SDC डायग्नोस्टिक सेंटरमध्ये माझ्या चाचण्या पूर्ण केल्या."], p2: ["काही तासांतच मला माझ्या व्हॉट्सॲपवर अचूक रिपोर्ट मिळाला.", "निकालांचा टर्नअराउंड वेळ खरोखरच आश्चर्यकारकपणे वेगवान होता.", "रिपोर्ट्स देण्यात कोणताही विलंब न करता अत्यंत तत्पर सेवा दिली गेली.", "थेट फोनवर डिजिटल रिपोर्ट्स मिळणे अत्यंत सोयीचे आहे.", "त्यांनी दिलेला शब्द पाळला आणि माझे तातडीचे रिपोर्ट्स वेळेवर दिले."] },
+                staff: { p1: ["SDC डायग्नोस्टिक सेंटरच्या टीमसोबत संवाद साधला.", "लोकमान्य नगर जवळील क्लिनिकला भेट दिली.", "नुकत्याच मी माझ्या चाचण्या येथे करून घेतल्या.", "एका त्वरित डायग्नोस्टिक टेस्टसाठी आत गेलो.", "पॅथॉलॉजी लॅबमधील माझा अनुभव अत्यंत सुरळीत राहिला."], p2: ["रिसेप्शनचा स्टाफ अत्यंत नम्र आणि मदत करणारा होता.", "प्रतीक्षेचा वेळ खूप कमी होता आणि टीम अतिशय सहकार्य करणारी आहे.", "त्यांनी माझ्या सर्व प्रश्नांची शांतपणे उत्तरे दिली आणि योग्य मार्गदर्शन केले.", "बिलिंग प्रक्रिया वेगवान होती आणि फ्रंट डेस्कचा व्यवहार सौजन्यपूर्ण होता.", "रविवारीही इतक्या समर्पित कर्मचाऱ्यांसोबत लॅब सुरू असलेली पाहणे खूप छान वाटले."] }
+            }
+        };
+
+        const serviceKeys = Object.keys(generatorData.en.services);
+        let currentLang = 'mr'; 
+        let selectedServices = []; 
+        let currentRating = 0; 
+
+        const generatedReviews = { en: {}, hi: {}, mr: {} };
+        const sequentialCounters = { en: {}, hi: {}, mr: {} };
+
+        function initApp() {
+            // Build the 500 variations per TAG
+            for (let lang in generatorData) {
+                if(lang === 'title' || lang === 'slogan' || lang === 'google' || lang === 'website' || lang === 'prompt' || lang === 'subPrompt' || lang === 'copyBtn' || lang === 'rephraseBtn' || lang === 'copiedMsg' || lang === 'ratePrompt' || lang === 'services' || lang === 'transitions' || lang === 'shared_p3') continue;
+                
+                serviceKeys.forEach(srvKey => {
+                    let sentences500 = [];
+                    const srvData = generatorData[lang][srvKey];
+                    if(!srvData) return; 
+                    
+                    const p1Arr = srvData.p1;
+                    const p2Arr = srvData.p2; 
+                    const p3Arr = generatorData[lang].shared_p3; 
+
+                    const structuralOrders = [ [0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0] ];
+
+                    for (let i = 0; i < p1Arr.length; i++) {
+                        for (let j = 0; j < p2Arr.length; j++) {
+                            for (let k = 0; k < p3Arr.length; k++) {
+                                let parts = [p1Arr[i], p2Arr[j], p3Arr[k]];
+                                let orderIdx = (i + j + k) % 6; 
+                                let ord = structuralOrders[orderIdx];
+                                let sentence = `${parts[ord[0]]} ${parts[ord[1]]} ${parts[ord[2]]}`;
+                                sentences500.push(sentence);
+                            }
+                        }
+                    }
+
+                    // Scramble algorithm
+                    let mixed500 = new Array(500);
+                    for (let i = 0; i < 500; i++) {
+                        mixed500[(i * 137) % 500] = sentences500[i];
+                    }
+
+                    generatedReviews[lang][srvKey] = mixed500;
+                    sequentialCounters[lang][srvKey] = 0; 
+                });
+            }
+            
+            initStars();
+            setLanguage('mr');
+        }
+
+        function initStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    currentRating = parseInt(this.getAttribute('data-value'));
+                    
+                    stars.forEach(s => {
+                        if (parseInt(s.getAttribute('data-value')) <= currentRating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+
+                    document.getElementById('txt-sub-prompt').style.display = 'block';
+                    document.getElementById('tags-container').style.display = 'flex';
+                    
+                    if (selectedServices.length > 0) {
+                        document.getElementById('review-action-area').style.display = 'block';
+                        displayReview();
+                    }
+
+                    updateButtonUI();
+                });
+            });
+        }
+
+        function updateButtonUI() {
+            const btnCopy = document.getElementById('txt-copy');
+            // Always set button to copy functionality regardless of rating, as requested
+            btnCopy.innerText = generatorData[currentLang].copyBtn;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            const langData = generatorData[lang];
+            
+            document.getElementById('title').innerText = langData.title;
+            document.getElementById('slogan').innerText = langData.slogan;
+            document.getElementById('txt-google').innerText = langData.google;
+            document.getElementById('txt-website').innerText = langData.website;
+            document.getElementById('txt-rate-prompt').innerText = langData.ratePrompt;
+            document.getElementById('txt-sub-prompt').innerText = langData.subPrompt;
+            document.getElementById('txt-rephrase').innerText = langData.rephraseBtn;
+            
+            updateButtonUI();
+            
+            const copyBtn = document.getElementById('copy-btn');
+            copyBtn.style.backgroundColor = "var(--accent-google)";
+
+            renderTags();
+
+            if (selectedServices.length > 0) {
+                displayReview();
+            }
+        }
+
+        function renderTags() {
+            const container = document.getElementById('tags-container');
+            container.innerHTML = '';
+            
+            serviceKeys.forEach(key => {
+                const btn = document.createElement('button');
+                btn.className = 'tag-btn ' + (selectedServices.includes(key) ? 'active-tag' : '');
+                btn.innerText = generatorData[currentLang].services[key];
+                
+                btn.onclick = () => toggleTag(key);
+                
+                container.appendChild(btn);
+            });
+        }
+
+        function toggleTag(key) {
+            const index = selectedServices.indexOf(key);
+            
+            if (index > -1) {
+                selectedServices.splice(index, 1);
+            } else {
+                selectedServices.push(key);
+            }
+            
+            renderTags(); 
+            
+            if (selectedServices.length > 0 && currentRating > 0) {
+                document.getElementById('review-action-area').style.display = 'block';
+                displayReview();
+            } else {
+                document.getElementById('review-action-area').style.display = 'none';
+            }
+        }
+
+        function triggerReviewCard() {
+            document.getElementById('review-card').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('review-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function displayReview() {
+            if(selectedServices.length === 0) return;
+            
+            let combinedReview = [];
+            let closingStatement = "";
+            let langData = generatorData[currentLang];
+
+            if (selectedServices.length === 1) {
+                let srv = selectedServices[0];
+                let currentIndex = sequentialCounters[currentLang][srv] % 500;
+                combinedReview.push(generatedReviews[currentLang][srv][currentIndex]);
+                sequentialCounters[currentLang][srv]++;
+            } else {
+                selectedServices.forEach((srv, index) => {
+                    let c = sequentialCounters[currentLang][srv];
+                    let serviceNameStr = generatorData[currentLang].services[srv].toLowerCase();
+                    
+                    let p1Arr = langData[srv].p1;
+                    let p2Arr = langData[srv].p2;
+                    let transArr = langData.transitions;
+                    let p3Arr = langData.shared_p3;
+
+                    let p1_idx = c % p1Arr.length;
+                    let p2_idx = Math.floor(c / p1Arr.length) % p2Arr.length;
+                    let trans_idx = c % transArr.length;
+                    let p3_idx = Math.floor(c / (p1Arr.length * p2Arr.length)) % p3Arr.length;
+
+                    if (index === 0) {
+                        combinedReview.push(`${p1Arr[p1_idx]} ${p2Arr[p2_idx]}`);
+                    } else {
+                        let transition = transArr[trans_idx].replace(/\[SERVICE\]/g, serviceNameStr);
+                        combinedReview.push(`${transition} ${p2Arr[p2_idx]}`);
+                    }
+
+                    if (index === selectedServices.length - 1) {
+                        closingStatement = p3Arr[p3_idx];
+                    }
+
+                    sequentialCounters[currentLang][srv]++;
+                });
+                combinedReview.push(closingStatement);
+            }
+            
+            document.getElementById('review-text').value = combinedReview.join(' ');
+            document.getElementById('copy-btn').style.backgroundColor = "var(--accent-google)";
+            updateButtonUI();
+        }
+
+        function copyAndRedirect() {
+            const copyText = document.getElementById("review-text");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const copyBtn = document.getElementById("copy-btn");
+                copyBtn.style.backgroundColor = "#10b981"; 
+                document.getElementById('txt-copy').innerText = generatorData[currentLang].copiedMsg;
+                
+                // All ratings redirect to Google now
+                setTimeout(() => {
+                    // REPLACE THIS WITH SDC's GOOGLE REVIEW PLACE ID LINK
+                    window.location.href = 'https://search.google.com/local/writereview?placeid=YOUR_GOOGLE_PLACE_ID_OR_SHARE_LINK';
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+</html>
