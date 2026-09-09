@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TapMe AI — Futuristic Visiting Card</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========== CSS VARIABLES ========== */
+    :root {
+      /* Card Dimensions — Standard Business Card 3.5 × 2 inches at 300 DPI */
+      --card-w: 1050px;
+      --card-h: 600px;
+      --card-radius: 20px;
+
+      /* Brand & Sci-Fi Colors */
+      --navy-dark: #050b14;
+      --navy-mid: #0a1628;
+      --navy-accent: #112644;
+      --cyan-glow: #00d4ff;
+      --cyan-bright: #5ce6ff;
+      --white: #ffffff;
+      --off-white: #e4edf8;
+      --text-muted: #84a2c6;
+      
+      /* Tech Accents */
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(0, 212, 255, 0.15);
+
+      /* Fonts */
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-tech: 'Share Tech Mono', monospace;
+    }
+
+    /* ========== RESET ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d1117;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 70px;
+      padding: 50px 20px;
+      font-family: var(--font-body);
+    }
+
+    .card-label {
+      font-family: var(--font-tech);
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 4px;
+      color: var(--cyan-glow);
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+
+    .card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ========== CARD BASE ========== */
+    .card {
+      width: var(--card-w);
+      height: var(--card-h);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      position: relative;
+      background: var(--navy-dark);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      box-shadow: 
+        0 0 40px rgba(0, 212, 255, 0.1),
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        inset 0 0 20px rgba(0, 212, 255, 0.05);
+    }
+
+    /* ====================================================
+       FRONT SIDE
+    ==================================================== */
+    .card-front {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* --- Left Panel (White / Tech) --- */
+    .front-left {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffffff 0%, #dce8f5 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 40px;
+      overflow: hidden;
+      border-right: 2px solid var(--cyan-glow);
+      box-shadow: 10px 0 30px rgba(0, 212, 255, 0.1);
+      z-index: 2;
+    }
+
+    /* Hexagon/Grid Background on Light Side */
+    .front-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 180, 220, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 180, 220, 0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    /* Main Logo Image */
+    .main-logo {
+      width: 320px;
+      height: auto;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+    }
+
+    .brand-tagline {
+      font-family: var(--font-tech);
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a73e8;
+      letter-spacing: 4px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-mission {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 700;
+      color: #3a6ea5;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 180, 220, 0.2);
+      box-shadow: 0 4px 15px rgba(0, 180, 220, 0.05);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- Right Panel (Navy Dark / Cyber) --- */
+    .front-right {
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(circle at 100% 0%, var(--navy-mid) 0%, var(--navy-dark) 80%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cyber Grid on Dark Side */
+    .cyber-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .contact-name {
+      font-family: var(--font-heading);
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+      position: relative;
+    }
+
+    .contact-name::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--cyan-glow);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    /* Glassmorphism Contact Blocks */
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0) 100%);
+      border-left: 3px solid var(--cyan-glow);
+      padding: 14px 20px;
+      border-radius: 4px;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(4px);
+      transition: background 0.3s ease;
+    }
+
+    .contact-item:hover {
+      background: linear-gradient(90deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0) 100%);
+    }
+
+    .contact-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--cyan-bright);
+      filter: drop-shadow(0 0 5px var(--cyan-glow));
+    }
+
+    .contact-text {
+      font-family: var(--font-tech);
+      font-size: 18px;
+      color: var(--off-white);
+      letter-spacing: 1px;
+    }
+
+
+    /* ====================================================
+       BACK SIDE
+    ==================================================== */
+    .card-back-inner {
+      width: 100%;
+      height: 100%;
+      background: var(--navy-dark);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .back-bg-accent {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* HUD Corner Brackets */
+    .hud-bracket {
+      position: absolute;
+      width: 40px; height: 40px;
+      border: 2px solid var(--cyan-glow);
+      opacity: 0.5;
+    }
+    .hud-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .hud-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .hud-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .hud-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    /* --- Top Badge (Pill for Logo) --- */
+    .back-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 35px;
+      padding-bottom: 15px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-pill {
+      background: var(--white);
+      padding: 10px 25px;
+      border-radius: 40px;
+      box-shadow: 
+        0 0 20px rgba(0, 212, 255, 0.4),
+        inset 0 0 10px rgba(0, 212, 255, 0.2);
+      border: 2px solid var(--cyan-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-pill img {
+      width: 130px;
+      height: auto;
+    }
+
+    /* --- Middle Content --- */
+    .back-middle {
+      display: flex;
+      flex: 1;
+      padding: 10px 40px;
+      gap: 30px;
+      position: relative;
+      z-index: 2;
+      align-items: center;
+    }
+
+    .services-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    /* Futuristic Service Blocks */
+    .service-block {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--cyan-glow);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 15px rgba(0, 212, 255, 0.1);
+    }
+
+    .service-icon svg {
+      width: 32px; height: 32px;
+      fill: var(--cyan-bright);
+      filter: drop-shadow(0 0 5px rgba(0,212,255,0.6));
+    }
+
+    .service-content {
+      flex: 1;
+    }
+
+    .service-title {
+      font-family: var(--font-tech);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--cyan-bright);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .service-desc {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* QR Panel with Scanner Beam */
+    .qr-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 240px;
+    }
+
+    .qr-container {
+      width: 190px;
+      height: 190px;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 0 30px rgba(0, 212, 255, 0.2),
+        0 0 0 2px var(--cyan-glow);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .qr-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Laser Scanner Animation */
+    .scanner-beam {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: #00ffcc;
+      box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc;
+      z-index: 3;
+      animation: scan 3s infinite linear;
+    }
+
+    @keyframes scan {
+      0% { top: -10px; opacity: 0; }
+      10% { opacity: 1; }
+      90% { top: 100%; opacity: 1; }
+      100% { top: 110px; opacity: 0; }
+    }
+
+    .qr-label {
+      font-family: var(--font-tech);
+      font-size: 13px;
+      color: var(--cyan-glow);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(0,212,255,0.4);
+    }
+
+    /* --- Bottom Banner --- */
+    .back-bottom {
+      padding: 20px 40px 30px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .demo-banner {
+      display: inline-block;
+      font-family: var(--font-tech);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy-dark);
+      background: var(--cyan-glow);
+      padding: 10px 40px;
+      border-radius: 4px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+    }
+
+    /* ========== PRINT STYLES ========== */
+    @media print {
+      body { background: white; gap: 40px; padding: 0; }
+      .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+      .card-label { display: none; }
+      .scanner-beam { display: none; }
+      @page { margin: 0.5in; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================== FRONT SIDE ======================== -->
+  <div class="card-wrapper">
+    <div class="card-label">[ FRONT SIDE ]</div>
+    <div class="card">
+      <div class="card-front">
+
+        <!-- LEFT PANEL — Brand -->
+        <div class="front-left">
+          <img src="assets/logo.png" alt="TapMe AI Logo" class="main-logo">
+          
+          <div class="brand-tagline">[ INNOVATING WITH INTELLIGENCE ]</div>
+          <div class="brand-mission">EMPOWERING FUTURE WITH AI SOLUTIONS</div>
+        </div>
+
+        <!-- RIGHT PANEL — Cyber Contact Info -->
+        <div class="front-right">
+          <div class="cyber-grid"></div>
+          
+          <div class="contact-name">Anand Maurya</div>
+
+          <!-- Phone -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </div>
+            <span class="contact-text">+91 9336157892</span>
+          </div>
+
+          <!-- Email -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+            <span class="contact-text">tapmeai01@gmail.com</span>
+          </div>
+
+          <!-- Website -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            </div>
+            <span class="contact-text">tapmeai.com</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== BACK SIDE ======================== -->
+  <div class="card-wrapper">
+    <div class="card-label">[ BACK SIDE ]</div>
+    <div class="card">
+      <div class="card-back-inner">
+
+        <div class="back-bg-accent"></div>
+        <div class="cyber-grid"></div>
+
+        <!-- HUD Brackets -->
+        <div class="hud-bracket hud-tl"></div>
+        <div class="hud-bracket hud-tr"></div>
+        <div class="hud-bracket hud-bl"></div>
+        <div class="hud-bracket hud-br"></div>
+
+        <!-- TOP — Mini Logo Pill -->
+        <div class="back-top">
+          <div class="logo-pill">
+            <img src="assets/logo.png" alt="TapMe AI Logo">
+          </div>
+        </div>
+
+        <!-- MIDDLE — Services + QR -->
+        <div class="back-middle">
+          <!-- Services -->
+          <div class="services-panel">
+            
+            <!-- Service 1 -->
+            <div class="service-block">
+              <div class="service-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- AI nodes icon -->
+                  <rect x="6" y="6" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.5" fill="none" style="color: #5ce6ff"/>
+                  <rect x="10" y="10" width="6" height="6" rx="1" fill="#5ce6ff"/>
+                  <rect x="28" y="6" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.5" fill="none" style="color: #5ce6ff"/>
+                  <rect x="32" y="10" width="6" height="6" rx="1" fill="#5ce6ff"/>
+                  <rect x="6" y="28" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.5" fill="none" style="color: #5ce6ff"/>
+                  <rect x="10" y="32" width="6" height="6" rx="1" fill="#5ce6ff"/>
+                  <rect x="28" y="28" width="4" height="4" fill="#5ce6ff"/>
+                  <rect x="36" y="28" width="4" height="4" fill="#5ce6ff"/>
+                  <rect x="28" y="36" width="4" height="4" fill="#5ce6ff"/>
+                  <rect x="36" y="36" width="6" height="6" rx="1" fill="#5ce6ff"/>
+                  <circle cx="38" cy="8" r="2" fill="#00d4ff" opacity="0.6"/>
+                  <line x1="20" y1="13" x2="28" y2="13" stroke="#5ce6ff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                  <line x1="13" y1="20" x2="13" y2="28" stroke="#5ce6ff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-title">Autonomous QR Review System</div>
+                <div class="service-desc">Intelligent review management and aggregation, utilizing dynamic AI feedback loops for maximum engagement.</div>
+              </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-block">
+              <div class="service-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Digital catalog icon -->
+                  <rect x="12" y="4" width="24" height="40" rx="4" stroke="#5ce6ff" stroke-width="2.5" fill="none"/>
+                  <line x1="12" y1="10" x2="36" y2="10" stroke="#5ce6ff" stroke-width="1.5"/>
+                  <line x1="12" y1="36" x2="36" y2="36" stroke="#5ce6ff" stroke-width="1.5"/>
+                  <line x1="16" y1="16" x2="32" y2="16" stroke="#5ce6ff" stroke-width="1.5" opacity="0.8"/>
+                  <line x1="16" y1="21" x2="28" y2="21" stroke="#5ce6ff" stroke-width="1.5" opacity="0.5"/>
+                  <line x1="16" y1="26" x2="30" y2="26" stroke="#5ce6ff" stroke-width="1.5" opacity="0.8"/>
+                  <line x1="16" y1="31" x2="26" y2="31" stroke="#5ce6ff" stroke-width="1.5" opacity="0.5"/>
+                  <circle cx="24" cy="40" r="1.5" fill="#5ce6ff"/>
+                </svg>
+              </div>
+              <div class="service-content">
+                <div class="service-title">QR Menu &amp; Digital Catalogs</div>
+                <div class="service-desc">Contact-free interactive menus with dynamic pricing, real-time item updates, and order-ready interfaces.</div>
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- QR Code -->
+          <div class="qr-panel">
+            <div class="qr-container">
+              <div class="scanner-beam"></div>
+              <img src="assets/qr-code.png" alt="Scan for Services QR Code">
+            </div>
+            <div class="qr-label">Scan to Connect</div>
+          </div>
+        </div>
+
+        <!-- BOTTOM — CTA Banner -->
+        <div class="back-bottom">
+          <div class="demo-banner">Request a Demo &amp; Explore More</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
